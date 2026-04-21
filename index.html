@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yota B2B Onboarding</title>
+  <style>
+    :root {
+      --primary: #00AEEF;
+      --light-blue: #E5F7FD;
+      --bg: #F2F4F7;
+      --accent: #731982;
+      --text: #17212f;
+      --muted: #6f7c8f;
+      --white: #ffffff;
+      --border: #dbe3ee;
+      --shadow: 0 12px 34px rgba(10, 35, 66, 0.08);
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --radius-sm: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      width: min(1220px, 92vw);
+      margin: 0 auto;
+    }
+
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 174, 239, 0.16);
+    }
+
+    .top-nav__row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+      min-height: 76px;
+    }
+
+    .logo {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .region {
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: var(--light-blue);
+      color: #008fc4;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    main { padding: 30px 0 46px; }
+
+    .screen {
+      display: none;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .screen.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero {
+      background: linear-gradient(125deg, #ffffff 0%, #edf9ff 55%, #e3f6ff 100%);
+      border-radius: var(--radius-lg);
+      padding: 42px;
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
+    }
+
+    h1, h2, h3 { margin: 0 0 12px; }
+    h1 { font-size: clamp(2rem, 3vw, 3rem); }
+    h2 { font-size: clamp(1.55rem, 2.2vw, 2.2rem); }
+    p { margin: 0; color: var(--muted); }
+
+    .tariff-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid transparent;
+    }
+
+    .card.primary { border-color: rgba(0, 174, 239, 0.35); }
+
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--light-blue);
+      color: #0088bb;
+      margin-bottom: 12px;
+    }
+
+    .features {
+      margin: 14px 0;
+      padding-left: 18px;
+      color: #4f5f73;
+      line-height: 1.7;
+    }
+
+    .price {
+      font-size: 1.7rem;
+      font-weight: 800;
+      margin: 12px 0 16px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 160ms ease;
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn:hover { transform: translateY(-1px); opacity: 0.95; }
+    .btn.secondary {
+      background: #fff;
+      color: #0889b8;
+      border: 1px solid #aadff2;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 26, 43, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 80;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      width: min(460px, 92vw);
+      background: #fff;
+      border-radius: 26px;
+      padding: 26px;
+      box-shadow: 0 22px 50px rgba(8, 26, 48, 0.22);
+    }
+
+    .field { margin: 12px 0; }
+    .field label { font-size: 0.88rem; font-weight: 600; color: #5a6677; display: block; margin-bottom: 8px; }
+
+    input, select {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      padding: 11px 12px;
+      font-size: 0.97rem;
+      outline: none;
+      background: #fff;
+    }
+    input:focus, select:focus { border-color: #7fd5f3; box-shadow: 0 0 0 4px rgba(0, 174, 239, 0.12); }
+
+    .onboarding-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.8fr) minmax(290px, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: #fff;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .banner {
+      background: #edf9ff;
+      border: 1px solid #cbebf8;
+      color: #008dbc;
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    .progress-track {
+      height: 10px;
+      border-radius: 999px;
+      background: #e6edf5;
+      overflow: hidden;
+      margin: 12px 0 16px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 30%;
+      background: linear-gradient(90deg, #00AEEF 0%, #36cbff 100%);
+    }
+
+    .benefit {
+      margin: 16px 0 18px;
+      padding: 18px;
+      border-radius: 18px;
+      color: #fff;
+      font-weight: 700;
+      background: linear-gradient(135deg, #00AEEF, #1089dc);
+    }
+
+    .tracker {
+      display: grid;
+      gap: 10px;
+    }
+
+    .tracker-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 14px;
+      padding: 11px 12px;
+      background: #f6faff;
+      border: 1px solid #d6effa;
+      font-weight: 600;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: #9eddf5;
+    }
+    .tracker-step.done .dot,
+    .tracker-step.active .dot { background: #00AEEF; }
+    .tracker-step.active {
+      border-color: #6fd2f3;
+      background: #edf9ff;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 94px;
+    }
+
+    .summary-list {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .summary-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      color: #4f6077;
+      font-size: 0.94rem;
+    }
+
+    .auth-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 14px 0 16px;
+    }
+
+    .auth-card {
+      border: 1px solid #dce6f2;
+      border-radius: 16px;
+      padding: 14px;
+      cursor: pointer;
+      transition: 150ms ease;
+      background: #fff;
+    }
+
+    .auth-card:hover { border-color: #8ad8f3; transform: translateY(-1px); }
+    .auth-card.selected {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(0, 174, 239, 0.12);
+      background: #f5fcff;
+    }
+
+    .icon-placeholder {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #dff4fe;
+      color: #0089bb;
+      display: grid;
+      place-items: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .info {
+      margin: 12px 0;
+      border-radius: 14px;
+      padding: 11px 13px;
+      background: #eaf8ff;
+      color: #047fac;
+      font-weight: 600;
+      border: 1px solid #cbeaf8;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .checkbox {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      font-size: 0.9rem;
+      color: #4f6077;
+      margin-top: 8px;
+    }
+
+    .error { color: #c23b6f; font-size: 0.85rem; margin-top: 8px; min-height: 18px; }
+
+    @media (max-width: 980px) {
+      .tariff-grid { grid-template-columns: repeat(2, 1fr); }
+      .onboarding-layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-nav">
+    <div class="container top-nav__row">
+      <div class="logo">Yota</div>
+      <nav class="nav-links">
+        <span>Тарифы</span>
+        <span>Решения</span>
+        <span>Поддержка</span>
+      </nav>
+      <div class="region">Москва и область</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="landingScreen" class="screen active">
+      <div class="hero">
+        <h1>Связь для нового бизнеса</h1>
+        <p>Подключайте тариф для команды без визитов в офис: цифровой процесс, быстрый старт, никакой бюрократии.</p>
+      </div>
+
+      <div class="tariff-grid">
+        <article class="card primary">
+          <span class="badge">Готовый сценарий</span>
+          <h3>Business Start</h3>
+          <ul class="features">
+            <li>600 минут</li>
+            <li>40 ГБ</li>
+            <li>eSIM</li>
+            <li>Yota ID</li>
+          </ul>
+          <div class="price">990 ₽</div>
+          <button class="btn" id="chooseStartBtn">Выбрать</button>
+        </article>
+
+        <article class="card">
+          <h3>Business Grow</h3>
+          <p>Для растущих команд с расширенным лимитом связи.</p>
+          <div class="price">1 490 ₽</div>
+          <button class="btn secondary" type="button">Скоро</button>
+        </article>
+
+        <article class="card">
+          <h3>Business Global</h3>
+          <p>Роуминг и расширенный пакет интернета для международных проектов.</p>
+          <div class="price">2 290 ₽</div>
+          <button class="btn secondary" type="button">Скоро</button>
+        </article>
+
+        <article class="card">
+          <h3>AI-конфигурация</h3>
+          <p>Подбор параметров тарифа на базе ИИ. Отдельный сценарий подключения.</p>
+          <div class="price">Индивидуально</div>
+          <button class="btn secondary" type="button">Отдельный поток</button>
+        </article>
+      </div>
+    </section>
+
+    <section id="onboardingScreen" class="screen">
+      <div class="onboarding-layout">
+        <div class="panel">
+          <div class="banner">Yota ID уже оформлена</div>
+          <h2>Оформление подключения</h2>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+          <div class="benefit">Подключение за пару минут</div>
+
+          <div class="tracker" id="tracker"></div>
+
+          <div id="onboardingStepContent"></div>
+        </div>
+
+        <aside class="panel sidebar">
+          <h3>Сводка заказа</h3>
+          <ul class="summary-list">
+            <li><span>Тариф</span><strong id="summaryTariff">—</strong></li>
+            <li><span>Yota ID</span><strong id="summaryYota">—</strong></li>
+            <li><span>Верификация</span><strong id="summaryVerification">—</strong></li>
+            <li><span>Итого</span><strong id="summaryPrice">—</strong></li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <div id="otpModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal">
+      <h3>Вход в Yota ID</h3>
+      <p style="margin-bottom: 12px;">Вы почти подключены. Подтвердите номер и завершите настройку.</p>
+
+      <div class="field">
+        <label for="phoneInput">Телефон</label>
+        <input id="phoneInput" value="+7 999 123-45-67" />
+      </div>
+
+      <div class="field">
+        <label for="otpInput">Код из SMS</label>
+        <input id="otpInput" placeholder="Введите 1234" maxlength="4" />
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top: 12px;">
+        <button class="btn secondary" id="getCodeBtn" type="button">Получить код</button>
+        <button class="btn" id="loginBtn" type="button">Войти</button>
+      </div>
+      <div class="error" id="otpError"></div>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      currentScreen: 'landing',
+      currentOnboardingStep: 'start',
+      tariff: 'Business Start',
+      price: '990 ₽',
+      yotaIdCreated: false,
+      verified: false,
+      authType: '',
+      user: {
+        phone: '+7 999 123-45-67',
+        email: '',
+        fullName: '',
+        citizenship: ''
+      },
+      consent: false
+    };
+
+    const refs = {
+      landingScreen: document.getElementById('landingScreen'),
+      onboardingScreen: document.getElementById('onboardingScreen'),
+      otpModal: document.getElementById('otpModal'),
+      chooseStartBtn: document.getElementById('chooseStartBtn'),
+      getCodeBtn: document.getElementById('getCodeBtn'),
+      loginBtn: document.getElementById('loginBtn'),
+      otpInput: document.getElementById('otpInput'),
+      phoneInput: document.getElementById('phoneInput'),
+      otpError: document.getElementById('otpError'),
+      tracker: document.getElementById('tracker'),
+      progressFill: document.getElementById('progressFill'),
+      onboardingStepContent: document.getElementById('onboardingStepContent'),
+      summaryTariff: document.getElementById('summaryTariff'),
+      summaryYota: document.getElementById('summaryYota'),
+      summaryVerification: document.getElementById('summaryVerification'),
+      summaryPrice: document.getElementById('summaryPrice')
+    };
+
+    const authProfiles = {
+      'T-ID': { email: 'founder@startup.ru', fullName: 'Илья Смирнов', citizenship: 'РФ' },
+      'Sber ID': { email: 'founder@sberbiz.ru', fullName: 'Анна Морозова', citizenship: 'РФ' },
+      'Alfa ID': { email: 'founder@alfabiz.ru', fullName: 'Дмитрий Лебедев', citizenship: 'РФ' },
+      'Госуслуги': { email: 'founder@gos.ru', fullName: 'Мария Петрова', citizenship: 'РФ' }
+    };
+
+    function setScreen(screen) {
+      state.currentScreen = screen;
+      refs.landingScreen.classList.toggle('active', screen === 'landing');
+      refs.onboardingScreen.classList.toggle('active', screen === 'onboarding');
+    }
+
+    function renderTracker() {
+      const stepState = {
+        start: ['done', 'done', 'active', 'pending'],
+        verification: ['done', 'done', 'active', 'pending'],
+        userData: ['done', 'done', 'done', 'active']
+      };
+
+      const labels = ['Тариф выбран', 'Авторизация', 'Верификация', 'Данные клиента'];
+      refs.tracker.innerHTML = labels.map((label, i) => {
+        const cls = stepState[state.currentOnboardingStep]?.[i] || 'pending';
+        return `<div class="tracker-step ${cls}"><span class="dot"></span><span>${label}</span></div>`;
+      }).join('');
+    }
+
+    function renderSummary() {
+      refs.summaryTariff.textContent = state.tariff;
+      refs.summaryYota.textContent = state.yotaIdCreated ? 'Создана' : 'Ожидание';
+      refs.summaryVerification.textContent = state.verified ? 'Пройдена' : 'Не начата';
+      refs.summaryPrice.textContent = state.price;
+    }
+
+    function renderOnboardingContent() {
+      refs.progressFill.style.width = state.currentOnboardingStep === 'userData' ? '85%' : '30%';
+
+      if (state.currentOnboardingStep === 'start' || state.currentOnboardingStep === 'verification') {
+        const providers = ['T-ID', 'Sber ID', 'Alfa ID', 'Госуслуги'];
+
+        refs.onboardingStepContent.innerHTML = `
+          <div style="margin-top: 20px;">
+            <h3>Пройди верификацию</h3>
+            <p>Выбери удобный способ входа — данные подтянутся автоматически.</p>
+            <div class="auth-grid">
+              ${providers.map(name => `
+                <button class="auth-card ${state.authType === name ? 'selected' : ''}" type="button" data-auth="${name}">
+                  <div class="icon-placeholder">ID</div>
+                  <strong>${name}</strong>
+                  <p style="margin-top:6px; font-size:0.86rem;">Без ручного ввода и загрузки документов.</p>
+                </button>
+              `).join('')}
+            </div>
+            <button class="btn" id="continueVerificationBtn" type="button">Войти и подтянуть данные</button>
+            <div class="error" id="verificationError"></div>
+          </div>
+        `;
+
+        document.querySelectorAll('[data-auth]').forEach((el) => {
+          el.addEventListener('click', () => {
+            state.authType = el.dataset.auth;
+            render();
+          });
+        });
+
+        document.getElementById('continueVerificationBtn').addEventListener('click', () => {
+          if (!state.authType) {
+            document.getElementById('verificationError').textContent = 'Выберите способ верификации.';
+            return;
+          }
+          state.verified = true;
+          const profile = authProfiles[state.authType];
+          state.user.email = profile.email;
+          state.user.fullName = profile.fullName;
+          state.user.citizenship = profile.citizenship;
+          state.currentOnboardingStep = 'userData';
+          render();
+        });
+
+        return;
+      }
+
+      refs.onboardingStepContent.innerHTML = `
+        <div style="margin-top: 20px;">
+          <h3>Данные получателя</h3>
+          <div class="info">Данные получены автоматически</div>
+
+          <div class="field">
+            <label>Телефон</label>
+            <input id="userPhone" value="${state.user.phone}" />
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input id="userEmail" value="${state.user.email}" />
+          </div>
+          <div class="field">
+            <label>ФИО</label>
+            <input id="userName" value="${state.user.fullName}" />
+          </div>
+          <div class="field">
+            <label>Гражданство</label>
+            <select id="userCitizenship">
+              <option ${state.user.citizenship === 'РФ' ? 'selected' : ''}>РФ</option>
+              <option ${state.user.citizenship === 'Республика Беларусь' ? 'selected' : ''}>Республика Беларусь</option>
+              <option ${state.user.citizenship === 'Казахстан' ? 'selected' : ''}>Казахстан</option>
+            </select>
+          </div>
+
+          <label class="checkbox">
+            <input id="consentCheck" type="checkbox" ${state.consent ? 'checked' : ''}/>
+            <span>Согласен на обработку данных и подписание цифрового договора.</span>
+          </label>
+
+          <div class="row-actions">
+            <button class="btn secondary" id="backBtn" type="button">Назад</button>
+            <button class="btn" id="nextBtn" type="button">Далее</button>
+          </div>
+          <div class="error" id="finalError"></div>
+        </div>
+      `;
+
+      document.getElementById('backBtn').addEventListener('click', () => {
+        state.currentOnboardingStep = 'verification';
+        render();
+      });
+
+      document.getElementById('nextBtn').addEventListener('click', () => {
+        state.user.phone = document.getElementById('userPhone').value;
+        state.user.email = document.getElementById('userEmail').value;
+        state.user.fullName = document.getElementById('userName').value;
+        state.user.citizenship = document.getElementById('userCitizenship').value;
+        state.consent = document.getElementById('consentCheck').checked;
+
+        const finalError = document.getElementById('finalError');
+        finalError.textContent = state.consent ? 'Готово: подключение можно завершить в следующем шаге.' : 'Подтвердите согласие, чтобы продолжить.';
+      });
+    }
+
+    function render() {
+      renderTracker();
+      renderSummary();
+      renderOnboardingContent();
+    }
+
+    refs.chooseStartBtn.addEventListener('click', () => {
+      refs.otpModal.classList.add('open');
+      refs.otpModal.setAttribute('aria-hidden', 'false');
+      refs.otpError.textContent = '';
+    });
+
+    refs.getCodeBtn.addEventListener('click', () => {
+      refs.otpError.textContent = 'Код отправлен. Для демо используйте 1234.';
+    });
+
+    refs.loginBtn.addEventListener('click', () => {
+      if (refs.otpInput.value.trim() !== '1234') {
+        refs.otpError.textContent = 'Неверный код. Попробуйте 1234.';
+        return;
+      }
+      state.user.phone = refs.phoneInput.value.trim();
+      state.yotaIdCreated = true;
+      state.currentOnboardingStep = 'verification';
+      refs.otpModal.classList.remove('open');
+      refs.otpModal.setAttribute('aria-hidden', 'true');
+      setScreen('onboarding');
+      render();
+    });
+
+    refs.otpModal.addEventListener('click', (e) => {
+      if (e.target === refs.otpModal) {
+        refs.otpModal.classList.remove('open');
+        refs.otpModal.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>
