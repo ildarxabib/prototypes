@@ -3,362 +3,364 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yota B2B Onboarding</title>
+  <title>Yota B2B Onboarding Flow</title>
   <style>
     :root {
       --primary: #00AEEF;
-      --light-blue: #E5F7FD;
-      --bg: #F2F4F7;
+      --primary-soft: #E5F7FD;
       --accent: #731982;
-      --text: #17212f;
-      --muted: #6f7c8f;
-      --white: #ffffff;
-      --border: #dbe3ee;
-      --shadow: 0 12px 34px rgba(10, 35, 66, 0.08);
-      --radius-lg: 28px;
-      --radius-md: 20px;
-      --radius-sm: 14px;
+      --empty: #F2F4F7;
+      --border: #D2D5DA;
+      --border-active: #00AEEF;
+      --text: #1A2533;
+      --muted: #66748A;
+      --magenta-soft: #F07EFF;
+      --deep-extra: #4F533;
+      --grad-a: #00B956;
+      --grad-b: #00D2FF;
+      --shadow: 0 14px 32px rgba(20, 40, 71, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
+      background: var(--empty);
       color: var(--text);
+      font-family: "Euclid Circular A", "Euclid Circular A Regular", "Euclid Circular A Light", "Euclid Circular A Medium", "Euclid Circular A Semibold", "Euclid Circular A Bold", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    .container {
-      width: min(1220px, 92vw);
-      margin: 0 auto;
-    }
+    .container { width: min(1240px, 94vw); margin: 0 auto; }
 
     .top-nav {
       position: sticky;
       top: 0;
-      z-index: 30;
+      z-index: 40;
       background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(0, 174, 239, 0.16);
+      border-bottom: 1px solid rgba(0, 174, 239, 0.2);
     }
 
     .top-nav__row {
+      min-height: 78px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 22px;
-      min-height: 76px;
+      gap: 16px;
     }
 
-    .logo {
-      font-size: 1.45rem;
-      font-weight: 800;
-      letter-spacing: 0.4px;
-      color: var(--primary);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 22px;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
+    .logo { color: var(--primary); font-size: 1.5rem; font-weight: 700; }
+    .nav-links { display: flex; gap: 20px; color: var(--muted); }
     .region {
-      padding: 10px 16px;
+      background: var(--primary-soft);
       border-radius: 999px;
-      background: var(--light-blue);
-      color: #008fc4;
+      padding: 9px 14px;
+      color: #0989bc;
       font-weight: 600;
       font-size: 0.9rem;
     }
 
-    main { padding: 30px 0 46px; }
+    main { padding: 28px 0 44px; }
 
-    .screen {
-      display: none;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 180ms ease, transform 180ms ease;
-    }
-
-    .screen.active {
-      display: block;
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .screen { display: none; opacity: 0; transform: translateY(8px); transition: 220ms ease; }
+    .screen.active { display: block; opacity: 1; transform: translateY(0); }
 
     .hero {
-      background: linear-gradient(125deg, #ffffff 0%, #edf9ff 55%, #e3f6ff 100%);
-      border-radius: var(--radius-lg);
-      padding: 42px;
+      background: linear-gradient(110deg, #fff 0%, #eef9ff 56%, #e8f7ff 100%);
+      border-radius: var(--radius-xl);
       box-shadow: var(--shadow);
-      margin-bottom: 22px;
+      padding: 44px;
+      margin-bottom: 20px;
     }
 
-    h1, h2, h3 { margin: 0 0 12px; }
-    h1 { font-size: clamp(2rem, 3vw, 3rem); }
-    h2 { font-size: clamp(1.55rem, 2.2vw, 2.2rem); }
+    h1, h2, h3, h4 { margin: 0 0 10px; }
+    h1 { font-size: clamp(2.05rem, 3vw, 3.2rem); }
+    h2 { font-size: clamp(1.6rem, 2.3vw, 2.25rem); }
     p { margin: 0; color: var(--muted); }
 
     .tariff-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 18px;
+      gap: 15px;
+      align-items: stretch;
     }
 
-    .card {
-      background: var(--white);
-      border-radius: var(--radius-md);
-      padding: 20px;
+    .tariff-card {
+      border-radius: var(--radius-lg);
       box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      min-height: 470px;
       border: 1px solid transparent;
+      overflow: hidden;
+      background: #fff;
     }
 
-    .card.primary { border-color: rgba(0, 174, 239, 0.35); }
+    .tariff-card.primary {
+      border-color: rgba(0, 174, 239, 0.35);
+      background: linear-gradient(180deg, #f7fdff 0%, #ffffff 34%);
+    }
+
+    .tariff-card.grow {
+      background: linear-gradient(180deg, #f6fbff 0%, #ffffff 36%);
+    }
+
+    .tariff-card.global {
+      background: linear-gradient(180deg, #f9f5ff 0%, #ffffff 38%);
+      border: 1px solid rgba(115, 25, 130, 0.2);
+    }
+
+    .tariff-card.ai .ai-cap {
+      height: 25%;
+      min-height: 108px;
+      background: linear-gradient(125deg, var(--grad-a), var(--grad-b));
+      color: #fff;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+
+    .card-inner { padding: 18px; display: flex; flex-direction: column; flex: 1; }
 
     .badge {
-      display: inline-block;
+      display: inline-flex;
+      align-self: flex-start;
+      padding: 5px 10px;
       border-radius: 999px;
-      padding: 6px 10px;
+      background: var(--primary-soft);
+      color: #0b8bbb;
       font-size: 0.75rem;
       font-weight: 700;
-      background: var(--light-blue);
-      color: #0088bb;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
     .features {
-      margin: 14px 0;
-      padding-left: 18px;
-      color: #4f5f73;
-      line-height: 1.7;
+      list-style: none;
+      padding: 0;
+      margin: 12px 0 14px;
+      display: grid;
+      gap: 7px;
+      color: #425268;
+      font-size: 0.93rem;
     }
 
-    .price {
-      font-size: 1.7rem;
-      font-weight: 800;
-      margin: 12px 0 16px;
+    .features li::before {
+      content: "•";
+      color: var(--primary);
+      margin-right: 8px;
+      font-weight: 700;
+    }
+
+    .price { font-size: 1.65rem; font-weight: 700; margin-top: 4px; color: #182a3f; }
+
+    .btn-row {
+      margin-top: auto;
+      padding-top: 14px;
+      display: flex;
+      justify-content: center;
     }
 
     .btn {
-      border: none;
       border-radius: 999px;
+      border: 1px solid var(--border-active);
+      background: var(--primary);
+      color: #fff;
       padding: 12px 18px;
       font-weight: 700;
       cursor: pointer;
+      min-width: 150px;
       transition: 160ms ease;
-      background: var(--primary);
-      color: #fff;
     }
 
-    .btn:hover { transform: translateY(-1px); opacity: 0.95; }
+    .btn:hover { transform: translateY(-1px); opacity: 0.96; }
     .btn.secondary {
       background: #fff;
-      color: #0889b8;
-      border: 1px solid #aadff2;
+      color: #0a8dbe;
+      border-color: var(--border);
     }
 
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(10, 26, 43, 0.45);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 80;
+      background: rgba(17, 29, 46, 0.45);
+      z-index: 100;
     }
     .modal-overlay.open { display: flex; }
 
     .modal {
-      width: min(460px, 92vw);
-      background: #fff;
+      width: min(480px, 92vw);
       border-radius: 26px;
-      padding: 26px;
-      box-shadow: 0 22px 50px rgba(8, 26, 48, 0.22);
+      background: #fff;
+      box-shadow: 0 22px 58px rgba(11, 29, 50, 0.28);
+      padding: 24px;
     }
 
     .field { margin: 12px 0; }
-    .field label { font-size: 0.88rem; font-weight: 600; color: #5a6677; display: block; margin-bottom: 8px; }
+    .field label { display: block; margin-bottom: 7px; font-size: 0.88rem; font-weight: 600; color: #617084; }
 
     input, select {
       width: 100%;
-      border-radius: 14px;
-      border: 1px solid var(--border);
       padding: 11px 12px;
-      font-size: 0.97rem;
-      outline: none;
+      border-radius: 13px;
+      border: 1px solid var(--border);
       background: #fff;
+      font-size: 0.96rem;
+      outline: none;
     }
-    input:focus, select:focus { border-color: #7fd5f3; box-shadow: 0 0 0 4px rgba(0, 174, 239, 0.12); }
+    input::placeholder { color: #9aa5b5; }
+    input:focus, select:focus { border-color: var(--border-active); box-shadow: 0 0 0 4px rgba(0, 174, 239, 0.12); }
+
+    .error { min-height: 18px; margin-top: 8px; font-size: 0.85rem; color: #d53f76; }
 
     .onboarding-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.8fr) minmax(290px, 1fr);
+      grid-template-columns: minmax(0, 1.75fr) minmax(310px, 1fr);
       gap: 18px;
       align-items: start;
     }
 
     .panel {
       background: #fff;
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-lg);
       box-shadow: var(--shadow);
       padding: 22px;
     }
 
-    .banner {
-      background: #edf9ff;
-      border: 1px solid #cbebf8;
-      color: #008dbc;
-      padding: 12px 16px;
-      border-radius: 12px;
-      margin-bottom: 16px;
-      font-weight: 700;
-      display: inline-block;
+    .yota-id-alert {
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+      background: linear-gradient(130deg, #00AEEF, #00D2FF);
+      color: #fff;
+      box-shadow: 0 10px 26px rgba(0, 174, 239, 0.32);
     }
+    .yota-id-alert strong { font-size: 1.05rem; }
 
     .progress-track {
       height: 10px;
       border-radius: 999px;
-      background: #e6edf5;
       overflow: hidden;
-      margin: 12px 0 16px;
+      background: #e8edf3;
+      margin: 10px 0 16px;
     }
+    .progress-fill { height: 100%; width: 24%; background: linear-gradient(90deg, var(--primary), #36d2ff); }
 
-    .progress-fill {
-      height: 100%;
-      width: 30%;
-      background: linear-gradient(90deg, #00AEEF 0%, #36cbff 100%);
-    }
-
-    .benefit {
-      margin: 16px 0 18px;
-      padding: 18px;
+    .yota-benefits {
+      margin: 12px 0 18px;
       border-radius: 18px;
-      color: #fff;
-      font-weight: 700;
-      background: linear-gradient(135deg, #00AEEF, #1089dc);
+      background: linear-gradient(140deg, #f8f3ff, #ebf9ff);
+      border: 1px solid rgba(115, 25, 130, 0.2);
+      padding: 16px;
     }
 
-    .tracker {
-      display: grid;
-      gap: 10px;
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .chip {
+      background: #fff;
+      border: 1px solid #edd5ff;
+      color: #713586;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
     }
 
+    .tracker { display: grid; gap: 8px; margin-bottom: 16px; }
     .tracker-step {
       display: flex;
       align-items: center;
       gap: 10px;
-      border-radius: 14px;
-      padding: 11px 12px;
-      background: #f6faff;
-      border: 1px solid #d6effa;
+      border-radius: 12px;
+      border: 1px solid #dcedf7;
+      background: #f7fcff;
+      padding: 10px 11px;
       font-weight: 600;
+      color: #32506d;
+      font-size: 0.93rem;
     }
 
     .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: #9eddf5;
+      width: 11px;
+      height: 11px;
+      border-radius: 99px;
+      background: #8fd5f1;
     }
     .tracker-step.done .dot,
-    .tracker-step.active .dot { background: #00AEEF; }
+    .tracker-step.active .dot { background: var(--primary); }
     .tracker-step.active {
-      border-color: #6fd2f3;
-      background: #edf9ff;
+      border-color: #90dff8;
+      background: #ebf9ff;
     }
 
-    .sidebar {
-      position: sticky;
-      top: 94px;
-    }
-
-    .summary-list {
-      list-style: none;
-      padding: 0;
-      margin: 12px 0;
+    .choice-grid {
       display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
+      margin: 10px 0 14px;
     }
 
-    .summary-list li {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      color: #4f6077;
-      font-size: 0.94rem;
-    }
-
-    .auth-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin: 14px 0 16px;
-    }
-
-    .auth-card {
-      border: 1px solid #dce6f2;
-      border-radius: 16px;
-      padding: 14px;
+    .choice-card {
+      border: 1px solid #dbe6f2;
+      border-radius: 14px;
+      padding: 12px;
       cursor: pointer;
-      transition: 150ms ease;
       background: #fff;
+      text-align: left;
     }
-
-    .auth-card:hover { border-color: #8ad8f3; transform: translateY(-1px); }
-    .auth-card.selected {
+    .choice-card.selected {
       border-color: var(--primary);
       box-shadow: 0 0 0 4px rgba(0, 174, 239, 0.12);
-      background: #f5fcff;
+      background: #f4fcff;
     }
 
-    .icon-placeholder {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: #dff4fe;
-      color: #0089bb;
+    .icon {
+      width: 34px;
+      height: 34px;
       display: grid;
       place-items: center;
-      font-size: 0.75rem;
+      border-radius: 10px;
+      background: var(--primary-soft);
+      color: #0986b4;
+      font-size: 0.78rem;
       font-weight: 700;
       margin-bottom: 8px;
     }
 
-    .info {
-      margin: 12px 0;
-      border-radius: 14px;
-      padding: 11px 13px;
-      background: #eaf8ff;
-      color: #047fac;
-      font-weight: 600;
-      border: 1px solid #cbeaf8;
-    }
+    .row-actions { margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
 
-    .row-actions {
-      display: flex;
+    .sidebar { position: sticky; top: 96px; }
+    .summary-list {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0;
+      display: grid;
       gap: 10px;
-      margin-top: 14px;
+    }
+    .summary-list li { display: flex; justify-content: space-between; gap: 10px; font-size: 0.93rem; color: #51627a; }
+
+    .invoice-note {
+      background: #f7f2ff;
+      border: 1px solid rgba(115, 25, 130, 0.25);
+      color: #583269;
+      border-radius: 14px;
+      padding: 12px;
+      margin: 10px 0 14px;
+      font-weight: 600;
     }
 
-    .checkbox {
-      display: flex;
-      gap: 8px;
-      align-items: flex-start;
-      font-size: 0.9rem;
-      color: #4f6077;
-      margin-top: 8px;
-    }
-
-    .error { color: #c23b6f; font-size: 0.85rem; margin-top: 8px; min-height: 18px; }
-
-    @media (max-width: 980px) {
-      .tariff-grid { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 1050px) {
+      .tariff-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .onboarding-layout { grid-template-columns: 1fr; }
       .sidebar { position: static; }
+      .choice-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -368,7 +370,7 @@
       <div class="logo">Yota</div>
       <nav class="nav-links">
         <span>Тарифы</span>
-        <span>Решения</span>
+        <span>Сервисы</span>
         <span>Поддержка</span>
       </nav>
       <div class="region">Москва и область</div>
@@ -379,66 +381,113 @@
     <section id="landingScreen" class="screen active">
       <div class="hero">
         <h1>Связь для нового бизнеса</h1>
-        <p>Подключайте тариф для команды без визитов в офис: цифровой процесс, быстрый старт, никакой бюрократии.</p>
+        <p>Цифровое подключение для стартапов, предпринимателей и digital-команд: быстро, минимально и без бюрократии.</p>
       </div>
 
       <div class="tariff-grid">
-        <article class="card primary">
-          <span class="badge">Готовый сценарий</span>
-          <h3>Business Start</h3>
-          <ul class="features">
-            <li>600 минут</li>
-            <li>40 ГБ</li>
-            <li>eSIM</li>
-            <li>Yota ID</li>
-          </ul>
-          <div class="price">990 ₽</div>
-          <button class="btn" id="chooseStartBtn">Выбрать</button>
+        <article class="tariff-card primary">
+          <div class="card-inner">
+            <span class="badge">Готовый сценарий</span>
+            <h3>Business Start</h3>
+            <ul class="features">
+              <li>600 минут на РФ и внутри сети</li>
+              <li>40 ГБ трафика + безлимит мессенджеров</li>
+              <li>eSIM + мультиустройство</li>
+              <li>Yota ID для ускоренного обслуживания</li>
+              <li>Общий кабинет команды до 15 пользователей</li>
+            </ul>
+            <div class="price">990 ₽</div>
+            <div class="btn-row"><button class="btn" id="chooseStartBtn">Выбрать</button></div>
+          </div>
         </article>
 
-        <article class="card">
-          <h3>Business Grow</h3>
-          <p>Для растущих команд с расширенным лимитом связи.</p>
-          <div class="price">1 490 ₽</div>
-          <button class="btn secondary" type="button">Скоро</button>
+        <article class="tariff-card grow">
+          <div class="card-inner">
+            <span class="badge">Для роста</span>
+            <h3>Business Grow</h3>
+            <ul class="features">
+              <li>1300 минут и 80 ГБ</li>
+              <li>Приоритетная поддержка 24/7</li>
+              <li>Пул корпоративных eSIM</li>
+              <li>Единый биллинг и роли сотрудников</li>
+              <li>Скидка при подключении 10+ номеров</li>
+            </ul>
+            <div class="price">1 490 ₽</div>
+            <div class="btn-row"><button class="btn secondary" type="button">Выбрать</button></div>
+          </div>
         </article>
 
-        <article class="card">
-          <h3>Business Global</h3>
-          <p>Роуминг и расширенный пакет интернета для международных проектов.</p>
-          <div class="price">2 290 ₽</div>
-          <button class="btn secondary" type="button">Скоро</button>
+        <article class="tariff-card global">
+          <div class="card-inner">
+            <span class="badge" style="background:#f8f0ff;color:#7f3897;">Международный</span>
+            <h3>Business Global</h3>
+            <ul class="features">
+              <li>2200 минут + 140 ГБ</li>
+              <li>Пакеты роуминга для командировок</li>
+              <li>Глобальные дата-опции для SaaS-команд</li>
+              <li>Расширенные лимиты API-интеграции</li>
+              <li>Yota ID + партнерские бонусы</li>
+            </ul>
+            <div class="price">2 290 ₽</div>
+            <div class="btn-row"><button class="btn secondary" type="button">Выбрать</button></div>
+          </div>
         </article>
 
-        <article class="card">
-          <h3>AI-конфигурация</h3>
-          <p>Подбор параметров тарифа на базе ИИ. Отдельный сценарий подключения.</p>
-          <div class="price">Индивидуально</div>
-          <button class="btn secondary" type="button">Отдельный поток</button>
+        <article class="tariff-card ai">
+          <div class="ai-cap">
+            <span>AI-конфигурация</span>
+            <small>Подбор тарифа на основе профиля компании</small>
+          </div>
+          <div class="card-inner">
+            <h3>AI-подбор тарифа</h3>
+            <ul class="features">
+              <li>Сценарии по отрасли и модели команды</li>
+              <li>Прогноз расходов и динамические лимиты</li>
+              <li>Индивидуальные скидки и партнерские связки</li>
+              <li>Подбор SIM/eSIM и каналов выдачи</li>
+            </ul>
+            <div class="price">Индивидуально</div>
+            <div class="btn-row"><button class="btn secondary" type="button">Выбрать</button></div>
+          </div>
         </article>
       </div>
     </section>
 
     <section id="onboardingScreen" class="screen">
       <div class="onboarding-layout">
-        <div class="panel">
-          <div class="banner">Yota ID уже оформлена</div>
+        <section class="panel">
+          <div class="yota-id-alert">
+            <strong>Yota ID успешно создана</strong>
+            <div>Вы уже внутри экосистемы — осталось завершить несколько шагов и активировать подключение.</div>
+          </div>
+
           <h2>Оформление подключения</h2>
           <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
 
-          <div class="benefit">Подключение за пару минут</div>
+          <div class="yota-benefits">
+            <h4 style="color:#592f6c;">Преимущества Yota ID</h4>
+            <p>Один идентификатор для phygital-сценариев, скидок, социальных акций, партнерских программ и ускоренного обслуживания.</p>
+            <div class="chips">
+              <span class="chip">Phygital-сценарии</span>
+              <span class="chip">Скидки</span>
+              <span class="chip">Соц. акции</span>
+              <span class="chip">Партнерские программы</span>
+              <span class="chip">Быстрый сервис</span>
+            </div>
+          </div>
 
           <div class="tracker" id="tracker"></div>
-
-          <div id="onboardingStepContent"></div>
-        </div>
+          <div id="stepContent"></div>
+        </section>
 
         <aside class="panel sidebar">
           <h3>Сводка заказа</h3>
           <ul class="summary-list">
             <li><span>Тариф</span><strong id="summaryTariff">—</strong></li>
             <li><span>Yota ID</span><strong id="summaryYota">—</strong></li>
+            <li><span>Юрлицо</span><strong id="summaryCompany">—</strong></li>
             <li><span>Верификация</span><strong id="summaryVerification">—</strong></li>
+            <li><span>Получение</span><strong id="summaryDelivery">—</strong></li>
             <li><span>Итого</span><strong id="summaryPrice">—</strong></li>
           </ul>
         </aside>
@@ -449,7 +498,7 @@
   <div id="otpModal" class="modal-overlay" aria-hidden="true">
     <div class="modal">
       <h3>Вход в Yota ID</h3>
-      <p style="margin-bottom: 12px;">Вы почти подключены. Подтвердите номер и завершите настройку.</p>
+      <p>Вы уже почти подключены. Подтвердите номер телефона для продолжения.</p>
 
       <div class="field">
         <label for="phoneInput">Телефон</label>
@@ -461,7 +510,7 @@
         <input id="otpInput" placeholder="Введите 1234" maxlength="4" />
       </div>
 
-      <div style="display:flex; gap:10px; margin-top: 12px;">
+      <div class="row-actions">
         <button class="btn secondary" id="getCodeBtn" type="button">Получить код</button>
         <button class="btn" id="loginBtn" type="button">Войти</button>
       </div>
@@ -472,45 +521,65 @@
   <script>
     const state = {
       currentScreen: 'landing',
-      currentOnboardingStep: 'start',
       tariff: 'Business Start',
       price: '990 ₽',
       yotaIdCreated: false,
-      verified: false,
-      authType: '',
-      user: {
-        phone: '+7 999 123-45-67',
-        email: '',
-        fullName: '',
-        citizenship: ''
+      otpPhone: '+7 999 123-45-67',
+      step: 1,
+      legalEntity: {
+        query: '',
+        inn: '',
+        name: '',
+        address: ''
       },
-      consent: false
+      buyer: {
+        authType: '',
+        verified: false,
+        fullName: '',
+        email: ''
+      },
+      delivery: {
+        method: '',
+        recipient: '',
+        recipientPhone: '',
+        date: '',
+        slot: ''
+      },
+      consent: false,
+      finalSubmitted: false
     };
 
     const refs = {
       landingScreen: document.getElementById('landingScreen'),
       onboardingScreen: document.getElementById('onboardingScreen'),
-      otpModal: document.getElementById('otpModal'),
       chooseStartBtn: document.getElementById('chooseStartBtn'),
+      otpModal: document.getElementById('otpModal'),
+      phoneInput: document.getElementById('phoneInput'),
+      otpInput: document.getElementById('otpInput'),
       getCodeBtn: document.getElementById('getCodeBtn'),
       loginBtn: document.getElementById('loginBtn'),
-      otpInput: document.getElementById('otpInput'),
-      phoneInput: document.getElementById('phoneInput'),
       otpError: document.getElementById('otpError'),
-      tracker: document.getElementById('tracker'),
       progressFill: document.getElementById('progressFill'),
-      onboardingStepContent: document.getElementById('onboardingStepContent'),
+      tracker: document.getElementById('tracker'),
+      stepContent: document.getElementById('stepContent'),
       summaryTariff: document.getElementById('summaryTariff'),
       summaryYota: document.getElementById('summaryYota'),
+      summaryCompany: document.getElementById('summaryCompany'),
       summaryVerification: document.getElementById('summaryVerification'),
+      summaryDelivery: document.getElementById('summaryDelivery'),
       summaryPrice: document.getElementById('summaryPrice')
     };
 
-    const authProfiles = {
-      'T-ID': { email: 'founder@startup.ru', fullName: 'Илья Смирнов', citizenship: 'РФ' },
-      'Sber ID': { email: 'founder@sberbiz.ru', fullName: 'Анна Морозова', citizenship: 'РФ' },
-      'Alfa ID': { email: 'founder@alfabiz.ru', fullName: 'Дмитрий Лебедев', citizenship: 'РФ' },
-      'Госуслуги': { email: 'founder@gos.ru', fullName: 'Мария Петрова', citizenship: 'РФ' }
+    const buyerProfiles = {
+      'Госуслуги': { fullName: 'Ирина Ковалева', email: 'founder@gos.ru' },
+      'Sber ID': { fullName: 'Павел Романов', email: 'founder@sberbiz.ru' },
+      'Alfa ID': { fullName: 'Екатерина Орлова', email: 'founder@alfabiz.ru' }
+    };
+
+    const entityMockData = {
+      inn: '7707083893',
+      name: 'ООО «Новый Вектор»',
+      address: 'г. Москва, Пресненская наб., 8с1'
     };
 
     function setScreen(screen) {
@@ -520,15 +589,16 @@
     }
 
     function renderTracker() {
-      const stepState = {
-        start: ['done', 'done', 'active', 'pending'],
-        verification: ['done', 'done', 'active', 'pending'],
-        userData: ['done', 'done', 'done', 'active']
-      };
+      const labels = [
+        '1. Данные юрлица',
+        '2. Подтверждение покупателя',
+        '3. Способ получения',
+        '4. Оформление заказа'
+      ];
 
-      const labels = ['Тариф выбран', 'Авторизация', 'Верификация', 'Данные клиента'];
       refs.tracker.innerHTML = labels.map((label, i) => {
-        const cls = stepState[state.currentOnboardingStep]?.[i] || 'pending';
+        const index = i + 1;
+        const cls = state.step > index ? 'done' : state.step === index ? 'active' : 'pending';
         return `<div class="tracker-step ${cls}"><span class="dot"></span><span>${label}</span></div>`;
       }).join('');
     }
@@ -536,118 +606,244 @@
     function renderSummary() {
       refs.summaryTariff.textContent = state.tariff;
       refs.summaryYota.textContent = state.yotaIdCreated ? 'Создана' : 'Ожидание';
-      refs.summaryVerification.textContent = state.verified ? 'Пройдена' : 'Не начата';
+      refs.summaryCompany.textContent = state.legalEntity.name || 'Не заполнено';
+      refs.summaryVerification.textContent = state.buyer.verified ? state.buyer.authType : 'Не пройдена';
+      refs.summaryDelivery.textContent = state.delivery.method || 'Не выбрано';
       refs.summaryPrice.textContent = state.price;
+      refs.progressFill.style.width = `${24 + (state.step - 1) * 24}%`;
     }
 
-    function renderOnboardingContent() {
-      refs.progressFill.style.width = state.currentOnboardingStep === 'userData' ? '85%' : '30%';
+    function bindChoiceCards(selector, keyPath, rerender = true) {
+      document.querySelectorAll(selector).forEach((card) => {
+        card.addEventListener('click', () => {
+          const value = card.dataset.value;
+          if (keyPath === 'authType') state.buyer.authType = value;
+          if (keyPath === 'deliveryMethod') state.delivery.method = value;
+          if (rerender) render();
+        });
+      });
+    }
 
-      if (state.currentOnboardingStep === 'start' || state.currentOnboardingStep === 'verification') {
-        const providers = ['T-ID', 'Sber ID', 'Alfa ID', 'Госуслуги'];
+    function renderStep() {
+      if (state.step === 1) {
+        refs.stepContent.innerHTML = `
+          <h3>Шаг 1. Заполните данные о юрлице</h3>
+          <p>Введите ИНН или название компании — остальные данные подтянем автоматически.</p>
 
-        refs.onboardingStepContent.innerHTML = `
-          <div style="margin-top: 20px;">
-            <h3>Пройди верификацию</h3>
-            <p>Выбери удобный способ входа — данные подтянутся автоматически.</p>
-            <div class="auth-grid">
-              ${providers.map(name => `
-                <button class="auth-card ${state.authType === name ? 'selected' : ''}" type="button" data-auth="${name}">
-                  <div class="icon-placeholder">ID</div>
-                  <strong>${name}</strong>
-                  <p style="margin-top:6px; font-size:0.86rem;">Без ручного ввода и загрузки документов.</p>
-                </button>
-              `).join('')}
-            </div>
-            <button class="btn" id="continueVerificationBtn" type="button">Войти и подтянуть данные</button>
-            <div class="error" id="verificationError"></div>
+          <div class="field">
+            <label for="entityQuery">ИНН или название</label>
+            <input id="entityQuery" placeholder="Например: 7707083893 или ООО Ромашка" value="${state.legalEntity.query}" />
           </div>
+
+          <div class="row-actions">
+            <button id="autofillEntityBtn" class="btn" type="button">Подтянуть данные</button>
+          </div>
+
+          <div class="field">
+            <label>Название юрлица</label>
+            <input id="entityName" value="${state.legalEntity.name}" />
+          </div>
+          <div class="field">
+            <label>ИНН</label>
+            <input id="entityInn" value="${state.legalEntity.inn}" />
+          </div>
+          <div class="field">
+            <label>Юридический адрес</label>
+            <input id="entityAddress" value="${state.legalEntity.address}" />
+          </div>
+
+          <div class="row-actions">
+            <button id="toStep2Btn" class="btn" type="button">Далее</button>
+          </div>
+          <div class="error" id="step1Error"></div>
         `;
 
-        document.querySelectorAll('[data-auth]').forEach((el) => {
-          el.addEventListener('click', () => {
-            state.authType = el.dataset.auth;
-            render();
-          });
-        });
-
-        document.getElementById('continueVerificationBtn').addEventListener('click', () => {
-          if (!state.authType) {
-            document.getElementById('verificationError').textContent = 'Выберите способ верификации.';
+        document.getElementById('autofillEntityBtn').addEventListener('click', () => {
+          state.legalEntity.query = document.getElementById('entityQuery').value.trim();
+          if (!state.legalEntity.query) {
+            document.getElementById('step1Error').textContent = 'Укажите ИНН или название компании.';
             return;
           }
-          state.verified = true;
-          const profile = authProfiles[state.authType];
-          state.user.email = profile.email;
-          state.user.fullName = profile.fullName;
-          state.user.citizenship = profile.citizenship;
-          state.currentOnboardingStep = 'userData';
+          state.legalEntity.name = entityMockData.name;
+          state.legalEntity.inn = entityMockData.inn;
+          state.legalEntity.address = entityMockData.address;
           render();
         });
 
+        document.getElementById('toStep2Btn').addEventListener('click', () => {
+          state.legalEntity.query = document.getElementById('entityQuery').value.trim();
+          state.legalEntity.name = document.getElementById('entityName').value.trim();
+          state.legalEntity.inn = document.getElementById('entityInn').value.trim();
+          state.legalEntity.address = document.getElementById('entityAddress').value.trim();
+
+          if (!state.legalEntity.name || !state.legalEntity.inn) {
+            document.getElementById('step1Error').textContent = 'Заполните данные юрлица.';
+            return;
+          }
+          state.step = 2;
+          render();
+        });
         return;
       }
 
-      refs.onboardingStepContent.innerHTML = `
-        <div style="margin-top: 20px;">
-          <h3>Данные получателя</h3>
-          <div class="info">Данные получены автоматически</div>
+      if (state.step === 2) {
+        refs.stepContent.innerHTML = `
+          <h3>Шаг 2. Подтверждение данных покупателя</h3>
+          <p>Пройдите верификацию через Госуслуги или банковский ID.</p>
+
+          <div class="choice-grid">
+            ${['Госуслуги', 'Sber ID', 'Alfa ID'].map(item => `
+              <button type="button" class="choice-card ${state.buyer.authType === item ? 'selected' : ''}" data-value="${item}">
+                <div class="icon">ID</div>
+                <strong>${item}</strong>
+                <p style="margin-top:6px;font-size:0.84rem;">Подтягиваем данные автоматически.</p>
+              </button>
+            `).join('')}
+          </div>
+
+          <div class="row-actions">
+            <button id="verifyBuyerBtn" class="btn" type="button">Войти и подтянуть данные</button>
+            <button id="backTo1Btn" class="btn secondary" type="button">Назад</button>
+          </div>
+          <div class="error" id="step2Error"></div>
+        `;
+
+        bindChoiceCards('.choice-card', 'authType');
+
+        document.getElementById('backTo1Btn').addEventListener('click', () => {
+          state.step = 1;
+          render();
+        });
+
+        document.getElementById('verifyBuyerBtn').addEventListener('click', () => {
+          if (!state.buyer.authType) {
+            document.getElementById('step2Error').textContent = 'Выберите способ верификации.';
+            return;
+          }
+          const profile = buyerProfiles[state.buyer.authType];
+          state.buyer.verified = true;
+          state.buyer.fullName = profile.fullName;
+          state.buyer.email = profile.email;
+          state.step = 3;
+          render();
+        });
+        return;
+      }
+
+      if (state.step === 3) {
+        refs.stepContent.innerHTML = `
+          <h3>Шаг 3. Выберите способ получения</h3>
+          <p>Укажите канал получения и данные получателя, затем выберите дату и временной слот.</p>
+
+          <div class="choice-grid">
+            ${['Доставка курьером', 'Салон связи', 'Партнерский ПВЗ'].map(item => `
+              <button type="button" class="choice-card ${state.delivery.method === item ? 'selected' : ''}" data-value="${item}">
+                <div class="icon">СП</div>
+                <strong>${item}</strong>
+                <p style="margin-top:6px;font-size:0.84rem;">Выберите удобный формат получения.</p>
+              </button>
+            `).join('')}
+          </div>
 
           <div class="field">
-            <label>Телефон</label>
-            <input id="userPhone" value="${state.user.phone}" />
+            <label>Получатель</label>
+            <input id="recipientName" value="${state.delivery.recipient || state.buyer.fullName}" />
           </div>
           <div class="field">
-            <label>Email</label>
-            <input id="userEmail" value="${state.user.email}" />
+            <label>Телефон получателя</label>
+            <input id="recipientPhone" value="${state.delivery.recipientPhone || state.otpPhone}" />
+          </div>
+
+          <div class="field">
+            <label>Дата</label>
+            <input id="deliveryDate" type="date" value="${state.delivery.date}" />
           </div>
           <div class="field">
-            <label>ФИО</label>
-            <input id="userName" value="${state.user.fullName}" />
-          </div>
-          <div class="field">
-            <label>Гражданство</label>
-            <select id="userCitizenship">
-              <option ${state.user.citizenship === 'РФ' ? 'selected' : ''}>РФ</option>
-              <option ${state.user.citizenship === 'Республика Беларусь' ? 'selected' : ''}>Республика Беларусь</option>
-              <option ${state.user.citizenship === 'Казахстан' ? 'selected' : ''}>Казахстан</option>
+            <label>Временной слот</label>
+            <select id="deliverySlot">
+              <option value="">Выберите слот</option>
+              <option ${state.delivery.slot === '10:00–13:00' ? 'selected' : ''}>10:00–13:00</option>
+              <option ${state.delivery.slot === '13:00–16:00' ? 'selected' : ''}>13:00–16:00</option>
+              <option ${state.delivery.slot === '16:00–19:00' ? 'selected' : ''}>16:00–19:00</option>
             </select>
           </div>
 
-          <label class="checkbox">
-            <input id="consentCheck" type="checkbox" ${state.consent ? 'checked' : ''}/>
-            <span>Согласен на обработку данных и подписание цифрового договора.</span>
-          </label>
-
           <div class="row-actions">
-            <button class="btn secondary" id="backBtn" type="button">Назад</button>
-            <button class="btn" id="nextBtn" type="button">Далее</button>
+            <button id="toStep4Btn" class="btn" type="button">Далее</button>
+            <button id="backTo2Btn" class="btn secondary" type="button">Назад</button>
           </div>
-          <div class="error" id="finalError"></div>
+          <div class="error" id="step3Error"></div>
+        `;
+
+        bindChoiceCards('.choice-card', 'deliveryMethod');
+
+        document.getElementById('backTo2Btn').addEventListener('click', () => {
+          state.step = 2;
+          render();
+        });
+
+        document.getElementById('toStep4Btn').addEventListener('click', () => {
+          state.delivery.recipient = document.getElementById('recipientName').value.trim();
+          state.delivery.recipientPhone = document.getElementById('recipientPhone').value.trim();
+          state.delivery.date = document.getElementById('deliveryDate').value;
+          state.delivery.slot = document.getElementById('deliverySlot').value;
+
+          if (!state.delivery.method || !state.delivery.recipient || !state.delivery.date || !state.delivery.slot) {
+            document.getElementById('step3Error').textContent = 'Заполните способ получения, данные получателя, дату и слот.';
+            return;
+          }
+
+          state.step = 4;
+          render();
+        });
+        return;
+      }
+
+      refs.stepContent.innerHTML = `
+        <h3>Шаг 4. Завершение оформления</h3>
+        <div class="invoice-note">После нажатия на кнопку «Оформить заказ» мы сформируем счёт. После оплаты договор будет считаться завершённым.</div>
+
+        <div class="field">
+          <label>Контактный email для счёта</label>
+          <input id="invoiceEmail" value="${state.buyer.email}" />
         </div>
+
+        <label style="display:flex;gap:8px;align-items:flex-start;margin-top:8px;color:#4d5d73;font-size:0.9rem;">
+          <input id="consentCheck" type="checkbox" ${state.consent ? 'checked' : ''} />
+          <span>Подтверждаю корректность данных и согласен на формирование счёта и договора.</span>
+        </label>
+
+        <div class="row-actions">
+          <button id="submitOrderBtn" class="btn" type="button">Оформить заказ</button>
+          <button id="backTo3Btn" class="btn secondary" type="button">Назад</button>
+        </div>
+        <div class="error" id="step4Error">${state.finalSubmitted ? 'Заказ оформлен: счёт сформирован, ожидаем оплату.' : ''}</div>
       `;
 
-      document.getElementById('backBtn').addEventListener('click', () => {
-        state.currentOnboardingStep = 'verification';
+      document.getElementById('backTo3Btn').addEventListener('click', () => {
+        state.step = 3;
         render();
       });
 
-      document.getElementById('nextBtn').addEventListener('click', () => {
-        state.user.phone = document.getElementById('userPhone').value;
-        state.user.email = document.getElementById('userEmail').value;
-        state.user.fullName = document.getElementById('userName').value;
-        state.user.citizenship = document.getElementById('userCitizenship').value;
+      document.getElementById('submitOrderBtn').addEventListener('click', () => {
+        state.buyer.email = document.getElementById('invoiceEmail').value.trim();
         state.consent = document.getElementById('consentCheck').checked;
 
-        const finalError = document.getElementById('finalError');
-        finalError.textContent = state.consent ? 'Готово: подключение можно завершить в следующем шаге.' : 'Подтвердите согласие, чтобы продолжить.';
+        const error = document.getElementById('step4Error');
+        if (!state.consent) {
+          error.textContent = 'Подтвердите согласие для завершения оформления.';
+          return;
+        }
+
+        state.finalSubmitted = true;
+        error.textContent = 'Заказ оформлен: счёт сформирован, ожидаем оплату.';
       });
     }
 
     function render() {
       renderTracker();
       renderSummary();
-      renderOnboardingContent();
+      renderStep();
     }
 
     refs.chooseStartBtn.addEventListener('click', () => {
@@ -657,25 +853,25 @@
     });
 
     refs.getCodeBtn.addEventListener('click', () => {
-      refs.otpError.textContent = 'Код отправлен. Для демо используйте 1234.';
+      refs.otpError.textContent = 'Код отправлен. Для демо введите 1234.';
     });
 
     refs.loginBtn.addEventListener('click', () => {
       if (refs.otpInput.value.trim() !== '1234') {
-        refs.otpError.textContent = 'Неверный код. Попробуйте 1234.';
+        refs.otpError.textContent = 'Неверный код. Используйте 1234.';
         return;
       }
-      state.user.phone = refs.phoneInput.value.trim();
+
+      state.otpPhone = refs.phoneInput.value.trim();
       state.yotaIdCreated = true;
-      state.currentOnboardingStep = 'verification';
       refs.otpModal.classList.remove('open');
       refs.otpModal.setAttribute('aria-hidden', 'true');
       setScreen('onboarding');
       render();
     });
 
-    refs.otpModal.addEventListener('click', (e) => {
-      if (e.target === refs.otpModal) {
+    refs.otpModal.addEventListener('click', (event) => {
+      if (event.target === refs.otpModal) {
         refs.otpModal.classList.remove('open');
         refs.otpModal.setAttribute('aria-hidden', 'true');
       }
