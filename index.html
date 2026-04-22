@@ -3,471 +3,290 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yota B2B Onboarding</title>
+  <title>Yota B2B — Digital Onboarding</title>
   <style>
     :root {
-      --bg: #f4f5f7;
-      --panel: #ffffff;
-      --text: #3f4d68;
-      --muted: #8c97aa;
-      --line: #d9dee7;
-      --blue: #16a5df;
-      --blue-soft: #dff2fb;
-      --btn-disabled: #bbbcc6;
-      --footer: #5b6781;
+      --bg: #f3f5f8;
+      --surface: #ffffff;
+      --text: #24324a;
+      --muted: #6f7f95;
+      --primary: #00AEEF;
+      --primary-soft: #e6f7fd;
+      --accent: #731982;
+      --line: #d6dfeb;
+      --success: #00b5d6;
       --radius-xl: 24px;
       --radius-lg: 18px;
       --radius-md: 14px;
-      --shadow: 0 10px 24px rgba(47, 64, 89, 0.08);
+      --shadow: 0 14px 32px rgba(27, 45, 76, 0.08);
     }
 
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
-      font-family: "Euclid Circular A", Inter, "Segoe UI", Roboto, sans-serif;
-      color: var(--text);
+      font-family: Inter, "Euclid Circular A", "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
+      color: var(--text);
     }
 
-    .container { width: min(1540px, 96vw); margin: 0 auto; }
+    .container { width: min(1240px, 94vw); margin: 0 auto; }
 
     .top-nav {
       position: sticky;
       top: 0;
       z-index: 40;
-      background: rgba(244, 245, 247, 0.95);
+      background: rgba(243, 245, 248, 0.96);
       backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(0, 174, 239, 0.2);
     }
 
     .top-row {
-      min-height: 88px;
+      min-height: 76px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
+      gap: 16px;
     }
 
-    .brand {
-      font-size: 56px;
-      color: #2fa8e7;
-      font-weight: 700;
-      line-height: 1;
-      letter-spacing: -1px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 38px;
-      font-size: 38px;
-      color: #4e596f;
-      white-space: nowrap;
-    }
-
-    .region-pill {
-      color: #169dd8;
-      font-size: 38px;
-      white-space: nowrap;
-    }
+    .brand { font-size: 38px; color: #2ea8e9; font-weight: 800; letter-spacing: -0.6px; }
+    .nav-links { display: flex; gap: 24px; color: #4f5f78; font-size: 15px; }
+    .region { color: #179ed8; font-size: 15px; font-weight: 600; }
 
     .screen { display: none; }
     .screen.active { display: block; }
 
-    /* Landing */
     .hero {
-      margin-top: 26px;
-      background: linear-gradient(130deg, #fff, #eaf7ff);
+      margin-top: 22px;
       border-radius: var(--radius-xl);
-      padding: 38px;
+      background: linear-gradient(132deg, #fff 0%, #eefaff 62%, #ecf8ff 100%);
       box-shadow: var(--shadow);
+      padding: 36px;
     }
 
-    .hero h1 {
-      margin: 0 0 12px;
-      font-size: 68px;
-      line-height: 1.05;
-      color: #3d4b67;
-    }
-
-    .hero p {
-      margin: 0;
-      font-size: 28px;
-      color: #69758d;
-      max-width: 1100px;
-    }
+    .hero h1 { margin: 0 0 10px; font-size: clamp(32px, 4vw, 52px); }
+    .hero p { margin: 0; color: var(--muted); font-size: 17px; max-width: 780px; }
 
     .tariff-grid {
-      margin-top: 20px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-
-    .tariff-card {
-      background: #fff;
-      border: 1px solid #dde3ec;
-      border-radius: var(--radius-lg);
-      min-height: 460px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      box-shadow: var(--shadow);
-    }
-
-    .tariff-card.ai .cap {
-      height: 120px;
-      border-radius: 12px;
-      padding: 12px;
-      background: linear-gradient(130deg, #00b956, #00d2ff);
-      color: #fff;
-      margin-bottom: 10px;
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .badge {
-      display: inline-flex;
-      background: #e8f7ff;
-      color: #169ed8;
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .tariff-card h3 {
-      margin: 4px 0 10px;
-      font-size: 28px;
-      color: #3f4d68;
-    }
-
-    .tariff-card ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 7px;
-      color: #5d6a82;
-      font-size: 19px;
-    }
-
-    .tariff-card ul li::before {
-      content: "•";
-      color: #16a5df;
-      margin-right: 8px;
-    }
-
-    .price {
-      margin-top: auto;
-      font-size: 38px;
-      font-weight: 700;
-      color: #3f4d68;
-      text-align: center;
-      padding-top: 16px;
-    }
-
-    .btn-row { display: flex; justify-content: center; margin-top: 10px; }
-
-    .btn {
-      border: 1px solid #16a5df;
-      border-radius: 999px;
-      background: #16a5df;
-      color: #fff;
-      min-width: 260px;
-      font-size: 28px;
-      font-weight: 700;
-      padding: 14px 22px;
-      cursor: pointer;
-    }
-
-    .btn.secondary {
-      background: #fff;
-      color: #16a5df;
-      border: 1px solid #d2d5da;
-    }
-
-    /* OTP */
-    .otp-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(30, 46, 70, 0.45);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-    }
-    .otp-modal.open { display: flex; }
-
-    .otp-card {
-      width: min(760px, 92vw);
-      background: #fff;
-      border-radius: 22px;
-      padding: 26px;
-      box-shadow: 0 20px 42px rgba(17, 36, 61, 0.28);
-    }
-
-    .otp-card h3 { margin: 0; font-size: 44px; }
-    .otp-card p { margin: 10px 0 12px; font-size: 24px; color: #6b7790; }
-
-    .field { margin: 10px 0; }
-    .field label { font-size: 19px; color: #6c7890; display: block; margin-bottom: 6px; }
-
-    input, select {
-      width: 100%;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: #fff;
-      padding: 14px 15px;
-      font-size: 24px;
-      color: #3f4d68;
-      outline: none;
-    }
-
-    input:focus, select:focus { border-color: #16a5df; box-shadow: 0 0 0 4px rgba(22, 165, 223, 0.14); }
-    .error { min-height: 26px; margin-top: 8px; color: #cc3f7a; font-size: 20px; }
-
-    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
-
-    /* Onboarding */
-    .onboarding-wrap { padding-top: 20px; }
-
-    .title-row {
-      position: relative;
-      text-align: center;
-      margin: 8px auto 18px;
-      max-width: 1120px;
-    }
-
-    .title-row h2 {
-      margin: 0;
-      font-size: 74px;
-      color: #3f4d68;
-      font-weight: 700;
-    }
-
-    .progress {
-      height: 18px;
-      border-radius: 999px;
-      background: #d7dde7;
       margin-top: 18px;
-      overflow: hidden;
-    }
-
-    .progress > div {
-      height: 100%;
-      width: 24%;
-      background: #16a5df;
-      border-radius: inherit;
-      transition: width .25s ease;
-    }
-
-    .region-box {
-      position: absolute;
-      right: -430px;
-      top: -14px;
-      width: 420px;
-      border-radius: 22px;
-      background: #d8dee8;
-      border: 1px solid #2aaee6;
-      padding: 20px;
-      text-align: left;
-    }
-
-    .region-box h4 { margin: 0; font-size: 44px; line-height: 1.12; }
-    .region-box .small { font-size: 34px; margin-bottom: 8px; }
-
-    .region-box .row { margin-top: 12px; display: flex; gap: 8px; }
-
-    .mini-btn {
-      border-radius: 999px;
-      border: 2px solid #16a5df;
-      background: #16a5df;
-      color: #fff;
-      font-size: 36px;
-      padding: 8px 18px;
-    }
-
-    .mini-btn.secondary { background: transparent; color: #169ed8; }
-
-    .main-layout {
-      margin: 26px auto 0;
-      max-width: 1120px;
       display: grid;
-      grid-template-columns: minmax(0, 1.8fr) 330px;
-      gap: 16px;
-    }
-
-    .step-area {
-      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px;
     }
 
-    .card {
-      background: #fff;
-      border: 1px solid #d8dee8;
-      border-radius: 18px;
+    .tariff {
+      border-radius: var(--radius-lg);
+      border: 1px solid #dbe4ef;
+      background: var(--surface);
+      box-shadow: var(--shadow);
       padding: 16px;
-    }
-
-    .section-title {
-      margin: 0 0 8px;
-      font-size: 32px;
-      font-weight: 700;
-    }
-
-    .muted { color: #8a95a9; font-size: 20px; }
-
-    .accordion-step {
-      border: 1px solid #d8dee8;
-      border-radius: 18px;
-      padding: 16px 18px;
-      font-size: 30px;
-      font-weight: 600;
-      background: #fff;
-    }
-
-    .choice {
-      border: 1px solid #d8dee8;
-      border-radius: 18px;
-      padding: 16px;
-      cursor: pointer;
-      margin-top: 10px;
-      background: #fff;
-    }
-
-    .choice.active {
-      border-color: #16a5df;
-      box-shadow: inset 0 0 0 1px #16a5df;
-    }
-
-    .choice .label { font-size: 36px; font-weight: 700; margin-bottom: 4px; }
-    .choice .desc { font-size: 30px; color: #6e7a91; }
-
-    .info {
-      margin-top: 10px;
-      border-radius: 14px;
-      background: #cfeaf6;
-      color: #3f4d68;
-      padding: 12px;
-      font-size: 22px;
-    }
-
-    .consent {
-      margin-top: 10px;
       display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      font-size: 20px;
-      color: #667389;
+      flex-direction: column;
+      min-height: 420px;
     }
 
-    .consent input { width: 26px; height: 26px; }
-
-    .main-btn {
-      width: 100%;
-      border-radius: 999px;
-      border: none;
-      padding: 14px;
-      font-size: 34px;
-      font-weight: 700;
-      margin-top: 12px;
-      background: #16a5df;
+    .tariff.primary { border-color: rgba(0, 174, 239, 0.4); }
+    .tariff.ai .cap {
+      border-radius: 12px;
+      background: linear-gradient(130deg, #00b956, #00d2ff);
       color: #fff;
-      cursor: pointer;
+      padding: 10px 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      font-size: 13px;
     }
 
-    .main-btn.secondary {
-      background: #cfe7f3;
-      color: #169fd9;
-    }
-
-    .main-btn.disabled {
-      background: var(--btn-disabled);
-      cursor: not-allowed;
-    }
-
-    .order {
-      position: sticky;
-      top: 110px;
-      background: #fff;
-      border: 1px solid #d8dee8;
-      border-radius: 18px;
-      padding: 16px;
-      height: fit-content;
-    }
-
-    .order h4 { margin: 0 0 12px; font-size: 32px; }
-    .order ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
-    .order li { display: flex; justify-content: space-between; font-size: 19px; color: #68758e; }
-    .order li strong { color: #3f4d68; }
-
-    .yota-benefits {
-      border: 1px solid #2ab0e6;
-      background: #e8f8ff;
-      border-radius: 18px;
-      padding: 14px;
-      margin-top: 10px;
-    }
-
-    .yota-benefits h4 { margin: 0 0 8px; font-size: 28px; }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
-    .chip {
-      background: #fff;
-      border: 1px solid #cfe7f4;
+    .badge {
+      align-self: flex-start;
+      background: var(--primary-soft);
+      color: #0a8fc2;
       border-radius: 999px;
-      color: #55708f;
-      padding: 6px 9px;
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    .footer {
-      margin-top: 30px;
-      padding: 22px 0 18px;
-      color: var(--footer);
-      font-size: 18px;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 280px 1fr 1fr 1fr;
-      gap: 30px;
-      align-items: start;
-    }
-
-    .qr {
-      width: 130px;
-      height: 130px;
-      border-radius: 16px;
-      border: 2px solid #89b8d0;
-      background: repeating-linear-gradient(45deg, #d7e8f2 0 6px, #f6fbff 6px 12px);
+      padding: 5px 9px;
+      font-size: 12px;
+      font-weight: 700;
       margin-bottom: 8px;
     }
 
-    .footer-links { display: grid; gap: 9px; }
+    .tariff h3 { margin: 0 0 8px; font-size: 22px; }
+    .tariff ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; color: #5f6f85; font-size: 14px; }
+    .tariff ul li::before { content: "•"; color: var(--primary); margin-right: 7px; }
 
-    .footer-bottom {
-      margin-top: 16px;
-      border-top: 1px solid #d8dee8;
-      padding-top: 10px;
+    .price { margin-top: auto; font-size: 30px; font-weight: 800; text-align: center; padding-top: 14px; }
+    .btn-row { margin-top: 10px; display: flex; justify-content: center; }
+
+    .btn {
+      border: 1px solid var(--primary);
+      background: var(--primary);
+      color: #fff;
+      border-radius: 999px;
+      padding: 10px 20px;
       font-size: 16px;
-      color: #7f8aa0;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
+      font-weight: 700;
+      min-width: 160px;
+      cursor: pointer;
+      transition: .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); opacity: .95; }
+    .btn.secondary { background: #fff; color: var(--primary); border-color: var(--line); }
+
+    .otp-backdrop {
+      position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+      background: rgba(16, 33, 59, 0.46); z-index: 100;
+    }
+    .otp-backdrop.open { display: flex; }
+
+    .otp {
+      width: min(460px, 92vw);
+      background: #fff;
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 18px 46px rgba(16, 33, 59, 0.33);
+    }
+    .otp h3 { margin: 0; font-size: 24px; }
+    .otp p { margin: 8px 0 12px; color: var(--muted); }
+
+    .field { margin: 10px 0; }
+    .field label { display: block; margin-bottom: 6px; color: #6c7a8f; font-size: 13px; font-weight: 600; }
+    input, select {
+      width: 100%; border-radius: 12px; border: 1px solid var(--line); background: #fff; padding: 11px 12px; font-size: 15px;
+      color: var(--text); outline: none;
+    }
+    input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0, 174, 239, 0.12); }
+
+    .actions { display: flex; gap: 10px; margin-top: 10px; }
+    .error { min-height: 18px; color: #c53f79; font-size: 13px; margin-top: 8px; }
+
+    .onboarding { margin-top: 22px; }
+    .title-row { position: relative; text-align: center; max-width: 920px; margin: 0 auto; }
+    .title-row h2 { margin: 0; font-size: clamp(32px, 3.4vw, 52px); }
+    .progress { margin-top: 12px; height: 12px; background: #d9e1eb; border-radius: 999px; overflow: hidden; }
+    .progress > div { height: 100%; width: 20%; background: var(--primary); border-radius: inherit; transition: width .25s ease; }
+
+    .region-box {
+      position: absolute; right: -330px; top: -8px; width: 310px;
+      background: #dae1eb; border: 1px solid #6fc7ea; border-radius: 16px; padding: 14px; text-align: left;
+    }
+    .region-box p { margin: 0; font-size: 13px; color: #4f5d76; }
+    .region-box strong { font-size: 19px; display: block; margin: 4px 0 10px; }
+    .tiny-row { display: flex; gap: 8px; }
+    .tiny-btn { border-radius: 999px; border: 1px solid var(--primary); padding: 8px 12px; font-size: 14px; background: var(--primary); color: #fff; }
+    .tiny-btn.secondary { background: transparent; color: #0b96cb; }
+
+    .layout {
+      margin: 24px auto 0;
+      max-width: 980px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 290px;
+      gap: 14px;
+      align-items: start;
     }
 
-    @media (max-width: 1300px) {
-      .nav-links, .region-pill { font-size: 20px; }
-      .brand { font-size: 48px; }
-      .hero h1 { font-size: 52px; }
-      .title-row h2 { font-size: 52px; }
-      .region-box { position: static; width: 100%; margin-top: 12px; }
-      .main-layout { grid-template-columns: 1fr; }
-      .order { position: static; }
-      .tariff-grid { grid-template-columns: repeat(2, 1fr); }
+    .panel {
+      border-radius: var(--radius-lg);
+      border: 1px solid #dbe3ee;
+      background: #fff;
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+
+    .step-title { margin: 0 0 8px; font-size: 26px; }
+    .muted { margin: 0; color: var(--muted); font-size: 14px; }
+
+    .choice {
+      border: 1px solid #dbe3ee;
+      border-radius: 14px;
+      padding: 12px;
+      margin-top: 10px;
+      cursor: pointer;
+      background: #fff;
+    }
+    .choice.active { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+    .choice strong { display: block; font-size: 17px; }
+    .choice span { color: #66758a; font-size: 14px; }
+
+    .pill {
+      display: inline-block;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: #158fc1;
+      padding: 6px 11px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .stack { display: grid; gap: 10px; }
+    .main-btn {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 11px 14px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--primary);
+      color: #fff;
+    }
+    .main-btn.secondary { background: #cfe8f4; color: #0b96cb; }
+    .main-btn.disabled { background: #bdc0cb; cursor: not-allowed; }
+
+    .hint {
+      margin-top: 8px;
+      border-radius: 12px;
+      background: #d0eaf7;
+      color: #355372;
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+
+    .accordion-item {
+      margin-top: 8px;
+      border: 1px solid #dbe3ee;
+      border-radius: 14px;
+      padding: 13px;
+      font-weight: 600;
+      color: #44536d;
+      background: #fff;
+    }
+
+    .summary h4 { margin: 0 0 10px; font-size: 21px; }
+    .summary ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+    .summary li { display: flex; justify-content: space-between; color: #6a7890; font-size: 14px; }
+    .summary li strong { color: #2f3e57; }
+
+    .benefits {
+      margin-top: 12px;
+      border-radius: 12px;
+      border: 1px solid #93d6ef;
+      background: #eaf8ff;
+      padding: 11px;
+    }
+    .benefits h5 { margin: 0 0 6px; font-size: 14px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip { border-radius: 999px; border: 1px solid #d2ebf6; background: #fff; padding: 5px 8px; font-size: 11px; color: #4f6786; }
+
+    .footer {
+      margin-top: 34px;
+      border-top: 1px solid #dbe3ee;
+      padding: 18px 0;
+      color: #5f6f88;
+      font-size: 13px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 240px 1fr 1fr 1fr;
+      gap: 24px;
+    }
+    .qr {
+      width: 104px; height: 104px; border-radius: 12px; border: 2px solid #8ab8cf;
+      background: repeating-linear-gradient(45deg, #d2e3ef 0 5px, #f4fbff 5px 10px);
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 1120px) {
+      .region-box { position: static; width: 100%; margin-top: 10px; }
+      .layout { grid-template-columns: 1fr; }
+      .tariff-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -480,68 +299,66 @@
         <span>Поддержка</span>
         <span>Оплата</span>
         <span>Акции и услуги</span>
-        <span>Интернет-магазин</span>
-        <span>Дополнительно</span>
       </nav>
-      <div class="region-pill">📍 Москва и область</div>
+      <div class="region">📍 Москва и область</div>
     </div>
   </header>
 
   <main class="container">
-    <section id="landingScreen" class="screen active">
+    <section id="landing" class="screen active">
       <div class="hero">
         <h1>Связь для нового бизнеса</h1>
-        <p>Вы уже почти подключены: выберите тариф, подтвердите Yota ID и завершите оформление без бюрократии.</p>
+        <p>Выбери тариф, подтверди Yota ID и заверши подключение за пару минут — без бюрократии и лишних действий.</p>
       </div>
 
       <div class="tariff-grid">
-        <article class="tariff-card">
+        <article class="tariff primary">
           <span class="badge">Готовый сценарий</span>
           <h3>Business Start</h3>
           <ul>
             <li>600 минут на РФ</li>
             <li>40 ГБ + безлимит мессенджеров</li>
-            <li>eSIM и личный кабинет команды</li>
-            <li>Yota ID для быстрой активации</li>
+            <li>eSIM и управление командой</li>
+            <li>Yota ID и быстрый старт</li>
           </ul>
           <div class="price">990 ₽</div>
           <div class="btn-row"><button class="btn" id="chooseStart">Выбрать</button></div>
         </article>
 
-        <article class="tariff-card">
-          <span class="badge">Масштабирование</span>
+        <article class="tariff">
+          <span class="badge">Рост</span>
           <h3>Business Grow</h3>
           <ul>
             <li>1300 минут и 80 ГБ</li>
-            <li>Роли и лимиты команды</li>
             <li>Приоритетная поддержка</li>
-            <li>Скидка на 10+ SIM</li>
+            <li>Роли/лимиты сотрудников</li>
+            <li>Скидка на 10+ номеров</li>
           </ul>
           <div class="price">1490 ₽</div>
           <div class="btn-row"><button class="btn secondary" type="button">Выбрать</button></div>
         </article>
 
-        <article class="tariff-card">
+        <article class="tariff">
           <span class="badge">Международный</span>
           <h3>Business Global</h3>
           <ul>
             <li>2200 минут + 140 ГБ</li>
             <li>Пакеты роуминга</li>
-            <li>Единый биллинг для филиалов</li>
+            <li>Единый биллинг филиалов</li>
             <li>Партнерские бонусы</li>
           </ul>
           <div class="price">2290 ₽</div>
           <div class="btn-row"><button class="btn secondary" type="button">Выбрать</button></div>
         </article>
 
-        <article class="tariff-card ai">
-          <div class="cap">AI-конфигурация<br><small style="font-size:16px;opacity:.9;">Подбор параметров под профиль компании</small></div>
+        <article class="tariff ai">
+          <div class="cap">AI-конфигурация<br><small style="opacity:.9;font-weight:600;">Персональный подбор параметров</small></div>
           <h3>AI-подбор тарифа</h3>
           <ul>
-            <li>Персональный сценарий подключения</li>
-            <li>Динамические лимиты и скидки</li>
-            <li>Рекомендации по доставке и активации</li>
-            <li>Phygital-бонусы через Yota ID</li>
+            <li>Сценарии под отрасль</li>
+            <li>Прогноз расходов</li>
+            <li>Динамические лимиты</li>
+            <li>Phygital-бонусы</li>
           </ul>
           <div class="price">Индивидуально</div>
           <div class="btn-row"><button class="btn secondary" type="button">Выбрать</button></div>
@@ -549,26 +366,26 @@
       </div>
     </section>
 
-    <section id="onboardingScreen" class="screen">
-      <div class="onboarding-wrap">
+    <section id="onboarding" class="screen">
+      <div class="onboarding">
         <div class="title-row">
           <h2 id="pageTitle">Заказ товаров и сим-карт</h2>
           <div class="progress"><div id="progressFill"></div></div>
 
           <aside class="region-box">
-            <div class="small">Ты находишься в регионе</div>
-            <h4>Москва и область ?</h4>
-            <div class="row">
-              <button class="mini-btn" type="button">Да, верно</button>
-              <button class="mini-btn secondary" type="button">Изменить регион</button>
+            <p>Ты находишься в регионе</p>
+            <strong>Москва и область?</strong>
+            <div class="tiny-row">
+              <button class="tiny-btn" type="button">Да, верно</button>
+              <button class="tiny-btn secondary" type="button">Изменить</button>
             </div>
           </aside>
         </div>
 
-        <div class="main-layout">
-          <section class="step-area" id="stepArea"></section>
+        <div class="layout">
+          <section id="stepContent"></section>
 
-          <aside class="order">
+          <aside class="panel summary">
             <h4>Твой заказ</h4>
             <ul>
               <li><span>Тариф</span><strong id="sumTariff">Business Start</strong></li>
@@ -576,17 +393,16 @@
               <li><span>Юрлицо</span><strong id="sumCompany">—</strong></li>
               <li><span>Верификация</span><strong id="sumVerify">—</strong></li>
               <li><span>Получение</span><strong id="sumDelivery">—</strong></li>
-              <li style="border-top:1px solid #e2e6ee;padding-top:8px;"><span>Итого</span><strong id="sumPrice">8300 ₽</strong></li>
+              <li style="border-top:1px solid #dbe3ee;padding-top:8px;"><span>Итого</span><strong id="sumPrice">8300 ₽</strong></li>
             </ul>
 
-            <div class="yota-benefits">
-              <h4>Плюсы Yota ID</h4>
+            <div class="benefits">
+              <h5>Преимущества Yota ID</h5>
               <div class="chips">
                 <span class="chip">Phygital-сценарии</span>
                 <span class="chip">Скидки</span>
                 <span class="chip">Социальные акции</span>
                 <span class="chip">Партнерские программы</span>
-                <span class="chip">Быстрый сервис</span>
               </div>
             </div>
           </aside>
@@ -596,40 +412,32 @@
   </main>
 
   <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <div class="qr"></div>
-          <div>Наведи камеру<br>и скачай приложение</div>
-        </div>
-        <div class="footer-links"><span>Новости</span><span>Контакты</span></div>
-        <div class="footer-links"><span>Документы</span><span>Прессе</span></div>
-        <div class="footer-links"><span>Написать нам</span><span>Оценить сайт</span></div>
+    <div class="container footer-grid">
+      <div>
+        <div class="qr"></div>
+        <div>Наведи камеру и скачай приложение</div>
       </div>
-      <div class="footer-bottom">
-        <span>12+ © 2026 ООО «Скартел»</span>
-        <span>Продолжая использовать сайт, вы даете согласие на обработку файлов Cookie и других данных.</span>
-      </div>
+      <div>Новости<br>Контакты</div>
+      <div>Документы<br>Прессе</div>
+      <div>Написать нам<br>Оценить сайт</div>
     </div>
   </footer>
 
-  <div id="otpModal" class="otp-modal" aria-hidden="true">
-    <div class="otp-card">
+  <div id="otpModal" class="otp-backdrop" aria-hidden="true">
+    <div class="otp">
       <h3>Вход в Yota ID</h3>
-      <p>Подтверди номер и перейди к оформлению заказа.</p>
-
+      <p>Подтверди номер и продолжи оформление.</p>
       <div class="field">
-        <label for="phone">Номер телефона</label>
+        <label for="phone">Телефон</label>
         <input id="phone" value="+7 999 123-45-67" />
       </div>
       <div class="field">
         <label for="otp">Код из SMS</label>
         <input id="otp" maxlength="4" placeholder="1234" />
       </div>
-
       <div class="actions">
-        <button class="btn secondary" id="sendCode" type="button">Получить код</button>
-        <button class="btn" id="login" type="button">Войти</button>
+        <button class="btn secondary" type="button" id="sendCode">Получить код</button>
+        <button class="btn" type="button" id="login">Войти</button>
       </div>
       <div class="error" id="otpError"></div>
     </div>
@@ -643,7 +451,7 @@
       tariff: 'Business Start',
       price: '8300 ₽',
       legalEntity: { query: '', inn: '', name: '', address: '' },
-      buyer: { authType: '', phone: '+7 999 123-45-67', fullName: '', citizenship: 'Россия', verified: false },
+      buyer: { authType: '', phone: '+7 999 123-45-67', fullName: '', verified: false },
       delivery: { method: 'Доставка курьером', recipient: '', date: '', slot: '' },
       consent: false,
       finalSubmitted: false
@@ -662,11 +470,11 @@
     };
 
     const refs = {
-      landing: document.getElementById('landingScreen'),
-      onboarding: document.getElementById('onboardingScreen'),
+      landing: document.getElementById('landing'),
+      onboarding: document.getElementById('onboarding'),
+      stepContent: document.getElementById('stepContent'),
       pageTitle: document.getElementById('pageTitle'),
       progressFill: document.getElementById('progressFill'),
-      stepArea: document.getElementById('stepArea'),
       chooseStart: document.getElementById('chooseStart'),
       otpModal: document.getElementById('otpModal'),
       phone: document.getElementById('phone'),
@@ -697,59 +505,79 @@
       refs.sumPrice.textContent = state.price;
     }
 
-    function titleByStep() {
-      if (state.step === 1) return 'Заказ товаров и сим-карт';
-      if (state.step === 2) return 'Подтверждение покупателя';
-      if (state.step === 3) return 'Способы получения';
-      return 'Финализация заказа';
+    function getTitle() {
+      const map = {
+        1: 'Заказ товаров и сим-карт',
+        2: 'Подтверждение покупателя',
+        3: 'Способы получения',
+        4: 'Финализация заказа'
+      };
+      return map[state.step];
+    }
+
+    function bindChoice(selector, key) {
+      document.querySelectorAll(selector).forEach((node) => {
+        node.addEventListener('click', () => {
+          const value = node.dataset.value;
+          if (key === 'auth') state.buyer.authType = value;
+          if (key === 'delivery') state.delivery.method = value;
+          render();
+        });
+      });
     }
 
     function renderStep() {
-      refs.pageTitle.textContent = titleByStep();
-      refs.progressFill.style.width = `${18 + (state.step - 1) * 26}%`;
+      refs.pageTitle.textContent = getTitle();
+      refs.progressFill.style.width = `${20 + (state.step - 1) * 24}%`;
 
       if (state.step === 1) {
-        refs.stepArea.innerHTML = `
-          <div class="card">
-            <h3 class="section-title">Контактные данные заказчика</h3>
-            <p class="muted">По ним свяжемся, чтобы подтвердить заказ</p>
+        refs.stepContent.innerHTML = `
+          <div class="panel">
+            <h3 class="step-title">Контактные данные заказчика</h3>
+            <p class="muted">По ним свяжемся, чтобы подтвердить заказ.</p>
 
-            <div class="field"><input id="s1query" placeholder="ИНН или название компании" value="${state.legalEntity.query}" /></div>
-            <div class="actions"><button class="btn" id="fillCompany" type="button">Подтянуть данные</button></div>
+            <div class="field"><input id="query" placeholder="ИНН или название компании" value="${state.legalEntity.query}" /></div>
+            <button class="main-btn" id="fillCompany" type="button">Подтянуть данные</button>
 
-            <div class="field"><input id="s1phone" placeholder="Номер телефона*" value="${state.buyer.phone}" /></div>
-            <div class="field"><input id="s1name" placeholder="Фамилия и имя*" value="${state.buyer.fullName}" /></div>
-            <div class="consent"><input type="checkbox" id="s1consent" ${state.consent ? 'checked' : ''}><span>Даю согласие на обработку персональных данных</span></div>
+            <div class="field"><input id="phoneStep" placeholder="Номер телефона*" value="${state.buyer.phone}" /></div>
+            <div class="field"><input id="nameStep" placeholder="Фамилия и имя*" value="${state.buyer.fullName}" /></div>
 
-            <button class="main-btn ${state.consent ? '' : 'disabled'}" id="toStep2" type="button">Далее</button>
-            <div class="error" id="s1error"></div>
+            <label style="display:flex;gap:8px;align-items:flex-start;font-size:14px;color:#66758a;margin:10px 0;">
+              <input id="consentStep" type="checkbox" ${state.consent ? 'checked' : ''} style="width:18px;height:18px;" />
+              <span>Даю согласие на обработку персональных данных</span>
+            </label>
+
+            <button class="main-btn ${state.consent ? '' : 'disabled'}" id="to2" type="button">Далее</button>
+            <div class="error" id="err1"></div>
           </div>
 
-          <div class="accordion-step">Данные по организации</div>
-          <div class="accordion-step">Выбор номеров</div>
-          <div class="accordion-step">Способ получения</div>
-          <div class="accordion-step">Оплата</div>
+          <div class="accordion-item">Данные по организации</div>
+          <div class="accordion-item">Выбор номеров</div>
+          <div class="accordion-item">Способ получения</div>
+          <div class="accordion-item">Оплата</div>
         `;
 
         document.getElementById('fillCompany').addEventListener('click', () => {
-          state.legalEntity.query = document.getElementById('s1query').value.trim();
+          state.legalEntity.query = document.getElementById('query').value.trim();
           if (!state.legalEntity.query) {
-            document.getElementById('s1error').textContent = 'Введите ИНН или название организации.';
+            document.getElementById('err1').textContent = 'Введите ИНН или название.';
             return;
           }
           state.legalEntity = { ...state.legalEntity, ...mockCompany };
-          document.getElementById('s1error').textContent = `Данные найдены: ${mockCompany.name}, ИНН ${mockCompany.inn}`;
+          document.getElementById('err1').textContent = `Найдена организация: ${mockCompany.name}`;
           updateSummary();
         });
 
-        document.getElementById('toStep2').addEventListener('click', () => {
-          state.buyer.phone = document.getElementById('s1phone').value.trim();
-          state.buyer.fullName = document.getElementById('s1name').value.trim();
-          state.consent = document.getElementById('s1consent').checked;
-          if (!state.consent || !state.buyer.phone || !state.buyer.fullName || !state.legalEntity.name) {
-            document.getElementById('s1error').textContent = 'Заполните обязательные поля и подтвердите согласие.';
+        document.getElementById('to2').addEventListener('click', () => {
+          state.buyer.phone = document.getElementById('phoneStep').value.trim();
+          state.buyer.fullName = document.getElementById('nameStep').value.trim();
+          state.consent = document.getElementById('consentStep').checked;
+
+          if (!state.legalEntity.name || !state.buyer.phone || !state.buyer.fullName || !state.consent) {
+            document.getElementById('err1').textContent = 'Заполните поля и подтвердите согласие.';
             return;
           }
+
           state.step = 2;
           render();
         });
@@ -757,39 +585,36 @@
       }
 
       if (state.step === 2) {
-        refs.stepArea.innerHTML = `
-          <div class="card">
-            <h3 class="section-title">Второй шаг — подтверждение покупателя</h3>
-            <p class="muted">Пройди верификацию через Госуслуги или банковский ID.</p>
+        refs.stepContent.innerHTML = `
+          <div class="panel">
+            <h3 class="step-title">Верификация покупателя</h3>
+            <p class="muted">Выберите Госуслуги или банковский ID.</p>
 
             ${['Госуслуги', 'Sber ID', 'Alfa ID'].map(item => `
-              <div class="choice ${state.buyer.authType === item ? 'active' : ''}" data-auth="${item}">
-                <div class="label">${item}</div>
-                <div class="desc">Авторизация и автозаполнение данных.</div>
+              <div class="choice ${state.buyer.authType === item ? 'active' : ''}" data-value="${item}">
+                <strong>${item}</strong>
+                <span>Авторизация и автозаполнение данных.</span>
               </div>
             `).join('')}
 
-            <button class="main-btn" id="verifyBtn" type="button">Войти и подтянуть данные</button>
-            <button class="main-btn secondary" id="back1" type="button">Назад</button>
-            <div class="error" id="s2error"></div>
+            <div class="stack" style="margin-top:12px;">
+              <button class="main-btn" id="verify" type="button">Войти и подтянуть данные</button>
+              <button class="main-btn secondary" id="back1" type="button">Назад</button>
+            </div>
+            <div class="error" id="err2"></div>
           </div>
         `;
 
-        document.querySelectorAll('[data-auth]').forEach((el) => {
-          el.addEventListener('click', () => {
-            state.buyer.authType = el.dataset.auth;
-            render();
-          });
-        });
+        bindChoice('.choice', 'auth');
 
         document.getElementById('back1').addEventListener('click', () => {
           state.step = 1;
           render();
         });
 
-        document.getElementById('verifyBtn').addEventListener('click', () => {
+        document.getElementById('verify').addEventListener('click', () => {
           if (!state.buyer.authType) {
-            document.getElementById('s2error').textContent = 'Выбери способ верификации.';
+            document.getElementById('err2').textContent = 'Выберите способ верификации.';
             return;
           }
           state.buyer.verified = true;
@@ -801,72 +626,76 @@
       }
 
       if (state.step === 3) {
-        refs.stepArea.innerHTML = `
-          <div class="card">
-            <div class="badge" style="font-size:24px;padding:8px 14px;">📍 Москва</div>
-            <h3 class="section-title">Третий шаг — способ получения</h3>
+        refs.stepContent.innerHTML = `
+          <div class="panel">
+            <span class="pill">📍 Москва</span>
+            <h3 class="step-title">Выбор способа получения</h3>
 
             ${['Доставка курьером', 'Салон связи', 'Партнерский ПВЗ'].map(item => `
-              <div class="choice ${state.delivery.method === item ? 'active' : ''}" data-delivery="${item}">
-                <div class="label">${item}</div>
-                <div class="desc">${item === 'Доставка курьером' ? 'Только в пределах города' : 'Подготовим заказ быстро и сообщим детали.'}</div>
+              <div class="choice ${state.delivery.method === item ? 'active' : ''}" data-value="${item}">
+                <strong>${item}</strong>
+                <span>${item === 'Доставка курьером' ? 'Только в пределах города.' : 'Подготовим заказ быстро и сообщим детали.'}</span>
               </div>
             `).join('')}
 
-            <div class="field"><input id="s3recipient" placeholder="Получатель" value="${state.delivery.recipient || state.buyer.fullName}" /></div>
-            <div class="field"><input id="s3date" type="date" value="${state.delivery.date}" /></div>
+            <div class="field"><input id="recipient" placeholder="Получатель" value="${state.delivery.recipient || state.buyer.fullName}" /></div>
+            <div class="field"><input id="deliveryDate" type="date" value="${state.delivery.date}" /></div>
             <div class="field">
-              <select id="s3slot">
-                <option value="">Временной слот</option>
+              <select id="slot">
+                <option value="">Выберите слот</option>
                 <option ${state.delivery.slot === '10:00–13:00' ? 'selected' : ''}>10:00–13:00</option>
                 <option ${state.delivery.slot === '13:00–16:00' ? 'selected' : ''}>13:00–16:00</option>
                 <option ${state.delivery.slot === '16:00–19:00' ? 'selected' : ''}>16:00–19:00</option>
               </select>
             </div>
 
-            <button class="main-btn" id="toStep4" type="button">Далее</button>
-            <button class="main-btn secondary" id="back2" type="button">Назад</button>
-            <div class="error" id="s3error"></div>
+            <div class="stack">
+              <button class="main-btn" id="to4" type="button">Далее</button>
+              <button class="main-btn secondary" id="back2" type="button">Назад</button>
+            </div>
+            <div class="error" id="err3"></div>
           </div>
         `;
 
-        document.querySelectorAll('[data-delivery]').forEach((el) => {
-          el.addEventListener('click', () => {
-            state.delivery.method = el.dataset.delivery;
-            render();
-          });
-        });
+        bindChoice('.choice', 'delivery');
 
         document.getElementById('back2').addEventListener('click', () => {
           state.step = 2;
           render();
         });
 
-        document.getElementById('toStep4').addEventListener('click', () => {
-          state.delivery.recipient = document.getElementById('s3recipient').value.trim();
-          state.delivery.date = document.getElementById('s3date').value;
-          state.delivery.slot = document.getElementById('s3slot').value;
+        document.getElementById('to4').addEventListener('click', () => {
+          state.delivery.recipient = document.getElementById('recipient').value.trim();
+          state.delivery.date = document.getElementById('deliveryDate').value;
+          state.delivery.slot = document.getElementById('slot').value;
+
           if (!state.delivery.method || !state.delivery.recipient || !state.delivery.date || !state.delivery.slot) {
-            document.getElementById('s3error').textContent = 'Заполни получателя, дату и временной слот.';
+            document.getElementById('err3').textContent = 'Заполните данные получателя, дату и слот.';
             return;
           }
+
           state.step = 4;
           render();
         });
         return;
       }
 
-      refs.stepArea.innerHTML = `
-        <div class="card">
-          <h3 class="section-title">После нажатия «Оформить заказ»</h3>
-          <div class="info">Мы сформируем счёт, а после оплаты договор будет считаться завершенным.</div>
+      refs.stepContent.innerHTML = `
+        <div class="panel">
+          <h3 class="step-title">Оформление заказа</h3>
+          <div class="hint">После нажатия на «Оформить заказ» сформируем счет. После оплаты договор будет считаться завершенным.</div>
 
-          <div class="field"><input id="s4email" placeholder="Email для счета" value="founder@startup.ru" /></div>
-          <div class="consent"><input type="checkbox" id="s4consent" ${state.consent ? 'checked' : ''}><span>Подтверждаю корректность данных.</span></div>
+          <div class="field"><input id="invoiceEmail" placeholder="Email для счета" value="founder@startup.ru" /></div>
+          <label style="display:flex;gap:8px;align-items:flex-start;font-size:14px;color:#66758a;margin:10px 0;">
+            <input id="consentFinal" type="checkbox" ${state.consent ? 'checked' : ''} style="width:18px;height:18px;" />
+            <span>Подтверждаю корректность данных.</span>
+          </label>
 
-          <button class="main-btn" id="finalBtn" type="button">Оформить заказ</button>
-          <button class="main-btn secondary" id="back3" type="button">Назад</button>
-          <div class="error" id="s4error">${state.finalSubmitted ? 'Заказ оформлен: счет сформирован.' : ''}</div>
+          <div class="stack">
+            <button class="main-btn" id="submitOrder" type="button">Оформить заказ</button>
+            <button class="main-btn secondary" id="back3" type="button">Назад</button>
+          </div>
+          <div class="error" id="err4">${state.finalSubmitted ? 'Заказ оформлен: счет сформирован.' : ''}</div>
         </div>
       `;
 
@@ -875,14 +704,14 @@
         render();
       });
 
-      document.getElementById('finalBtn').addEventListener('click', () => {
-        state.consent = document.getElementById('s4consent').checked;
+      document.getElementById('submitOrder').addEventListener('click', () => {
+        state.consent = document.getElementById('consentFinal').checked;
         if (!state.consent) {
-          document.getElementById('s4error').textContent = 'Подтверди согласие для завершения.';
+          document.getElementById('err4').textContent = 'Подтвердите согласие для завершения.';
           return;
         }
         state.finalSubmitted = true;
-        document.getElementById('s4error').textContent = 'Заказ оформлен: счет сформирован.';
+        document.getElementById('err4').textContent = 'Заказ оформлен: счет сформирован.';
       });
     }
 
@@ -898,23 +727,27 @@
     });
 
     refs.sendCode.addEventListener('click', () => {
-      refs.otpError.textContent = 'Код отправлен. Для демо используй 1234.';
+      refs.otpError.textContent = 'Код отправлен. Для демо используйте 1234.';
     });
 
     refs.login.addEventListener('click', () => {
       if (refs.otp.value.trim() !== '1234') {
-        refs.otpError.textContent = 'Неверный код. Попробуй 1234.';
+        refs.otpError.textContent = 'Неверный код. Используйте 1234.';
         return;
       }
       state.yotaIdCreated = true;
       state.buyer.phone = refs.phone.value.trim();
       refs.otpModal.classList.remove('open');
+      refs.otpModal.setAttribute('aria-hidden', 'true');
       setScreen('onboarding');
       render();
     });
 
     refs.otpModal.addEventListener('click', (e) => {
-      if (e.target === refs.otpModal) refs.otpModal.classList.remove('open');
+      if (e.target === refs.otpModal) {
+        refs.otpModal.classList.remove('open');
+        refs.otpModal.setAttribute('aria-hidden', 'true');
+      }
     });
 
     render();
