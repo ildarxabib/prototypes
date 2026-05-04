@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CX / Product Review Scorecard</title>
+  <style>
+    :root {
+      --primary-green: #00B956;
+      --green-hover: #00A94F;
+      --accent-purple: #731982;
+      --bg-main: #F2F4F7;
+      --bg-card: #FFFFFF;
+      --border-primary: #D2D5DA;
+      --border-secondary: #E6E9EE;
+      --text-primary: #2B2D33;
+      --text-secondary: #8F96A4;
+      --success-bg: #EAFBF1;
+      --warning-bg: #FFF6E5;
+      --error-bg: #FFF0F0;
+      --info-bg: #DDF5FF;
+      --radius-card: 24px;
+      --radius-btn: 14px;
+      --radius-input: 16px;
+      --radius-badge: 999px;
+      --shadow: 0 8px 20px rgba(34, 40, 49, 0.06);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text-primary);
+      background: var(--bg-main);
+      line-height: 1.4;
+    }
+
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-secondary);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow);
+    }
+
+    .hero { padding: 28px; margin-bottom: 18px; }
+    .hero h1 { margin: 0 0 8px; font-size: 34px; }
+    .hero p { margin: 0 0 20px; color: var(--text-secondary); font-size: 16px; }
+
+    .grid-5 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+    }
+
+    label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--border-primary);
+      border-radius: var(--radius-input);
+      padding: 11px 12px;
+      font-size: 14px;
+      color: var(--text-primary);
+      background: #fff;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary-green);
+      box-shadow: 0 0 0 3px rgba(0,185,86,0.14);
+    }
+
+    .sticky-panel {
+      position: sticky;
+      top: 8px;
+      z-index: 20;
+      margin-bottom: 18px;
+      padding: 16px 18px;
+    }
+    .panel-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+    .score-main { min-width: 220px; }
+    .score-main strong { font-size: 34px; color: var(--primary-green); }
+    .zone-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: var(--radius-badge);
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+    .zone-red { background: var(--error-bg); color: #BA2222; }
+    .zone-yellow { background: var(--warning-bg); color: #9C6D00; }
+    .zone-green { background: var(--success-bg); color: #007B39; }
+    .zone-benchmark { background: #EFE5FF; color: var(--accent-purple); }
+
+    .progress-wrap { flex: 1; min-width: 220px; }
+    .progress {
+      height: 12px;
+      border-radius: var(--radius-badge);
+      background: #E7EAF0;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .progress > span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--primary-green), var(--accent-purple));
+      transition: width .25s ease;
+    }
+    .meta { display: flex; gap: 14px; font-size: 13px; color: var(--text-secondary); flex-wrap: wrap; }
+
+    .buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+    button {
+      border: none;
+      border-radius: var(--radius-btn);
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+    }
+    button:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--primary-green); color: #fff; }
+    .btn-primary:hover { background: var(--green-hover); }
+    .btn-light { background: #F6F7FA; color: var(--text-primary); }
+
+    .accordion-item { margin-bottom: 14px; overflow: hidden; }
+    .accordion-header {
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 12px;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 1px solid transparent;
+    }
+    .accordion-title { font-weight: 700; }
+    .accordion-desc { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
+    .accordion-score { font-size: 13px; padding: 6px 10px; border-radius: var(--radius-badge); background: var(--info-bg); }
+    .chevron { font-size: 18px; transition: transform .2s; }
+    .accordion-item.open .chevron { transform: rotate(180deg); }
+    .accordion-content { display: none; padding: 0 0 14px; }
+    .accordion-item.open .accordion-content { display: block; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th, td {
+      border-top: 1px solid var(--border-secondary);
+      vertical-align: top;
+      padding: 12px 10px;
+      font-size: 13px;
+    }
+    th { text-align: left; color: var(--text-secondary); font-size: 12px; }
+    td small { color: var(--text-secondary); }
+    .col-crit { width: 34%; }
+    .col-weight { width: 70px; }
+    .col-mand { width: 110px; }
+    .col-rate { width: 170px; }
+
+    .crit-title { display: flex; align-items: center; gap: 8px; }
+    .info-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid var(--border-primary);
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: help;
+      position: relative;
+      background: #fff;
+    }
+    .info-icon:hover { border-color: var(--accent-purple); color: var(--accent-purple); }
+    .tooltip {
+      position: absolute;
+      left: 22px;
+      top: -8px;
+      width: 280px;
+      background: #2B2D33;
+      color: #fff;
+      font-weight: 400;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 12px;
+      line-height: 1.35;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(6px);
+      transition: .18s;
+      z-index: 40;
+    }
+    .info-icon:hover .tooltip { opacity: 1; transform: translateY(0); }
+
+    .summary { padding: 24px; margin-top: 18px; }
+    .summary h2 { margin: 0 0 14px; }
+    .summary-grid { display: grid; gap: 12px; }
+    .summary textarea { min-height: 84px; resize: vertical; }
+
+    @media print {
+      body { background: #fff; }
+      .container { max-width: 100%; padding: 0; }
+      .card { box-shadow: none; border-color: #d8d8d8; }
+      .buttons { display: none !important; }
+      .sticky-panel { position: static; top: auto; }
+      button, .info-icon:hover .tooltip { display: none !important; }
+      .accordion-content { display: block !important; }
+      .accordion-header { cursor: default; }
+      .chevron { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="card hero">
+      <h1>CX / Product Review Scorecard</h1>
+      <p>Онлайн-форма для оценки зрелости клиентского опыта продукта</p>
+      <div class="grid-5">
+        <div><label>Продукт</label><input id="product" type="text"></div>
+        <div><label>Тип ревью</label><input id="reviewType" type="text"></div>
+        <div><label>Ответственный</label><input id="owner" type="text"></div>
+        <div><label>CX Reviewer</label><input id="reviewer" type="text"></div>
+        <div><label>Дата ревью</label><input id="reviewDate" type="date"></div>
+      </div>
+    </section>
+
+    <section class="card sticky-panel">
+      <div class="panel-row">
+        <div class="score-main">
+          <strong id="totalScore">0%</strong>
+          <span id="zoneBadge" class="zone-badge zone-red">Красная зона</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress"><span id="progressFill"></span></div>
+          <div class="meta">
+            <span>Заполнено: <b id="filledCount">0</b></span>
+            <span>Mandatory gaps: <b id="gapCount">0</b></span>
+            <span>Штраф: <b id="penaltyValue">0%</b></span>
+          </div>
+        </div>
+        <div class="buttons">
+          <button class="btn-light" onclick="resetForm()">Очистить</button>
+          <button class="btn-light" onclick="window.print()">Печать / PDF</button>
+          <button class="btn-light" onclick="copySummary()">Скопировать итог</button>
+          <button class="btn-primary" onclick="saveForm()">Сохранить</button>
+          <button class="btn-primary" onclick="loadForm()">Загрузить</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="accordion"></div>
+
+    <section class="card summary">
+      <h2>Summary</h2>
+      <div class="summary-grid">
+        <div><label>Основные сильные стороны</label><textarea id="strengths" placeholder="Кратко перечислите сильные стороны"></textarea></div>
+        <div><label>Ключевые зоны роста</label><textarea id="growth" placeholder="Ключевые направления улучшения"></textarea></div>
+        <div><label>Критические риски</label><textarea id="risks" placeholder="Опишите риски"></textarea></div>
+        <div><label>План улучшений</label><textarea id="plan" placeholder="Шаги и сроки"></textarea></div>
+        <div><label>Решение по итогам ревью</label><textarea id="decision" placeholder="Go / Conditional Go / No Go"></textarea></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const blocks = [
+      { title: "1. Strategy & Value", desc: "Ценность продукта и CX-ориентация", items: [
+        { criterion: "Сформулировано ценностное предложение", bestPractice: "Ценность продукта описана для каждой ключевой аудитории на одном языке с бизнесом.", weight: 3, mandatory: true },
+        { criterion: "Понятные целевые сегменты", bestPractice: "Есть конкретные ICP/персоны и сценарии их работы с продуктом.", weight: 2, mandatory: true },
+        { criterion: "Связь CX-метрик с бизнес-целями", bestPractice: "NPS/CSAT/retention связаны с KPI продукта и команды.", weight: 2, mandatory: false }
+      ]},
+      { title: "2. Discovery & Research", desc: "Качество пользовательских исследований", items: [
+        { criterion: "Регулярные интервью с пользователями", bestPractice: "Интервью проводятся по графику и влияют на backlog.", weight: 3, mandatory: true },
+        { criterion: "Валидированы основные боли", bestPractice: "Есть подтвержденные top pains и приоритизация по влиянию.", weight: 2, mandatory: true },
+        { criterion: "Сегментация обратной связи", bestPractice: "Фидбек структурирован по ролям, каналам и частоте.", weight: 1, mandatory: false }
+      ]},
+      { title: "3. Customer Journey", desc: "Целостность клиентского пути", items: [
+        { criterion: "Описана end-to-end customer journey", bestPractice: "Карта пути охватывает onboarding, core-use, support, renewal.", weight: 3, mandatory: true },
+        { criterion: "Выявлены и измеряются точки трения", bestPractice: "Для ключевых шагов определены drop-off и причины.", weight: 2, mandatory: true },
+        { criterion: "Владельцы этапов CJM закреплены", bestPractice: "Каждый этап пути имеет owner и SLA изменений.", weight: 1, mandatory: false }
+      ]},
+      { title: "4. UX & Interface", desc: "Понятность и консистентность интерфейсов", items: [
+        { criterion: "Ключевые сценарии интуитивны", bestPractice: "Пользователь выполняет top tasks без обучения.", weight: 3, mandatory: true },
+        { criterion: "Единый дизайн-паттерн", bestPractice: "Компоненты и терминология единообразны по всем экранам.", weight: 2, mandatory: true },
+        { criterion: "Продукт доступен на разных устройствах", bestPractice: "Адаптивность и корректная работа на целевых платформах.", weight: 1, mandatory: false }
+      ]},
+      { title: "5. Onboarding", desc: "Первый опыт и время до ценности", items: [
+        { criterion: "Понятный first-run сценарий", bestPractice: "Первые шаги объясняют ценность и ведут к activation.", weight: 3, mandatory: true },
+        { criterion: "Сокращено Time-to-Value", bestPractice: "Пользователь достигает первой ценности за минимальное число действий.", weight: 2, mandatory: true },
+        { criterion: "Подсказки в нужном контексте", bestPractice: "Контекстная помощь появляется в момент затруднения.", weight: 1, mandatory: false }
+      ]},
+      { title: "6. Reliability & Performance", desc: "Стабильность и скорость", items: [
+        { criterion: "Стабильность ключевых операций", bestPractice: "Ошибки и падения в критических шагах близки к нулю.", weight: 3, mandatory: true },
+        { criterion: "Производительность соответствует SLA", bestPractice: "Время отклика в целевых сценариях в пределах норм.", weight: 2, mandatory: true },
+        { criterion: "Прозрачная коммуникация инцидентов", bestPractice: "Пользователь получает ясный статус и прогноз восстановления.", weight: 1, mandatory: false }
+      ]},
+      { title: "7. Support & Service", desc: "Поддержка и сервисные процессы", items: [
+        { criterion: "Доступны каналы поддержки", bestPractice: "Пользователь легко находит подходящий канал связи.", weight: 2, mandatory: true },
+        { criterion: "Соблюдаются SLA по ответам", bestPractice: "Время первого ответа и решения контролируется и соблюдается.", weight: 3, mandatory: true },
+        { criterion: "База знаний актуальна", bestPractice: "FAQ и инструкции регулярно обновляются по реальным запросам.", weight: 1, mandatory: false }
+      ]},
+      { title: "8. Communication", desc: "Коммуникация с клиентами", items: [
+        { criterion: "Ясные продуктовые уведомления", bestPractice: "Коммуникации короткие, понятные, с действием для пользователя.", weight: 2, mandatory: true },
+        { criterion: "Проактивное информирование об изменениях", bestPractice: "Релизы и изменения заранее объясняются пользователям.", weight: 2, mandatory: false },
+        { criterion: "Тон коммуникации единообразен", bestPractice: "Voice & tone соответствуют бренду и контексту.", weight: 1, mandatory: false }
+      ]},
+      { title: "9. Personalization", desc: "Персонализация и релевантность", items: [
+        { criterion: "Контент и опыт учитывают сегмент", bestPractice: "Предложения и интерфейс релевантны профилю клиента.", weight: 2, mandatory: false },
+        { criterion: "Настройки пользовательского опыта доступны", bestPractice: "Пользователь может гибко управлять предпочтениями.", weight: 2, mandatory: false },
+        { criterion: "Рекомендации помогают быстрее достичь цели", bestPractice: "Подсказки и рекомендации снижают когнитивную нагрузку.", weight: 1, mandatory: false }
+      ]},
+      { title: "10. Data & Metrics", desc: "Измерение CX и продуктовой эффективности", items: [
+        { criterion: "Определены ключевые CX-метрики", bestPractice: "Набор метрик покрывает satisfaction, effort, loyalty.", weight: 3, mandatory: true },
+        { criterion: "Метрики доступны в регулярных дашбордах", bestPractice: "Данные видны команде и используются в ритуалах.", weight: 2, mandatory: true },
+        { criterion: "Есть цикл " + '"measure → learn → improve"', bestPractice: "Результаты измерений приводят к конкретным улучшениям.", weight: 2, mandatory: true }
+      ]},
+      { title: "11. Governance", desc: "Роли, ответственность, процессы", items: [
+        { criterion: "Ответственность за CX закреплена", bestPractice: "Есть владельцы за ключевые CX-процессы и точки контакта.", weight: 2, mandatory: true },
+        { criterion: "Принятие решений прозрачно", bestPractice: "Критерии приоритезации и эскалации известны команде.", weight: 2, mandatory: false },
+        { criterion: "Регулярные review-ритуалы", bestPractice: "Проводятся ежемесячные/квартальные обзоры CX-результатов.", weight: 1, mandatory: false }
+      ]},
+      { title: "12. Compliance & Trust", desc: "Доверие, безопасность, соответствие", items: [
+        { criterion: "Прозрачность обработки данных", bestPractice: "Пользователь понимает какие данные и зачем используются.", weight: 3, mandatory: true },
+        { criterion: "Управление доступом и приватностью", bestPractice: "Роли и права исключают несанкционированный доступ.", weight: 3, mandatory: true },
+        { criterion: "Ясные условия и согласия", bestPractice: "Согласия и правила представлены понятным языком.", weight: 1, mandatory: false }
+      ]},
+      { title: "13. Continuous Improvement", desc: "Системные улучшения CX", items: [
+        { criterion: "Бэклог CX-улучшений приоритезирован", bestPractice: "Есть прозрачная очередность по impact/effort.", weight: 2, mandatory: true },
+        { criterion: "Проверяется эффект внедренных изменений", bestPractice: "После релиза анализируется влияние на метрики.", weight: 2, mandatory: true },
+        { criterion: "Команда делится инсайтами", bestPractice: "Ретроспективы и best practices масштабируются в организации.", weight: 1, mandatory: false }
+      ]}
+    ];
+
+    function renderBlocks() {
+      const root = document.getElementById('accordion');
+      root.innerHTML = '';
+      blocks.forEach((block, bi) => {
+        const item = document.createElement('section');
+        item.className = 'card accordion-item' + (bi === 0 ? ' open' : '');
+        item.dataset.block = bi;
+        item.innerHTML = `
+          <div class="accordion-header">
+            <div>
+              <div class="accordion-title">${block.title}</div>
+              <div class="accordion-desc">${block.desc}</div>
+            </div>
+            <div class="accordion-score" id="blockScore-${bi}">0%</div>
+            <div class="chevron">⌄</div>
+          </div>
+          <div class="accordion-content">
+            <table>
+              <thead><tr><th class="col-crit">Критерий</th><th class="col-weight">Вес</th><th class="col-mand">Обязательный</th><th class="col-rate">Оценка</th><th>Комментарий</th></tr></thead>
+              <tbody>
+                ${block.items.map((it, ii) => `
+                  <tr>
+                    <td>
+                      <div class="crit-title">${it.criterion}
+                        <span class="info-icon">i<span class="tooltip">${it.bestPractice}</span></span>
+                      </div>
+                    </td>
+                    <td>${it.weight}</td>
+                    <td>${it.mandatory ? 'Да' : 'Нет'}</td>
+                    <td>
+                      <select data-type="rate" data-b="${bi}" data-i="${ii}">
+                        <option value="">—</option>
+                        <option value="0">0 — Нет</option>
+                        <option value="1">1 — Критично</option>
+                        <option value="2">2 — База</option>
+                        <option value="3">3 — Эталон</option>
+                      </select>
+                    </td>
+                    <td><textarea data-type="comment" data-b="${bi}" data-i="${ii}" placeholder="Комментарий / рекомендация"></textarea></td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>`;
+
+        item.querySelector('.accordion-header').addEventListener('click', e => {
+          if (e.target.closest('select, textarea, .info-icon')) return;
+          item.classList.toggle('open');
+        });
+        root.appendChild(item);
+      });
+
+      root.addEventListener('input', calculateScore);
+      root.addEventListener('change', calculateScore);
+    }
+
+    function calculateBlockScore(blockIndex) {
+      const block = blocks[blockIndex];
+      let got = 0, max = 0;
+      block.items.forEach((it, ii) => {
+        const v = document.querySelector(`[data-type="rate"][data-b="${blockIndex}"][data-i="${ii}"]`).value;
+        if (v !== '') got += Number(v) * it.weight;
+        max += 3 * it.weight;
+      });
+      const pct = max ? (got / max) * 100 : 0;
+      document.getElementById(`blockScore-${blockIndex}`).textContent = `${Math.round(pct)}%`;
+      return pct;
+    }
+
+    function calculateScore() {
+      let got = 0, max = 0, filled = 0, gaps = 0;
+      blocks.forEach((block, bi) => {
+        block.items.forEach((it, ii) => {
+          const el = document.querySelector(`[data-type="rate"][data-b="${bi}"][data-i="${ii}"]`);
+          const v = el.value;
+          if (v !== '') {
+            filled++;
+            got += Number(v) * it.weight;
+            if (it.mandatory && (v === '0' || v === '1')) gaps++;
+          }
+          max += 3 * it.weight;
+        });
+        calculateBlockScore(bi);
+      });
+
+      let score = max ? (got / max) * 100 : 0;
+      const penalty = gaps * 10;
+      score = Math.max(0, Math.min(100, score - penalty));
+
+      document.getElementById('totalScore').textContent = `${Math.round(score)}%`;
+      document.getElementById('progressFill').style.width = `${score}%`;
+      document.getElementById('filledCount').textContent = filled;
+      document.getElementById('gapCount').textContent = gaps;
+      document.getElementById('penaltyValue').textContent = `${penalty}%`;
+
+      const badge = document.getElementById('zoneBadge');
+      badge.className = 'zone-badge';
+      if (score <= 40) { badge.classList.add('zone-red'); badge.textContent = 'Красная зона'; }
+      else if (score <= 70) { badge.classList.add('zone-yellow'); badge.textContent = 'Жёлтая зона'; }
+      else if (score <= 90) { badge.classList.add('zone-green'); badge.textContent = 'Зелёная зона'; }
+      else { badge.classList.add('zone-benchmark'); badge.textContent = 'Эталонная зона'; }
+    }
+
+    function saveForm() {
+      const data = {
+        hero: {
+          product: document.getElementById('product').value,
+          reviewType: document.getElementById('reviewType').value,
+          owner: document.getElementById('owner').value,
+          reviewer: document.getElementById('reviewer').value,
+          reviewDate: document.getElementById('reviewDate').value
+        },
+        rates: {}, comments: {},
+        summary: {
+          strengths: document.getElementById('strengths').value,
+          growth: document.getElementById('growth').value,
+          risks: document.getElementById('risks').value,
+          plan: document.getElementById('plan').value,
+          decision: document.getElementById('decision').value
+        }
+      };
+      document.querySelectorAll('[data-type="rate"]').forEach(el => data.rates[`${el.dataset.b}-${el.dataset.i}`] = el.value);
+      document.querySelectorAll('[data-type="comment"]').forEach(el => data.comments[`${el.dataset.b}-${el.dataset.i}`] = el.value);
+      localStorage.setItem('cxReviewScorecard', JSON.stringify(data));
+      alert('Форма сохранена локально.');
+    }
+
+    function loadForm() {
+      const raw = localStorage.getItem('cxReviewScorecard');
+      if (!raw) return alert('Нет сохраненных данных.');
+      const data = JSON.parse(raw);
+      Object.keys(data.hero || {}).forEach(k => document.getElementById(k).value = data.hero[k] || '');
+      Object.entries(data.rates || {}).forEach(([k,v]) => {
+        const [b,i] = k.split('-');
+        const el = document.querySelector(`[data-type="rate"][data-b="${b}"][data-i="${i}"]`);
+        if (el) el.value = v;
+      });
+      Object.entries(data.comments || {}).forEach(([k,v]) => {
+        const [b,i] = k.split('-');
+        const el = document.querySelector(`[data-type="comment"][data-b="${b}"][data-i="${i}"]`);
+        if (el) el.value = v;
+      });
+      Object.keys(data.summary || {}).forEach(k => document.getElementById(k).value = data.summary[k] || '');
+      calculateScore();
+      alert('Данные загружены.');
+    }
+
+    function resetForm() {
+      if (!confirm('Очистить все поля формы?')) return;
+      document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+      document.querySelectorAll('select').forEach(el => el.value = '');
+      calculateScore();
+    }
+
+    function copySummary() {
+      const text = [
+        `Продукт: ${document.getElementById('product').value}`,
+        `Тип ревью: ${document.getElementById('reviewType').value}`,
+        `Ответственный: ${document.getElementById('owner').value}`,
+        `CX Reviewer: ${document.getElementById('reviewer').value}`,
+        `Дата ревью: ${document.getElementById('reviewDate').value}`,
+        `Итоговый score: ${document.getElementById('totalScore').textContent}`,
+        `Зона: ${document.getElementById('zoneBadge').textContent}`,
+        `Mandatory gaps: ${document.getElementById('gapCount').textContent}`,
+        `Штраф: ${document.getElementById('penaltyValue').textContent}`,
+        '',
+        `Сильные стороны: ${document.getElementById('strengths').value}`,
+        `Зоны роста: ${document.getElementById('growth').value}`,
+        `Критические риски: ${document.getElementById('risks').value}`,
+        `План улучшений: ${document.getElementById('plan').value}`,
+        `Решение: ${document.getElementById('decision').value}`
+      ].join('\n');
+      navigator.clipboard.writeText(text).then(() => alert('Итог скопирован в буфер.'));
+    }
+
+    document.querySelectorAll('.hero input, .summary textarea').forEach(el => {
+      el.addEventListener('input', calculateScore);
+    });
+
+    renderBlocks();
+    calculateScore();
+  </script>
+</body>
+</html>
