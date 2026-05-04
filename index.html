@@ -6,656 +6,135 @@
   <title>CX / Product Review Scorecard</title>
   <style>
     :root {
-      --primary-green: #00B956;
+      --green: #00B956;
       --green-hover: #00A94F;
-      --accent-purple: #731982;
-      --bg-main: #F2F4F7;
-      --bg-card: #FFFFFF;
-      --border-primary: #D2D5DA;
-      --border-secondary: #E6E9EE;
-      --text-primary: #2B2D33;
-      --text-secondary: #8F96A4;
+      --green-pressed: #009447;
+      --purple: #731982;
+      --bg: #F2F4F7;
+      --card: #FFFFFF;
+      --surface: #F7F8FA;
+      --border: #D2D5DA;
+      --border-soft: #E6E9EE;
+      --text: #2B2D33;
+      --secondary: #8F96A4;
+      --disabled: #A8AFB9;
+      --inverse: #FFFFFF;
       --success-bg: #EAFBF1;
+      --info-bg: #DDF5FF;
       --warning-bg: #FFF6E5;
       --error-bg: #FFF0F0;
-      --info-bg: #DDF5FF;
-      --radius-card: 24px;
-      --radius-btn: 14px;
-      --radius-input: 16px;
-      --radius-badge: 999px;
-      --shadow: 0 8px 20px rgba(34, 40, 49, 0.06);
     }
-
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--text-primary);
-      background: var(--bg-main);
-      line-height: 1.4;
-    }
-
-    .container {
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-secondary);
-      border-radius: var(--radius-card);
-      box-shadow: var(--shadow);
-    }
-
-    .hero { padding: 28px; margin-bottom: 18px; }
-    .hero h1 { margin: 0 0 8px; font-size: 34px; }
-    .hero p { margin: 0 0 20px; color: var(--text-secondary); font-size: 16px; }
-
-    .grid-5 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 14px;
-    }
-
-    label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
-    input, select, textarea {
-      width: 100%;
-      border: 1px solid var(--border-primary);
-      border-radius: var(--radius-input);
-      padding: 11px 12px;
-      font-size: 14px;
-      color: var(--text-primary);
-      background: #fff;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--primary-green);
-      box-shadow: 0 0 0 3px rgba(0,185,86,0.14);
-    }
-
-    .sticky-panel {
-      position: sticky;
-      top: 8px;
-      z-index: 20;
-      margin-bottom: 18px;
-      padding: 16px 18px;
-    }
-    .panel-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
-    .score-main { min-width: 220px; }
-    .score-main strong { font-size: 34px; color: var(--primary-green); }
-    .zone-badge {
-      display: inline-block;
-      padding: 6px 12px;
-      border-radius: var(--radius-badge);
-      font-size: 12px;
-      font-weight: 600;
-      margin-left: 10px;
-    }
-    .zone-red { background: var(--error-bg); color: #BA2222; }
-    .zone-yellow { background: var(--warning-bg); color: #9C6D00; }
-    .zone-green { background: var(--success-bg); color: #007B39; }
-    .zone-benchmark { background: #EFE5FF; color: var(--accent-purple); }
-
-    .progress-wrap { flex: 1; min-width: 220px; }
-    .progress {
-      height: 12px;
-      border-radius: var(--radius-badge);
-      background: #E7EAF0;
-      overflow: hidden;
-      margin-bottom: 6px;
-    }
-    .progress > span {
-      display: block;
-      height: 100%;
-      width: 0;
-      background: linear-gradient(90deg, var(--primary-green), var(--accent-purple));
-      transition: width .25s ease;
-    }
-    .meta { display: flex; gap: 14px; font-size: 13px; color: var(--text-secondary); flex-wrap: wrap; }
-
-    .buttons { display: flex; gap: 8px; flex-wrap: wrap; }
-    button {
-      border: none;
-      border-radius: var(--radius-btn);
-      padding: 10px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background .2s, transform .1s;
-    }
-    button:hover { transform: translateY(-1px); }
-    .btn-primary { background: var(--primary-green); color: #fff; }
-    .btn-primary:hover { background: var(--green-hover); }
-    .btn-light { background: #F6F7FA; color: var(--text-primary); }
-
-    .accordion-item { margin-bottom: 14px; overflow: hidden; }
-    .accordion-header {
-      padding: 16px 20px;
-      display: grid;
-      grid-template-columns: 1fr auto auto;
-      gap: 12px;
-      align-items: center;
-      cursor: pointer;
-      border-bottom: 1px solid transparent;
-    }
-    .accordion-title { font-weight: 700; }
-    .accordion-desc { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
-    .accordion-score { font-size: 13px; padding: 6px 10px; border-radius: var(--radius-badge); background: var(--info-bg); }
-    .chevron { font-size: 18px; transition: transform .2s; }
-    .accordion-item.open .chevron { transform: rotate(180deg); }
-    .accordion-content { display: none; padding: 0 0 14px; }
-    .accordion-item.open .accordion-content { display: block; }
-
-    table { width: 100%; border-collapse: collapse; }
-    th, td {
-      border-top: 1px solid var(--border-secondary);
-      vertical-align: top;
-      padding: 12px 10px;
-      font-size: 13px;
-    }
-    th { text-align: left; color: var(--text-secondary); font-size: 12px; }
-    td small { color: var(--text-secondary); }
-    .col-crit { width: 34%; }
-    .col-weight { width: 70px; }
-    .col-mand { width: 110px; }
-    .col-rate { width: 170px; }
-
-    .crit-title { display: flex; align-items: center; gap: 8px; }
-    .info-icon {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      border: 1px solid var(--border-primary);
-      color: var(--text-secondary);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: help;
-      position: relative;
-      background: #fff;
-    }
-    .info-icon:hover { border-color: var(--accent-purple); color: var(--accent-purple); }
-    .tooltip {
-      position: absolute;
-      left: 22px;
-      top: -8px;
-      width: 280px;
-      background: #2B2D33;
-      color: #fff;
-      font-weight: 400;
-      border-radius: 10px;
-      padding: 10px;
-      font-size: 12px;
-      line-height: 1.35;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(6px);
-      transition: .18s;
-      z-index: 40;
-    }
-    .info-icon:hover .tooltip { opacity: 1; transform: translateY(0); }
-
-    .summary { padding: 24px; margin-top: 18px; }
-    .summary h2 { margin: 0 0 14px; }
-    .summary-grid { display: grid; gap: 12px; }
-    .summary textarea { min-height: 84px; resize: vertical; }
-
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: "MegaFon Graphik LC", "Inter", Arial, sans-serif; font-size: 16px; line-height: 1.5; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 48px 32px 80px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; box-shadow: 0 12px 32px rgba(43,45,51,0.06); margin-bottom: 24px; overflow: hidden; }
+    .hero { background: linear-gradient(135deg, #FFFFFF 0%, #EAFBF1 60%, #DDF5FF 100%); padding: 40px; }
+    h1 { margin: 0 0 10px; font-size: 44px; font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; }
+    h2 { margin: 0 0 16px; font-size: 32px; font-weight: 700; line-height: 1.15; }
+    h3 { margin: 0; font-size: 24px; font-weight: 600; }
+    .muted { color: var(--secondary); font-size: 13px; }
+    .hero-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 14px; margin-top: 22px; }
+    label { display: block; margin-bottom: 6px; font-size: 13px; color: var(--secondary); }
+    input, select, textarea { width:100%; background:#fff; border:1px solid var(--border); border-radius:16px; padding:12px 14px; font-size:15px; color:var(--text); outline:none; font-family:inherit; }
+    input:focus, select:focus, textarea:focus { border-color: var(--green); box-shadow: 0 0 0 4px rgba(0,185,86,.12); }
+    textarea { min-height: 72px; resize: vertical; }
+    .sticky { position: sticky; top: 8px; z-index: 50; padding: 20px 24px; }
+    .row { display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
+    .score { font-size: 44px; font-weight: 700; line-height:1; color: var(--green); }
+    .zone { border-radius: 999px; padding: 8px 12px; font-size: 13px; font-weight: 600; }
+    .progress { height: 12px; background:#e8ebf0; border-radius:999px; overflow:hidden; min-width:260px; flex:1; }
+    .progress > span { display:block; height:100%; width:0; background: linear-gradient(90deg,var(--green),var(--purple)); }
+    .buttons { display:flex; gap:10px; flex-wrap:wrap; }
+    button { font-family:inherit; font-size:15px; font-weight:600; border-radius:14px; padding:13px 18px; cursor:pointer; }
+    .primary { background: var(--green); color: white; border:none; }
+    .primary:hover { background: var(--green-hover); }
+    .primary:active { background: var(--green-pressed); transform:scale(.98); }
+    .secondary { background:white; color:var(--text); border:1px solid var(--border); }
+    .secondary:hover { border-color:var(--green); color:var(--green); }
+    .rules { padding: 24px 28px; }
+    .rule-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+    .rule { background: var(--surface); border:1px solid var(--border-soft); border-radius:16px; padding:14px; }
+    .acc-head { display:flex; justify-content:space-between; align-items:center; padding:24px 28px; cursor:pointer; background:linear-gradient(180deg,#FFFFFF 0%, #F7F8FA 100%); border-bottom:1px solid var(--border-soft); }
+    .acc-head:hover { background:#fff; }
+    .acc-meta { display:flex; align-items:center; gap:8px; }
+    .acc-score { font-size:13px; background:var(--info-bg); border-radius:999px; padding:6px 10px; }
+    .acc-content { display:none; }
+    .open .acc-content { display:block; }
+    .table-wrap{ overflow-x:auto; }
+    table{ width:100%; border-collapse:collapse; background:#fff; }
+    th{ background:var(--surface); color:var(--secondary); font-size:13px; font-weight:600; text-align:left; border-bottom:1px solid var(--border-soft); padding:16px; }
+    td{ padding:16px; border-bottom:1px solid var(--border-soft); vertical-align:top; font-size:15px; }
+    tr:hover td{ background:#FCFDFC; }
+    .crit{ font-weight:600; color:var(--text); display:flex; align-items:center; }
+    .info{ position:relative; display:inline-flex; width:18px; height:18px; border-radius:999px; background:#F7F8FA; border:1px solid #D2D5DA; color:#8F96A4; font-size:12px; font-weight:700; align-items:center; justify-content:center; margin-left:6px; cursor:help; }
+    .info:hover{ background:#EAFBF1; border-color:#00B956; color:#00B956; }
+    .tip{ position:absolute; left:24px; top:-6px; width:290px; background:#fff; border:1px solid #00B956; border-radius:12px; box-shadow:0 8px 20px rgba(43,45,51,.12); padding:10px 12px; font-size:13px; color:#2B2D33; opacity:0; transform:translateY(6px); pointer-events:none; transition:.15s; z-index:40; }
+    .info:hover .tip{ opacity:1; transform:translateY(0); }
+    .summary { padding:28px; }
     @media print {
-      body { background: #fff; }
-      .container { max-width: 100%; padding: 0; }
-      .card { box-shadow: none; border-color: #d8d8d8; }
-      .buttons { display: none !important; }
-      .sticky-panel { position: static; top: auto; }
-      button, .info-icon:hover .tooltip { display: none !important; }
-      .accordion-content { display: block !important; }
-      .accordion-header { cursor: default; }
-      .chevron { display: none; }
+      .buttons { display:none !important; }
+      .sticky { position: static; }
+      .card { box-shadow:none; }
+      .acc-head { cursor: default; }
+      .acc-content { display:block !important; }
+      tr:hover td { background:#fff; }
+      .card { break-inside: avoid; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <section class="card hero">
-      <h1>CX / Product Review Scorecard</h1>
-      <p>Онлайн-форма для оценки зрелости клиентского опыта продукта</p>
-      <div class="grid-5">
-        <div><label>Продукт</label><input id="product" type="text"></div>
-        <div><label>Тип ревью</label><input id="reviewType" type="text"></div>
-        <div><label>Ответственный</label><input id="owner" type="text"></div>
-        <div><label>CX Reviewer</label><input id="reviewer" type="text"></div>
-        <div><label>Дата ревью</label><input id="reviewDate" type="date"></div>
+<div class="container">
+  <section class="card hero">
+    <h1>CX / Product Review Scorecard</h1>
+    <div>Онлайн-форма для оценки зрелости клиентского опыта продукта</div>
+    <div class="hero-grid">
+      <div><label>Продукт</label><input id="product"></div>
+      <div><label>Тип ревью</label><select id="reviewType"><option>Запуск продукта</option><option>Квартальное ревью</option><option>Глубокий аудит</option><option>Редизайн сценария</option></select></div>
+      <div><label>Ответственный</label><input id="owner"></div>
+      <div><label>CX Reviewer</label><input id="reviewer"></div>
+      <div><label>Дата ревью</label><input id="reviewDate" type="date"></div>
+    </div>
+  </section>
+  <section class="card sticky">
+    <div class="row">
+      <div class="score" id="totalScore">0%</div><div class="zone" id="zone">Красная зона</div>
+      <div class="progress"><span id="progress"></span></div>
+      <div class="muted">Заполнено: <b id="filled">0</b> из <b id="total">0</b></div>
+      <div class="buttons">
+        <button class="secondary" onclick="resetForm()">Очистить</button><button class="secondary" onclick="window.print()">Печать / PDF</button><button class="secondary" onclick="copySummary()">Скопировать итог</button><button class="primary" onclick="saveForm()">Сохранить</button><button class="primary" onclick="loadForm()">Загрузить</button>
       </div>
-    </section>
+    </div>
+  </section>
+  <section class="card rules"><h3>Правила оценки</h3><div class="rule-grid"><div class="rule"><b>0 — Нет</b><div class="muted">Критерий отсутствует или не работает.</div></div><div class="rule"><b>1 — Критично</b><div class="muted">Реализовано слабо, фрагментарно или неудобно.</div></div><div class="rule"><b>2 — База</b><div class="muted">Соответствует минимальному стандарту.</div></div><div class="rule"><b>3 — Эталон</b><div class="muted">Сильное решение, можно использовать как пример.</div></div></div></section>
+  <div id="blocks"></div>
+  <section class="card summary"><h2>Итоговое резюме</h2><div class="hero-grid"><div><label>Основные сильные стороны</label><textarea id="strengths"></textarea></div><div><label>Ключевые зоны роста</label><textarea id="growth"></textarea></div><div><label>Критические риски</label><textarea id="risks"></textarea></div><div><label>План улучшений</label><textarea id="plan"></textarea></div><div><label>Решение по итогам ревью</label><select id="decision"><option>Запуск возможен</option><option>Запуск возможен с условиями</option><option>Требуется доработка</option><option>Запуск не рекомендован</option></select></div></div></section>
+</div>
+<script>
+const blocks = [
+{title:"Исследования и обоснование",desc:"Проверяем, насколько продуктовые решения опираются на данные, клиентов, рынок и подтверждённые гипотезы.",items:[{criterion:"Анализ рынка",check:"Актуальный анализ рынка и трендов",bestPractice:"Регулярный обзор рынка и фиксация выводов в продуктовой документации."},{criterion:"Конкурентный анализ",check:"Сравнение с конкурентами по UX и ценности",bestPractice:"Сравнение не только функций, но и UX-сценариев конкурентов."},{criterion:"CustDev / интервью",check:"Регулярность и качество интервью",bestPractice:"Минимум 5–7 интервью на сегмент перед значимой доработкой."},{criterion:"JTBD / персоны",check:"Определены роли и потребности",bestPractice:"Разделять роли ЛПР, администратора, бухгалтера и конечного пользователя."},{criterion:"Проверка гипотез",check:"Валидация решений до разработки",bestPractice:"Проверка спорных решений до разработки через MVP/прототипы."},{criterion:"Анализ текущего CJ",check:"Карта текущего клиентского пути",bestPractice:"Ведение AS IS / TO BE для ключевых сценариев."},{criterion:"Анализ обращений",check:"Использование данных поддержки",bestPractice:"Использовать поддержку как источник продуктовой диагностики."},{criterion:"Аналитика воронки",check:"Анализ потерь по этапам",bestPractice:"Анализировать потери между этапами, а не только общий CR."}]},
+{title:"Коммерческий блок и ценность продукта",desc:"Проверяем понятность ценности и коммерческого предложения.",items:[{criterion:"Ценностное предложение",check:"Ясность формулировки ценности",bestPractice:"Формула: для кого → какая боль → какой результат → почему с нами."},{criterion:"Конкурентные отличия",check:"Понятность уникальных преимуществ",bestPractice:"Показывать отличия в формате сравнений и преимуществ."},{criterion:"Бизнес-кейсы",check:"Наличие реальных кейсов",bestPractice:"Показывать реальные сценарии использования продукта."},{criterion:"Отраслевая специфика",check:"Адаптация предложения по сегментам",bestPractice:"Адаптировать предложение под сегменты и индустрии."},{criterion:"Эффект / выгода",check:"Показ измеримой пользы",bestPractice:"Показывать ROI, экономию, снижение ручного труда."},{criterion:"Прозрачность тарифов",check:"Ясность тарифов и ограничений",bestPractice:"Понятные тарифы, ограничения и условия."},{criterion:"Понятный CTA",check:"Явный следующий шаг",bestPractice:"Один главный следующий шаг на экран."},{criterion:"Доказательства доверия",check:"Наличие trust-элементов",bestPractice:"Отзывы, кейсы, логотипы клиентов, гарантии."},{criterion:"Калькулятор / расчёт",check:"Инструмент предварительного расчёта",bestPractice:"Калькулятор стоимости / конфигуратор."},{criterion:"FAQ до покупки",check:"Закрытие возражений до контакта",bestPractice:"Закрывать частые вопросы до обращения в продажи."}]},
+{title:"Заявка, лиды и продажи",desc:"Проверяем путь от заявки до продажи и передачи в подключение.",items:[{criterion:"SLA первого контакта",check:"Скорость первого ответа",bestPractice:"Быстрый контакт для горячих лидов."},{criterion:"Контроль SLA",check:"Мониторинг соблюдения SLA",bestPractice:"Дашборд просрочек и причин нарушений."},{criterion:"Подтверждение заявки",check:"Подтверждение получения заявки",bestPractice:"Сообщение о принятии заявки и следующих шагах."},{criterion:"Прозрачный статус заявки",check:"Видимость статуса заявки",bestPractice:"Трекер статусов заявки."},{criterion:"Ответственный за заявку",check:"Назначен владелец заявки",bestPractice:"Owner заявки в CRM / очереди."},{criterion:"Бесшовная передача",check:"Целостность данных между этапами",bestPractice:"Клиент не повторяет данные на этапах."},{criterion:"Минимум лишних вопросов",check:"Оптимизированная форма лида",bestPractice:"Короткая форма на старте."},{criterion:"Follow-up",check:"Повторные касания",bestPractice:"Повторные касания по незавершённым заявкам."},{criterion:"Единые статусы",check:"Общий язык статусов",bestPractice:"Общий словарь статусов по всем командам."},{criterion:"Передача в подключение",check:"Чёткий handoff после продажи",bestPractice:"Понятен следующий владелец и срок после продажи."}]},
+{title:"Оформление, договор и документы",desc:"Проверяем простоту юридических и операционных шагов.",items:[{criterion:"Понятный сценарий оформления",check:"Пошаговый путь оформления",bestPractice:"Пошаговый сценарий с прогрессом."},{criterion:"Минимум ручного ввода",check:"Автоматизация ввода",bestPractice:"Автозаполнение и переиспользование данных."},{criterion:"Проверка данных",check:"Валидация данных",bestPractice:"Inline validation."},{criterion:"Прозрачность документов",check:"Ясность документальных требований",bestPractice:"Список документов и требования."},{criterion:"Цифровое подписание",check:"Доступность e-sign",bestPractice:"Максимальный уход от бумаги."},{criterion:"Статус договора / счёта",check:"Трекинг статусов документов",bestPractice:"Видимость статусов документов."},{criterion:"Понятные юридические условия",check:"Понятность условий",bestPractice:"Выжимка условий простым языком."},{criterion:"Черновик оформления",check:"Сохранение прогресса",bestPractice:"Сохранение прогресса."},{criterion:"Исправление ошибок",check:"Прозрачная коррекция ошибок",bestPractice:"Понятная причина отклонения и действие."}]},
+{title:"Онбординг и активация",desc:"Проверяем выход клиента на первую пользу.",items:[{criterion:"Стартовый сценарий",check:"Первый путь пользователя",bestPractice:"Welcome-flow / чек-лист старта."},{criterion:"Welcome-коммуникация",check:"Коммуникация после регистрации",bestPractice:"Письмо / SMS / push со стартом."},{criterion:"Пошаговая настройка",check:"Наличие setup wizard",bestPractice:"Wizard / мастер настройки."},{criterion:"Прогресс настройки",check:"Отображение прогресса",bestPractice:"Progress bar / checklist."},{criterion:"Быстрый выход на пользу",check:"Время до первой ценности",bestPractice:"Сокращение time-to-value."},{criterion:"Подсказки в процессе",check:"Контекстная помощь",bestPractice:"Контекстная помощь."},{criterion:"Шаблоны и преднастройки",check:"Готовые стартовые сценарии",bestPractice:"Готовые конфигурации / шаблоны."},{criterion:"Пустые состояния",check:"Понятные empty states",bestPractice:"Пустой экран ведёт к действию."},{criterion:"Ролевой онбординг",check:"Разные onboarding-пути",bestPractice:"Разные сценарии по ролям."},{criterion:"Контроль активации",check:"Метрики completion",bestPractice:"Измерение completion rate."}]},
+{title:"Самообслуживание",desc:"Проверяем возможность управлять продуктом без поддержки.",items:[{criterion:"Базовые операции без поддержки",check:"Self-service доступен",bestPractice:"Максимум действий в self-service."},{criterion:"Управление настройками",check:"Самостоятельная настройка",bestPractice:"Самостоятельное изменение параметров."},{criterion:"Управление пользователями",check:"Управление аккаунтами",bestPractice:"CRUD пользователей / приглашения."},{criterion:"Роли и доступы",check:"Ролевая модель",bestPractice:"Готовая ролевая модель."},{criterion:"Документы и финансы",check:"Доступ к финансовым данным",bestPractice:"Онлайн-доступ к финансам."},{criterion:"История действий",check:"Логи операций",bestPractice:"Audit log."},{criterion:"Массовые действия",check:"Batch операции",bestPractice:"Bulk operations."},{criterion:"Шаблоны",check:"Повторное использование конфигураций",bestPractice:"Сохранение типовых настроек."},{criterion:"Самодиагностика",check:"Встроенная диагностика",bestPractice:"Проверка статуса / troubleshooting."},{criterion:"Прозрачное отключение",check:"Ясный offboarding",bestPractice:"Понятный offboarding / отключение."}]},
+{title:"Поддержка и помощь",desc:"Проверяем качество сервисной поддержки.",items:[{criterion:"Доступный канал поддержки",check:"Поддержка в нужных точках",bestPractice:"Поддержка доступна в релевантных точках."},{criterion:"Чат / цифровой канал",check:"Удобство цифрового обращения",bestPractice:"Чат / бот / заявка."},{criterion:"Понятный срок ответа",check:"Прозрачность SLA",bestPractice:"Показан SLA обращения."},{criterion:"Контекст обращения",check:"Передача контекста обращения",bestPractice:"Передача контекста обращения."},{criterion:"База знаний",check:"Актуальность KB",bestPractice:"Актуальная knowledge base."},{criterion:"Встроенная помощь",check:"Наличие embedded help",bestPractice:"Embedded help."},{criterion:"Эскалация",check:"Процедура эскалации",bestPractice:"Понятный путь эскалации."},{criterion:"Закрытие обращения",check:"Подтверждение решения",bestPractice:"Подтверждение решения."},{criterion:"Оценка поддержки",check:"Сбор CSAT",bestPractice:"CSAT после обращения."},{criterion:"Проактивная поддержка",check:"Предотвращение проблем",bestPractice:"Предупреждение проблем заранее."}]},
+{title:"Интерфейс и эвристики UX/UI",desc:"Проверяем удобство и соответствие UX-стандартам.",items:[{criterion:"Видимость статуса",check:"Понятные статусы",bestPractice:"Прогресс / статусы / результаты."},{criterion:"Понятный язык",check:"Язык пользователя",bestPractice:"Язык клиента, не внутренние термины."},{criterion:"Контроль и свобода",check:"Возможность отката/редактирования",bestPractice:"Undo / Back / Edit."},{criterion:"Единообразие",check:"Консистентность интерфейса",bestPractice:"Консистентность интерфейса."},{criterion:"Предотвращение ошибок",check:"Превентивные механики",bestPractice:"Error prevention."},{criterion:"Узнавание вместо запоминания",check:"Контекстность UI",bestPractice:"Нужный контекст на экране."},{criterion:"Быстрые действия",check:"Ускорители в UX",bestPractice:"Shortcuts / bulk / templates."},{criterion:"Минимум визуального шума",check:"Чистая визуальная иерархия",bestPractice:"Visual hierarchy / progressive disclosure."},{criterion:"Понятные ошибки",check:"Тексты ошибок с действием",bestPractice:"Ошибка объясняет проблему и действие."},{criterion:"Помощь и документация",check:"Доступность help",bestPractice:"Help там, где нужен."},{criterion:"Соответствие дизайн-системе",check:"Единая система компонентов",bestPractice:"Использование design system."},{criterion:"Читаемость и доступность",check:"Контраст и доступность",bestPractice:"Контраст / размер / tap zones."},{criterion:"Состояния компонентов",check:"Проработанность состояний",bestPractice:"Все UI-states спроектированы."},{criterion:"Адаптивность",check:"Работа на целевых устройствах",bestPractice:"Корректная работа на целевых устройствах."}]},
+{title:"Формы и ввод данных",desc:"Проверяем удобство заполнения данных.",items:[{criterion:"Минимум полей",check:"Оптимизация объема ввода",bestPractice:"Только необходимые поля."},{criterion:"Логичная группировка",check:"Группировка полей",bestPractice:"Поля сгруппированы по смыслу."},{criterion:"Понятные названия",check:"Ясные labels",bestPractice:"Ясные label без внутренней терминологии."},{criterion:"Подсказки",check:"Превентивные подсказки",bestPractice:"Подсказки до ошибки."},{criterion:"Валидация до отправки",check:"Inline validation",bestPractice:"Inline validation."},{criterion:"Маски и автозаполнение",check:"Ускорение ввода",bestPractice:"Input masks / autofill."},{criterion:"Сохранение данных",check:"Draft/autosave",bestPractice:"Draft / autosave."},{criterion:"Понятные ошибки",check:"Понятность ошибок формы",bestPractice:"Конкретное описание ошибки."},{criterion:"Согласия и безопасность",check:"Прозрачность согласий",bestPractice:"Прозрачная юридическая логика."}]},
+{title:"Коммуникации и уведомления",desc:"Проверяем клиентские уведомления.",items:[{criterion:"Подтверждение действий",check:"Подтверждения критичных действий",bestPractice:"Подтверждать важные действия."},{criterion:"Уведомления о статусах",check:"Статусные коммуникации",bestPractice:"Статусные сообщения по этапам."},{criterion:"Понятный текст сообщений",check:"Ясность текстов",bestPractice:"Что произошло → что делать → срок."},{criterion:"Правильный канал",check:"Канал по приоритету",bestPractice:"Выбор канала под критичность."},{criterion:"Нет лишнего шума",check:"Частота коммуникаций",bestPractice:"Контроль частоты коммуникаций."},{criterion:"История коммуникаций",check:"Лог уведомлений",bestPractice:"Журнал уведомлений."},{criterion:"Триггерные сообщения",check:"Event-based логика",bestPractice:"Event-based коммуникации."},{criterion:"Коммуникации после запуска",check:"Поддержка после старта",bestPractice:"Первые 7–14 дней сопровождения."}]},
+{title:"Аналитика и метрики",desc:"Проверяем измеримость продукта.",items:[{criterion:"Ключевые метрики определены",check:"Определена metric tree",bestPractice:"Есть metric tree."},{criterion:"Сбор данных настроен",check:"Корректный data collection",bestPractice:"Метрики реально собираются."},{criterion:"Воронка заявки / подключения",check:"Измеряемость funnel",bestPractice:"Lead-to-activation funnel."},{criterion:"Метрики онбординга",check:"Измерение onboarding",bestPractice:"Completion / TTV / drop-off."},{criterion:"Метрики использования",check:"Usage метрики",bestPractice:"Usage / DAU / depth."},{criterion:"Метрики поддержки",check:"Support метрики",bestPractice:"Support analytics."},{criterion:"Причины отказов",check:"Фиксация loss reasons",bestPractice:"Loss reasons tracking."},{criterion:"Регулярный разбор",check:"Ритм review метрик",bestPractice:"Регулярный review метрик."},{criterion:"Ответственный за метрики",check:"Назначен owner данных",bestPractice:"Есть owner данных."},{criterion:"Оценка эффекта изменений",check:"Post-release impact",bestPractice:"Impact review after release."}]},
+{title:"Удержание и развитие клиента",desc:"Проверяем работу с удержанием и развитием клиента.",items:[{criterion:"Сигналы риска оттока",check:"Раннее выявление churn",bestPractice:"Health score / churn signals."},{criterion:"Сценарии удержания",check:"Retention playbook",bestPractice:"Retention playbook."},{criterion:"Повторное вовлечение",check:"Re-engagement механики",bestPractice:"Re-engagement сценарии."},{criterion:"Расширение использования",check:"Expansion/upsell сценарии",bestPractice:"Upsell / expansion сценарии."},{criterion:"Обучение новым возможностям",check:"Коммуникации о новых фичах",bestPractice:"Release notes / education."},{criterion:"Обратная связь",check:"Системный сбор feedback",bestPractice:"CSAT / CES / NPS / feedback form."}]},
+{title:"Готовность запуска и управление качеством",desc:"Проверяем готовность продукта к запуску.",items:[{criterion:"Целевой CJ задокументирован",check:"TO BE CJ готов",bestPractice:"TO BE CJ / blueprint обязателен."},{criterion:"Роли и ответственность",check:"RACI и owners определены",bestPractice:"RACI / owner map."},{criterion:"Участники согласованы",check:"Согласование стейкхолдеров",bestPractice:"Stakeholder alignment."},{criterion:"Нестандартные сценарии",check:"Обработаны edge-cases",bestPractice:"Edge-case / fallback карта."},{criterion:"Готовность поддержки",check:"Support readiness",bestPractice:"Support readiness checklist."},{criterion:"Готовность продаж",check:"Sales enablement",bestPractice:"Sales enablement kit."},{criterion:"Готовность коммуникаций",check:"Communication readiness",bestPractice:"Communication map."},{criterion:"План мониторинга после запуска",check:"Post-launch monitoring",bestPractice:"Launch monitoring plan."},{criterion:"Критерии успешного запуска",check:"Launch success criteria",bestPractice:"Success criteria defined."},{criterion:"План быстрых исправлений",check:"Fast-fix ready",bestPractice:"Fast-fix backlog."}]}];
 
-    <section class="card sticky-panel">
-      <div class="panel-row">
-        <div class="score-main">
-          <strong id="totalScore">0%</strong>
-          <span id="zoneBadge" class="zone-badge zone-red">Красная зона</span>
-        </div>
-        <div class="progress-wrap">
-          <div class="progress"><span id="progressFill"></span></div>
-          <div class="meta">
-            <span>Заполнено: <b id="filledCount">0</b></span>
-            <span>Mandatory gaps: <b id="gapCount">0</b></span>
-            <span>Штраф: <b id="penaltyValue">0%</b></span>
-          </div>
-        </div>
-        <div class="buttons">
-          <button class="btn-light" onclick="resetForm()">Очистить</button>
-          <button class="btn-light" onclick="window.print()">Печать / PDF</button>
-          <button class="btn-light" onclick="copySummary()">Скопировать итог</button>
-          <button class="btn-primary" onclick="saveForm()">Сохранить</button>
-          <button class="btn-primary" onclick="loadForm()">Загрузить</button>
-        </div>
-      </div>
-    </section>
-
-    <div id="accordion"></div>
-
-    <section class="card summary">
-      <h2>Summary</h2>
-      <div class="summary-grid">
-        <div><label>Основные сильные стороны</label><textarea id="strengths" placeholder="Кратко перечислите сильные стороны"></textarea></div>
-        <div><label>Ключевые зоны роста</label><textarea id="growth" placeholder="Ключевые направления улучшения"></textarea></div>
-        <div><label>Критические риски</label><textarea id="risks" placeholder="Опишите риски"></textarea></div>
-        <div><label>План улучшений</label><textarea id="plan" placeholder="Шаги и сроки"></textarea></div>
-        <div><label>Решение по итогам ревью</label><textarea id="decision" placeholder="Go / Conditional Go / No Go"></textarea></div>
-      </div>
-    </section>
-  </div>
-
-  <script>
-    const blocks = [
-{
-  title: "Исследования и обоснование",
-  desc: "Проверяем, насколько продуктовые решения опираются на данные, клиентов, рынок и подтверждённые гипотезы.",
-  items: [
-    { criterion: "Анализ рынка", bestPractice: "Регулярный обзор рынка и фиксация выводов в продуктовой документации.", weight: 2, mandatory: true },
-    { criterion: "Конкурентный анализ", bestPractice: "Сравнение не только функций, но и UX-сценариев конкурентов.", weight: 2, mandatory: true },
-    { criterion: "CustDev / интервью", bestPractice: "Минимум 5–7 интервью на сегмент перед значимой доработкой.", weight: 3, mandatory: true },
-    { criterion: "JTBD / персоны", bestPractice: "Разделять роли ЛПР, администратора, бухгалтера и конечного пользователя.", weight: 2, mandatory: false },
-    { criterion: "Проверка гипотез", bestPractice: "Проверка спорных решений до разработки через MVP/прототипы.", weight: 2, mandatory: false },
-    { criterion: "Анализ текущего CJ", bestPractice: "Ведение AS IS / TO BE для ключевых сценариев.", weight: 3, mandatory: true },
-    { criterion: "Анализ обращений", bestPractice: "Использовать поддержку как источник продуктовой диагностики.", weight: 2, mandatory: false },
-    { criterion: "Аналитика воронки", bestPractice: "Анализировать потери между этапами, а не только общий CR.", weight: 3, mandatory: true }
-  ]
-},
-{
-  title: "Коммерческий блок и ценность продукта",
-  desc: "Проверяем понятность ценности и коммерческого предложения.",
-  items: [
-    { criterion: "Ценностное предложение", bestPractice: "Формула: для кого → какая боль → какой результат → почему с нами.", weight: 3, mandatory: true },
-    { criterion: "Конкурентные отличия", bestPractice: "Показывать отличия в формате сравнений и преимуществ.", weight: 3, mandatory: true },
-    { criterion: "Бизнес-кейсы", bestPractice: "Показывать реальные сценарии использования продукта.", weight: 2, mandatory: false },
-    { criterion: "Отраслевая специфика", bestPractice: "Адаптировать предложение под сегменты и индустрии.", weight: 2, mandatory: false },
-    { criterion: "Эффект / выгода", bestPractice: "Показывать ROI, экономию, снижение ручного труда.", weight: 3, mandatory: true },
-    { criterion: "Прозрачность тарифов", bestPractice: "Понятные тарифы, ограничения и условия.", weight: 3, mandatory: true },
-    { criterion: "Понятный CTA", bestPractice: "Один главный следующий шаг на экран.", weight: 2, mandatory: true },
-    { criterion: "Доказательства доверия", bestPractice: "Отзывы, кейсы, логотипы клиентов, гарантии.", weight: 2, mandatory: false },
-    { criterion: "Калькулятор / расчёт", bestPractice: "Калькулятор стоимости / конфигуратор.", weight: 2, mandatory: false },
-    { criterion: "FAQ до покупки", bestPractice: "Закрывать частые вопросы до обращения в продажи.", weight: 1, mandatory: false }
-  ]
-},
-{
-  title: "Заявка, лиды и продажи",
-  desc: "Проверяем путь от заявки до продажи и передачи в подключение.",
-  items: [
-    { criterion: "SLA первого контакта", bestPractice: "Быстрый контакт для горячих лидов.", weight: 3, mandatory: true },
-    { criterion: "Контроль SLA", bestPractice: "Дашборд просрочек и причин нарушений.", weight: 3, mandatory: true },
-    { criterion: "Подтверждение заявки", bestPractice: "Сообщение о принятии заявки и следующих шагах.", weight: 2, mandatory: true },
-    { criterion: "Прозрачный статус заявки", bestPractice: "Трекер статусов заявки.", weight: 3, mandatory: true },
-    { criterion: "Ответственный за заявку", bestPractice: "Owner заявки в CRM / очереди.", weight: 2, mandatory: false },
-    { criterion: "Бесшовная передача", bestPractice: "Клиент не повторяет данные на этапах.", weight: 3, mandatory: true },
-    { criterion: "Минимум лишних вопросов", bestPractice: "Короткая форма на старте.", weight: 2, mandatory: false },
-    { criterion: "Follow-up", bestPractice: "Повторные касания по незавершённым заявкам.", weight: 1, mandatory: false },
-    { criterion: "Единые статусы", bestPractice: "Общий словарь статусов по всем командам.", weight: 1, mandatory: false },
-    { criterion: "Передача в подключение", bestPractice: "Понятен следующий владелец и срок после продажи.", weight: 3, mandatory: true }
-  ]
-},
-{
-  title: "Оформление, договор и документы",
-  desc: "Проверяем простоту юридических и операционных шагов.",
-  items: [
-    { criterion: "Понятный сценарий оформления", bestPractice: "Пошаговый сценарий с прогрессом.", weight: 3, mandatory: true },
-    { criterion: "Минимум ручного ввода", bestPractice: "Автозаполнение и переиспользование данных.", weight: 2, mandatory: false },
-    { criterion: "Проверка данных", bestPractice: "Inline validation.", weight: 2, mandatory: true },
-    { criterion: "Прозрачность документов", bestPractice: "Список документов и требования.", weight: 2, mandatory: true },
-    { criterion: "Цифровое подписание", bestPractice: "Максимальный уход от бумаги.", weight: 3, mandatory: false },
-    { criterion: "Статус договора / счёта", bestPractice: "Видимость статусов документов.", weight: 2, mandatory: true },
-    { criterion: "Понятные юридические условия", bestPractice: "Выжимка условий простым языком.", weight: 2, mandatory: false },
-    { criterion: "Черновик оформления", bestPractice: "Сохранение прогресса.", weight: 1, mandatory: false },
-    { criterion: "Исправление ошибок", bestPractice: "Понятная причина отклонения и действие.", weight: 2, mandatory: true }
-  ]
-},
-{
-  title: "Онбординг и активация",
-  desc: "Проверяем выход клиента на первую пользу.",
-  items: [
-    { criterion: "Стартовый сценарий", bestPractice: "Welcome-flow / чек-лист старта.", weight: 3, mandatory: true },
-    { criterion: "Welcome-коммуникация", bestPractice: "Письмо / SMS / push со стартом.", weight: 2, mandatory: false },
-    { criterion: "Пошаговая настройка", bestPractice: "Wizard / мастер настройки.", weight: 3, mandatory: true },
-    { criterion: "Прогресс настройки", bestPractice: "Progress bar / checklist.", weight: 2, mandatory: false },
-    { criterion: "Быстрый выход на пользу", bestPractice: "Сокращение time-to-value.", weight: 3, mandatory: true },
-    { criterion: "Подсказки в процессе", bestPractice: "Контекстная помощь.", weight: 2, mandatory: false },
-    { criterion: "Шаблоны и преднастройки", bestPractice: "Готовые конфигурации / шаблоны.", weight: 2, mandatory: false },
-    { criterion: "Пустые состояния", bestPractice: "Пустой экран ведёт к действию.", weight: 2, mandatory: false },
-    { criterion: "Ролевой онбординг", bestPractice: "Разные сценарии по ролям.", weight: 2, mandatory: false },
-    { criterion: "Контроль активации", bestPractice: "Измерение completion rate.", weight: 3, mandatory: true }
-  ]
-},
-{
-  title: "Самообслуживание",
-  desc: "Проверяем возможность управлять продуктом без поддержки.",
-  items: [
-    { criterion: "Базовые операции без поддержки", bestPractice: "Максимум действий в self-service.", weight: 3, mandatory: true },
-    { criterion: "Управление настройками", bestPractice: "Самостоятельное изменение параметров.", weight: 2, mandatory: true },
-    { criterion: "Управление пользователями", bestPractice: "CRUD пользователей / приглашения.", weight: 3, mandatory: false },
-    { criterion: "Роли и доступы", bestPractice: "Готовая ролевая модель.", weight: 2, mandatory: false },
-    { criterion: "Документы и финансы", bestPractice: "Онлайн-доступ к финансам.", weight: 3, mandatory: true },
-    { criterion: "История действий", bestPractice: "Audit log.", weight: 2, mandatory: false },
-    { criterion: "Массовые действия", bestPractice: "Bulk operations.", weight: 1, mandatory: false },
-    { criterion: "Шаблоны", bestPractice: "Сохранение типовых настроек.", weight: 1, mandatory: false },
-    { criterion: "Самодиагностика", bestPractice: "Проверка статуса / troubleshooting.", weight: 2, mandatory: false },
-    { criterion: "Прозрачное отключение", bestPractice: "Понятный offboarding / отключение.", weight: 2, mandatory: true }
-  ]
-},
-{
-  title: "Поддержка и помощь",
-  desc: "Проверяем качество сервисной поддержки.",
-  items: [
-    { criterion: "Доступный канал поддержки", bestPractice: "Поддержка доступна в релевантных точках.", weight: 3, mandatory: true },
-    { criterion: "Чат / цифровой канал", bestPractice: "Чат / бот / заявка.", weight: 2, mandatory: false },
-    { criterion: "Понятный срок ответа", bestPractice: "Показан SLA обращения.", weight: 2, mandatory: true },
-    { criterion: "Контекст обращения", bestPractice: "Передача контекста обращения.", weight: 3, mandatory: true },
-    { criterion: "База знаний", bestPractice: "Актуальная knowledge base.", weight: 2, mandatory: false },
-    { criterion: "Встроенная помощь", bestPractice: "Embedded help.", weight: 2, mandatory: false },
-    { criterion: "Эскалация", bestPractice: "Понятный путь эскалации.", weight: 2, mandatory: true },
-    { criterion: "Закрытие обращения", bestPractice: "Подтверждение решения.", weight: 1, mandatory: false },
-    { criterion: "Оценка поддержки", bestPractice: "CSAT после обращения.", weight: 2, mandatory: false },
-    { criterion: "Проактивная поддержка", bestPractice: "Предупреждение проблем заранее.", weight: 2, mandatory: false }
-  ]
-},
-{
-  title: "Интерфейс и эвристики UX/UI",
-  desc: "Проверяем удобство и соответствие UX-стандартам.",
-  items: [
-    { criterion: "Видимость статуса", bestPractice: "Прогресс / статусы / результаты.", weight: 3, mandatory: true },
-    { criterion: "Понятный язык", bestPractice: "Язык клиента, не внутренние термины.", weight: 3, mandatory: true },
-    { criterion: "Контроль и свобода", bestPractice: "Undo / Back / Edit.", weight: 2, mandatory: true },
-    { criterion: "Единообразие", bestPractice: "Консистентность интерфейса.", weight: 2, mandatory: true },
-    { criterion: "Предотвращение ошибок", bestPractice: "Error prevention.", weight: 3, mandatory: true },
-    { criterion: "Узнавание вместо запоминания", bestPractice: "Нужный контекст на экране.", weight: 2, mandatory: false },
-    { criterion: "Быстрые действия", bestPractice: "Shortcuts / bulk / templates.", weight: 1, mandatory: false },
-    { criterion: "Минимум визуального шума", bestPractice: "Visual hierarchy / progressive disclosure.", weight: 3, mandatory: true },
-    { criterion: "Понятные ошибки", bestPractice: "Ошибка объясняет проблему и действие.", weight: 3, mandatory: true },
-    { criterion: "Помощь и документация", bestPractice: "Help там, где нужен.", weight: 2, mandatory: false },
-    { criterion: "Соответствие дизайн-системе", bestPractice: "Использование design system.", weight: 3, mandatory: true },
-    { criterion: "Читаемость и доступность", bestPractice: "Контраст / размер / tap zones.", weight: 2, mandatory: true },
-    { criterion: "Состояния компонентов", bestPractice: "Все UI-states спроектированы.", weight: 2, mandatory: false },
-    { criterion: "Адаптивность", bestPractice: "Корректная работа на целевых устройствах.", weight: 2, mandatory: true }
-  ]
-},
-{
-  title: "Формы и ввод данных",
-  desc: "Проверяем удобство заполнения данных.",
-  items: [
-    { criterion: "Минимум полей", bestPractice: "Только необходимые поля.", weight: 3, mandatory: true },
-    { criterion: "Логичная группировка", bestPractice: "Поля сгруппированы по смыслу.", weight: 2, mandatory: false },
-    { criterion: "Понятные названия", bestPractice: "Ясные label без внутренней терминологии.", weight: 2, mandatory: true },
-    { criterion: "Подсказки", bestPractice: "Подсказки до ошибки.", weight: 2, mandatory: false },
-    { criterion: "Валидация до отправки", bestPractice: "Inline validation.", weight: 3, mandatory: true },
-    { criterion: "Маски и автозаполнение", bestPractice: "Input masks / autofill.", weight: 2, mandatory: false },
-    { criterion: "Сохранение данных", bestPractice: "Draft / autosave.", weight: 2, mandatory: false },
-    { criterion: "Понятные ошибки", bestPractice: "Конкретное описание ошибки.", weight: 3, mandatory: true },
-    { criterion: "Согласия и безопасность", bestPractice: "Прозрачная юридическая логика.", weight: 2, mandatory: true }
-  ]
-},
-{
-  title: "Коммуникации и уведомления",
-  desc: "Проверяем клиентские уведомления.",
-  items: [
-    { criterion: "Подтверждение действий", bestPractice: "Подтверждать важные действия.", weight: 2, mandatory: true },
-    { criterion: "Уведомления о статусах", bestPractice: "Статусные сообщения по этапам.", weight: 2, mandatory: true },
-    { criterion: "Понятный текст сообщений", bestPractice: "Что произошло → что делать → срок.", weight: 3, mandatory: true },
-    { criterion: "Правильный канал", bestPractice: "Выбор канала под критичность.", weight: 2, mandatory: false },
-    { criterion: "Нет лишнего шума", bestPractice: "Контроль частоты коммуникаций.", weight: 2, mandatory: false },
-    { criterion: "История коммуникаций", bestPractice: "Журнал уведомлений.", weight: 1, mandatory: false },
-    { criterion: "Триггерные сообщения", bestPractice: "Event-based коммуникации.", weight: 2, mandatory: false },
-    { criterion: "Коммуникации после запуска", bestPractice: "Первые 7–14 дней сопровождения.", weight: 1, mandatory: false }
-  ]
-},
-{
-  title: "Аналитика и метрики",
-  desc: "Проверяем измеримость продукта.",
-  items: [
-    { criterion: "Ключевые метрики определены", bestPractice: "Есть metric tree.", weight: 3, mandatory: true },
-    { criterion: "Сбор данных настроен", bestPractice: "Метрики реально собираются.", weight: 3, mandatory: true },
-    { criterion: "Воронка заявки / подключения", bestPractice: "Lead-to-activation funnel.", weight: 3, mandatory: true },
-    { criterion: "Метрики онбординга", bestPractice: "Completion / TTV / drop-off.", weight: 2, mandatory: false },
-    { criterion: "Метрики использования", bestPractice: "Usage / DAU / depth.", weight: 2, mandatory: false },
-    { criterion: "Метрики поддержки", bestPractice: "Support analytics.", weight: 2, mandatory: false },
-    { criterion: "Причины отказов", bestPractice: "Loss reasons tracking.", weight: 2, mandatory: false },
-    { criterion: "Регулярный разбор", bestPractice: "Регулярный review метрик.", weight: 2, mandatory: true },
-    { criterion: "Ответственный за метрики", bestPractice: "Есть owner данных.", weight: 1, mandatory: false },
-    { criterion: "Оценка эффекта изменений", bestPractice: "Impact review after release.", weight: 2, mandatory: false }
-  ]
-},
-{
-  title: "Удержание и развитие клиента",
-  desc: "Проверяем работу с удержанием и развитием клиента.",
-  items: [
-    { criterion: "Сигналы риска оттока", bestPractice: "Health score / churn signals.", weight: 2, mandatory: false },
-    { criterion: "Сценарии удержания", bestPractice: "Retention playbook.", weight: 2, mandatory: false },
-    { criterion: "Повторное вовлечение", bestPractice: "Re-engagement сценарии.", weight: 1, mandatory: false },
-    { criterion: "Расширение использования", bestPractice: "Upsell / expansion сценарии.", weight: 1, mandatory: false },
-    { criterion: "Обучение новым возможностям", bestPractice: "Release notes / education.", weight: 1, mandatory: false },
-    { criterion: "Обратная связь", bestPractice: "CSAT / CES / NPS / feedback form.", weight: 2, mandatory: true }
-  ]
-},
-{
-  title: "Готовность запуска и управление качеством",
-  desc: "Проверяем готовность продукта к запуску.",
-  items: [
-    { criterion: "Целевой CJ задокументирован", bestPractice: "TO BE CJ / blueprint обязателен.", weight: 3, mandatory: true },
-    { criterion: "Роли и ответственность", bestPractice: "RACI / owner map.", weight: 2, mandatory: true },
-    { criterion: "Участники согласованы", bestPractice: "Stakeholder alignment.", weight: 2, mandatory: true },
-    { criterion: "Нестандартные сценарии", bestPractice: "Edge-case / fallback карта.", weight: 3, mandatory: true },
-    { criterion: "Готовность поддержки", bestPractice: "Support readiness checklist.", weight: 3, mandatory: true },
-    { criterion: "Готовность продаж", bestPractice: "Sales enablement kit.", weight: 2, mandatory: true },
-    { criterion: "Готовность коммуникаций", bestPractice: "Communication map.", weight: 2, mandatory: false },
-    { criterion: "План мониторинга после запуска", bestPractice: "Launch monitoring plan.", weight: 2, mandatory: true },
-    { criterion: "Критерии успешного запуска", bestPractice: "Success criteria defined.", weight: 2, mandatory: true },
-    { criterion: "План быстрых исправлений", bestPractice: "Fast-fix backlog.", weight: 2, mandatory: false }
-  ]
-}
-];
-
-    function renderBlocks() {
-      const root = document.getElementById('accordion');
-      root.innerHTML = '';
-      blocks.forEach((block, bi) => {
-        const item = document.createElement('section');
-        item.className = 'card accordion-item' + (bi === 0 ? ' open' : '');
-        item.dataset.block = bi;
-        item.innerHTML = `
-          <div class="accordion-header">
-            <div>
-              <div class="accordion-title">${block.title}</div>
-              <div class="accordion-desc">${block.desc}</div>
-            </div>
-            <div class="accordion-score" id="blockScore-${bi}">0%</div>
-            <div class="chevron">⌄</div>
-          </div>
-          <div class="accordion-content">
-            <table>
-              <thead><tr><th class="col-crit">Критерий</th><th class="col-weight">Вес</th><th class="col-mand">Обязательный</th><th class="col-rate">Оценка</th><th>Комментарий</th></tr></thead>
-              <tbody>
-                ${block.items.map((it, ii) => `
-                  <tr>
-                    <td>
-                      <div class="crit-title">${it.criterion}
-                        <span class="info-icon">i<span class="tooltip">${it.bestPractice}</span></span>
-                      </div>
-                    </td>
-                    <td>${it.weight}</td>
-                    <td>${it.mandatory ? 'Да' : 'Нет'}</td>
-                    <td>
-                      <select data-type="rate" data-b="${bi}" data-i="${ii}">
-                        <option value="">—</option>
-                        <option value="0">0 — Нет</option>
-                        <option value="1">1 — Критично</option>
-                        <option value="2">2 — База</option>
-                        <option value="3">3 — Эталон</option>
-                      </select>
-                    </td>
-                    <td><textarea data-type="comment" data-b="${bi}" data-i="${ii}" placeholder="Комментарий / рекомендация"></textarea></td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>`;
-
-        item.querySelector('.accordion-header').addEventListener('click', e => {
-          if (e.target.closest('select, textarea, .info-icon')) return;
-          item.classList.toggle('open');
-        });
-        root.appendChild(item);
-      });
-
-      root.addEventListener('input', calculateScore);
-      root.addEventListener('change', calculateScore);
-    }
-
-    function calculateBlockScore(blockIndex) {
-      const block = blocks[blockIndex];
-      let got = 0, max = 0;
-      block.items.forEach((it, ii) => {
-        const v = document.querySelector(`[data-type="rate"][data-b="${blockIndex}"][data-i="${ii}"]`).value;
-        if (v !== '') got += Number(v) * it.weight;
-        max += 3 * it.weight;
-      });
-      const pct = max ? (got / max) * 100 : 0;
-      document.getElementById(`blockScore-${blockIndex}`).textContent = `${Math.round(pct)}%`;
-      return pct;
-    }
-
-    function calculateScore() {
-      let got = 0, max = 0, filled = 0, gaps = 0;
-      blocks.forEach((block, bi) => {
-        block.items.forEach((it, ii) => {
-          const el = document.querySelector(`[data-type="rate"][data-b="${bi}"][data-i="${ii}"]`);
-          const v = el.value;
-          if (v !== '') {
-            filled++;
-            got += Number(v) * it.weight;
-            if (it.mandatory && (v === '0' || v === '1')) gaps++;
-          }
-          max += 3 * it.weight;
-        });
-        calculateBlockScore(bi);
-      });
-
-      let score = max ? (got / max) * 100 : 0;
-      const penalty = gaps * 10;
-      score = Math.max(0, Math.min(100, score - penalty));
-
-      document.getElementById('totalScore').textContent = `${Math.round(score)}%`;
-      document.getElementById('progressFill').style.width = `${score}%`;
-      document.getElementById('filledCount').textContent = filled;
-      document.getElementById('gapCount').textContent = gaps;
-      document.getElementById('penaltyValue').textContent = `${penalty}%`;
-
-      const badge = document.getElementById('zoneBadge');
-      badge.className = 'zone-badge';
-      if (score <= 40) { badge.classList.add('zone-red'); badge.textContent = 'Красная зона'; }
-      else if (score <= 70) { badge.classList.add('zone-yellow'); badge.textContent = 'Жёлтая зона'; }
-      else if (score <= 90) { badge.classList.add('zone-green'); badge.textContent = 'Зелёная зона'; }
-      else { badge.classList.add('zone-benchmark'); badge.textContent = 'Эталонная зона'; }
-    }
-
-    function saveForm() {
-      const data = {
-        hero: {
-          product: document.getElementById('product').value,
-          reviewType: document.getElementById('reviewType').value,
-          owner: document.getElementById('owner').value,
-          reviewer: document.getElementById('reviewer').value,
-          reviewDate: document.getElementById('reviewDate').value
-        },
-        rates: {}, comments: {},
-        summary: {
-          strengths: document.getElementById('strengths').value,
-          growth: document.getElementById('growth').value,
-          risks: document.getElementById('risks').value,
-          plan: document.getElementById('plan').value,
-          decision: document.getElementById('decision').value
-        }
-      };
-      document.querySelectorAll('[data-type="rate"]').forEach(el => data.rates[`${el.dataset.b}-${el.dataset.i}`] = el.value);
-      document.querySelectorAll('[data-type="comment"]').forEach(el => data.comments[`${el.dataset.b}-${el.dataset.i}`] = el.value);
-      localStorage.setItem('cxReviewScorecard', JSON.stringify(data));
-      alert('Форма сохранена локально.');
-    }
-
-    function loadForm() {
-      const raw = localStorage.getItem('cxReviewScorecard');
-      if (!raw) return alert('Нет сохраненных данных.');
-      const data = JSON.parse(raw);
-      Object.keys(data.hero || {}).forEach(k => document.getElementById(k).value = data.hero[k] || '');
-      Object.entries(data.rates || {}).forEach(([k,v]) => {
-        const [b,i] = k.split('-');
-        const el = document.querySelector(`[data-type="rate"][data-b="${b}"][data-i="${i}"]`);
-        if (el) el.value = v;
-      });
-      Object.entries(data.comments || {}).forEach(([k,v]) => {
-        const [b,i] = k.split('-');
-        const el = document.querySelector(`[data-type="comment"][data-b="${b}"][data-i="${i}"]`);
-        if (el) el.value = v;
-      });
-      Object.keys(data.summary || {}).forEach(k => document.getElementById(k).value = data.summary[k] || '');
-      calculateScore();
-      alert('Данные загружены.');
-    }
-
-    function resetForm() {
-      if (!confirm('Очистить все поля формы?')) return;
-      document.querySelectorAll('input, textarea').forEach(el => el.value = '');
-      document.querySelectorAll('select').forEach(el => el.value = '');
-      calculateScore();
-    }
-
-    function copySummary() {
-      const text = [
-        `Продукт: ${document.getElementById('product').value}`,
-        `Тип ревью: ${document.getElementById('reviewType').value}`,
-        `Ответственный: ${document.getElementById('owner').value}`,
-        `CX Reviewer: ${document.getElementById('reviewer').value}`,
-        `Дата ревью: ${document.getElementById('reviewDate').value}`,
-        `Итоговый score: ${document.getElementById('totalScore').textContent}`,
-        `Зона: ${document.getElementById('zoneBadge').textContent}`,
-        `Mandatory gaps: ${document.getElementById('gapCount').textContent}`,
-        `Штраф: ${document.getElementById('penaltyValue').textContent}`,
-        '',
-        `Сильные стороны: ${document.getElementById('strengths').value}`,
-        `Зоны роста: ${document.getElementById('growth').value}`,
-        `Критические риски: ${document.getElementById('risks').value}`,
-        `План улучшений: ${document.getElementById('plan').value}`,
-        `Решение: ${document.getElementById('decision').value}`
-      ].join('\n');
-      navigator.clipboard.writeText(text).then(() => alert('Итог скопирован в буфер.'));
-    }
-
-    document.querySelectorAll('.hero input, .summary textarea').forEach(el => {
-      el.addEventListener('input', calculateScore);
-    });
-
-    renderBlocks();
-    calculateScore();
-  </script>
+function getZone(score){if(score<=40)return{t:'Красная зона',bg:'#FFF0F0',c:'#B42318'};if(score<=70)return{t:'Жёлтая зона',bg:'#FFF6E5',c:'#B76E00'};if(score<=90)return{t:'Зелёная зона',bg:'#EAFBF1',c:'#067A3D'};return{t:'Эталонная зона',bg:'#DDF5FF',c:'#731982'};}
+function renderBlocks(){const root=document.getElementById('blocks');root.innerHTML='';blocks.forEach((b,bi)=>{const el=document.createElement('section');el.className='card '+(bi===0?'open':'');el.dataset.block=bi;el.innerHTML=`<div class="acc-head" onclick="toggleBlock(${bi})"><div><h3>${b.title}</h3><div class="muted">${b.desc}</div></div><div class="acc-meta"><span class="acc-score" id="bscore-${bi}">0%</span><span class="muted" id="bfilled-${bi}">0/${b.items.length}</span><span class="muted" id="chev-${bi}">${bi===0?'▲':'▼'}</span></div></div><div class="acc-content"><div class="table-wrap"><table><thead><tr><th>Критерий</th><th>Что проверяем</th><th>Оценка</th><th>Комментарий</th></tr></thead><tbody>${b.items.map((it,ii)=>`<tr><td class="crit">${it.criterion}<span class="info">i<span class="tip">${it.bestPractice}</span></span></td><td>${it.check}</td><td><select data-b="${bi}" data-i="${ii}" data-type="rate"><option value="">—</option><option value="0">0 — Нет</option><option value="1">1 — Критично</option><option value="2">2 — База</option><option value="3">3 — Эталон</option></select></td><td><textarea data-b="${bi}" data-i="${ii}" data-type="comment"></textarea></td></tr>`).join('')}</tbody></table></div></div>`;root.appendChild(el);});document.getElementById('total').textContent=blocks.reduce((a,b)=>a+b.items.length,0);root.addEventListener('input',calculateScore);root.addEventListener('change',calculateScore);}
+function calculateBlockScore(blockIndex){let s=0,c=0;document.querySelectorAll(`[data-type="rate"][data-b="${blockIndex}"]`).forEach(x=>{if(x.value!==''){s+=Number(x.value);c++;}});const p=c?Math.round((s/c/3)*100):0;document.getElementById(`bscore-${blockIndex}`).textContent=`${p}%`;document.getElementById(`bfilled-${blockIndex}`).textContent=`${c}/${blocks[blockIndex].items.length}`;return{p,c};}
+function calculateScore(){let s=0,c=0;blocks.forEach((_,i)=>{document.querySelectorAll(`[data-type="rate"][data-b="${i}"]`).forEach(x=>{if(x.value!==''){s+=Number(x.value);c++;}});calculateBlockScore(i);});const p=c?Math.round((s/c/3)*100):0;document.getElementById('totalScore').textContent=`${p}%`;document.getElementById('filled').textContent=c;document.getElementById('progress').style.width=p+'%';const z=getZone(p);const zone=document.getElementById('zone');zone.textContent=z.t;zone.style.background=z.bg;zone.style.color=z.c;}
+function toggleBlock(blockIndex){const card=document.querySelector(`section[data-block="${blockIndex}"]`);card.classList.toggle('open');document.getElementById(`chev-${blockIndex}`).textContent=card.classList.contains('open')?'▲':'▼';}
+function saveForm(){const d={hero:{product:product.value,reviewType:reviewType.value,owner:owner.value,reviewer:reviewer.value,reviewDate:reviewDate.value},rates:{},comments:{},summary:{strengths:strengths.value,growth:growth.value,risks:risks.value,plan:plan.value,decision:decision.value},open:[...document.querySelectorAll('section[data-block]')].map(x=>x.classList.contains('open'))};document.querySelectorAll('[data-type="rate"]').forEach(x=>d.rates[`${x.dataset.b}-${x.dataset.i}`]=x.value);document.querySelectorAll('[data-type="comment"]').forEach(x=>d.comments[`${x.dataset.b}-${x.dataset.i}`]=x.value);localStorage.setItem('cxScorecard',JSON.stringify(d));alert('Сохранено');}
+function loadForm(){const raw=localStorage.getItem('cxScorecard');if(!raw)return alert('Нет сохранения');const d=JSON.parse(raw);Object.entries(d.hero||{}).forEach(([k,v])=>document.getElementById(k).value=v||'');Object.entries(d.summary||{}).forEach(([k,v])=>document.getElementById(k).value=v||'');Object.entries(d.rates||{}).forEach(([k,v])=>{const [b,i]=k.split('-');const el=document.querySelector(`[data-type="rate"][data-b="${b}"][data-i="${i}"]`);if(el)el.value=v;});Object.entries(d.comments||{}).forEach(([k,v])=>{const [b,i]=k.split('-');const el=document.querySelector(`[data-type="comment"][data-b="${b}"][data-i="${i}"]`);if(el)el.value=v;});(d.open||[]).forEach((v,i)=>{const card=document.querySelector(`section[data-block="${i}"]`);if(card){card.classList.toggle('open',v);document.getElementById(`chev-${i}`).textContent=v?'▲':'▼';}});calculateScore();}
+function resetForm(){if(!confirm('Очистить форму?'))return;document.querySelectorAll('input,textarea').forEach(x=>x.value='');document.querySelectorAll('select').forEach(x=>x.selectedIndex=0);document.querySelectorAll('section[data-block]').forEach((x,i)=>{x.classList.toggle('open',i===0);document.getElementById(`chev-${i}`).textContent=i===0?'▲':'▼';});calculateScore();}
+function copySummary(){const t=`CX / Product Review Summary\n\nПродукт: ${product.value}\nТип ревью: ${reviewType.value}\nДата ревью: ${reviewDate.value}\nИтоговая оценка: ${totalScore.textContent}\nЗона качества: ${zone.textContent}\nЗаполнено критериев: ${filled.textContent} из ${total.textContent}\nРешение: ${decision.value}`;navigator.clipboard.writeText(t).then(()=>alert('Итог скопирован'));}
+renderBlocks();calculateScore();
+</script>
 </body>
 </html>
