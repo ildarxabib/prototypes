@@ -271,72 +271,209 @@
 
   <script>
     const blocks = [
-      { title: "1. Strategy & Value", desc: "Ценность продукта и CX-ориентация", items: [
-        { criterion: "Сформулировано ценностное предложение", bestPractice: "Ценность продукта описана для каждой ключевой аудитории на одном языке с бизнесом.", weight: 3, mandatory: true },
-        { criterion: "Понятные целевые сегменты", bestPractice: "Есть конкретные ICP/персоны и сценарии их работы с продуктом.", weight: 2, mandatory: true },
-        { criterion: "Связь CX-метрик с бизнес-целями", bestPractice: "NPS/CSAT/retention связаны с KPI продукта и команды.", weight: 2, mandatory: false }
-      ]},
-      { title: "2. Discovery & Research", desc: "Качество пользовательских исследований", items: [
-        { criterion: "Регулярные интервью с пользователями", bestPractice: "Интервью проводятся по графику и влияют на backlog.", weight: 3, mandatory: true },
-        { criterion: "Валидированы основные боли", bestPractice: "Есть подтвержденные top pains и приоритизация по влиянию.", weight: 2, mandatory: true },
-        { criterion: "Сегментация обратной связи", bestPractice: "Фидбек структурирован по ролям, каналам и частоте.", weight: 1, mandatory: false }
-      ]},
-      { title: "3. Customer Journey", desc: "Целостность клиентского пути", items: [
-        { criterion: "Описана end-to-end customer journey", bestPractice: "Карта пути охватывает onboarding, core-use, support, renewal.", weight: 3, mandatory: true },
-        { criterion: "Выявлены и измеряются точки трения", bestPractice: "Для ключевых шагов определены drop-off и причины.", weight: 2, mandatory: true },
-        { criterion: "Владельцы этапов CJM закреплены", bestPractice: "Каждый этап пути имеет owner и SLA изменений.", weight: 1, mandatory: false }
-      ]},
-      { title: "4. UX & Interface", desc: "Понятность и консистентность интерфейсов", items: [
-        { criterion: "Ключевые сценарии интуитивны", bestPractice: "Пользователь выполняет top tasks без обучения.", weight: 3, mandatory: true },
-        { criterion: "Единый дизайн-паттерн", bestPractice: "Компоненты и терминология единообразны по всем экранам.", weight: 2, mandatory: true },
-        { criterion: "Продукт доступен на разных устройствах", bestPractice: "Адаптивность и корректная работа на целевых платформах.", weight: 1, mandatory: false }
-      ]},
-      { title: "5. Onboarding", desc: "Первый опыт и время до ценности", items: [
-        { criterion: "Понятный first-run сценарий", bestPractice: "Первые шаги объясняют ценность и ведут к activation.", weight: 3, mandatory: true },
-        { criterion: "Сокращено Time-to-Value", bestPractice: "Пользователь достигает первой ценности за минимальное число действий.", weight: 2, mandatory: true },
-        { criterion: "Подсказки в нужном контексте", bestPractice: "Контекстная помощь появляется в момент затруднения.", weight: 1, mandatory: false }
-      ]},
-      { title: "6. Reliability & Performance", desc: "Стабильность и скорость", items: [
-        { criterion: "Стабильность ключевых операций", bestPractice: "Ошибки и падения в критических шагах близки к нулю.", weight: 3, mandatory: true },
-        { criterion: "Производительность соответствует SLA", bestPractice: "Время отклика в целевых сценариях в пределах норм.", weight: 2, mandatory: true },
-        { criterion: "Прозрачная коммуникация инцидентов", bestPractice: "Пользователь получает ясный статус и прогноз восстановления.", weight: 1, mandatory: false }
-      ]},
-      { title: "7. Support & Service", desc: "Поддержка и сервисные процессы", items: [
-        { criterion: "Доступны каналы поддержки", bestPractice: "Пользователь легко находит подходящий канал связи.", weight: 2, mandatory: true },
-        { criterion: "Соблюдаются SLA по ответам", bestPractice: "Время первого ответа и решения контролируется и соблюдается.", weight: 3, mandatory: true },
-        { criterion: "База знаний актуальна", bestPractice: "FAQ и инструкции регулярно обновляются по реальным запросам.", weight: 1, mandatory: false }
-      ]},
-      { title: "8. Communication", desc: "Коммуникация с клиентами", items: [
-        { criterion: "Ясные продуктовые уведомления", bestPractice: "Коммуникации короткие, понятные, с действием для пользователя.", weight: 2, mandatory: true },
-        { criterion: "Проактивное информирование об изменениях", bestPractice: "Релизы и изменения заранее объясняются пользователям.", weight: 2, mandatory: false },
-        { criterion: "Тон коммуникации единообразен", bestPractice: "Voice & tone соответствуют бренду и контексту.", weight: 1, mandatory: false }
-      ]},
-      { title: "9. Personalization", desc: "Персонализация и релевантность", items: [
-        { criterion: "Контент и опыт учитывают сегмент", bestPractice: "Предложения и интерфейс релевантны профилю клиента.", weight: 2, mandatory: false },
-        { criterion: "Настройки пользовательского опыта доступны", bestPractice: "Пользователь может гибко управлять предпочтениями.", weight: 2, mandatory: false },
-        { criterion: "Рекомендации помогают быстрее достичь цели", bestPractice: "Подсказки и рекомендации снижают когнитивную нагрузку.", weight: 1, mandatory: false }
-      ]},
-      { title: "10. Data & Metrics", desc: "Измерение CX и продуктовой эффективности", items: [
-        { criterion: "Определены ключевые CX-метрики", bestPractice: "Набор метрик покрывает satisfaction, effort, loyalty.", weight: 3, mandatory: true },
-        { criterion: "Метрики доступны в регулярных дашбордах", bestPractice: "Данные видны команде и используются в ритуалах.", weight: 2, mandatory: true },
-        { criterion: "Есть цикл " + '"measure → learn → improve"', bestPractice: "Результаты измерений приводят к конкретным улучшениям.", weight: 2, mandatory: true }
-      ]},
-      { title: "11. Governance", desc: "Роли, ответственность, процессы", items: [
-        { criterion: "Ответственность за CX закреплена", bestPractice: "Есть владельцы за ключевые CX-процессы и точки контакта.", weight: 2, mandatory: true },
-        { criterion: "Принятие решений прозрачно", bestPractice: "Критерии приоритезации и эскалации известны команде.", weight: 2, mandatory: false },
-        { criterion: "Регулярные review-ритуалы", bestPractice: "Проводятся ежемесячные/квартальные обзоры CX-результатов.", weight: 1, mandatory: false }
-      ]},
-      { title: "12. Compliance & Trust", desc: "Доверие, безопасность, соответствие", items: [
-        { criterion: "Прозрачность обработки данных", bestPractice: "Пользователь понимает какие данные и зачем используются.", weight: 3, mandatory: true },
-        { criterion: "Управление доступом и приватностью", bestPractice: "Роли и права исключают несанкционированный доступ.", weight: 3, mandatory: true },
-        { criterion: "Ясные условия и согласия", bestPractice: "Согласия и правила представлены понятным языком.", weight: 1, mandatory: false }
-      ]},
-      { title: "13. Continuous Improvement", desc: "Системные улучшения CX", items: [
-        { criterion: "Бэклог CX-улучшений приоритезирован", bestPractice: "Есть прозрачная очередность по impact/effort.", weight: 2, mandatory: true },
-        { criterion: "Проверяется эффект внедренных изменений", bestPractice: "После релиза анализируется влияние на метрики.", weight: 2, mandatory: true },
-        { criterion: "Команда делится инсайтами", bestPractice: "Ретроспективы и best practices масштабируются в организации.", weight: 1, mandatory: false }
-      ]}
-    ];
+{
+  title: "Исследования и обоснование",
+  desc: "Проверяем, насколько продуктовые решения опираются на данные, клиентов, рынок и подтверждённые гипотезы.",
+  items: [
+    { criterion: "Анализ рынка", bestPractice: "Регулярный обзор рынка и фиксация выводов в продуктовой документации.", weight: 2, mandatory: true },
+    { criterion: "Конкурентный анализ", bestPractice: "Сравнение не только функций, но и UX-сценариев конкурентов.", weight: 2, mandatory: true },
+    { criterion: "CustDev / интервью", bestPractice: "Минимум 5–7 интервью на сегмент перед значимой доработкой.", weight: 3, mandatory: true },
+    { criterion: "JTBD / персоны", bestPractice: "Разделять роли ЛПР, администратора, бухгалтера и конечного пользователя.", weight: 2, mandatory: false },
+    { criterion: "Проверка гипотез", bestPractice: "Проверка спорных решений до разработки через MVP/прототипы.", weight: 2, mandatory: false },
+    { criterion: "Анализ текущего CJ", bestPractice: "Ведение AS IS / TO BE для ключевых сценариев.", weight: 3, mandatory: true },
+    { criterion: "Анализ обращений", bestPractice: "Использовать поддержку как источник продуктовой диагностики.", weight: 2, mandatory: false },
+    { criterion: "Аналитика воронки", bestPractice: "Анализировать потери между этапами, а не только общий CR.", weight: 3, mandatory: true }
+  ]
+},
+{
+  title: "Коммерческий блок и ценность продукта",
+  desc: "Проверяем понятность ценности и коммерческого предложения.",
+  items: [
+    { criterion: "Ценностное предложение", bestPractice: "Формула: для кого → какая боль → какой результат → почему с нами.", weight: 3, mandatory: true },
+    { criterion: "Конкурентные отличия", bestPractice: "Показывать отличия в формате сравнений и преимуществ.", weight: 3, mandatory: true },
+    { criterion: "Бизнес-кейсы", bestPractice: "Показывать реальные сценарии использования продукта.", weight: 2, mandatory: false },
+    { criterion: "Отраслевая специфика", bestPractice: "Адаптировать предложение под сегменты и индустрии.", weight: 2, mandatory: false },
+    { criterion: "Эффект / выгода", bestPractice: "Показывать ROI, экономию, снижение ручного труда.", weight: 3, mandatory: true },
+    { criterion: "Прозрачность тарифов", bestPractice: "Понятные тарифы, ограничения и условия.", weight: 3, mandatory: true },
+    { criterion: "Понятный CTA", bestPractice: "Один главный следующий шаг на экран.", weight: 2, mandatory: true },
+    { criterion: "Доказательства доверия", bestPractice: "Отзывы, кейсы, логотипы клиентов, гарантии.", weight: 2, mandatory: false },
+    { criterion: "Калькулятор / расчёт", bestPractice: "Калькулятор стоимости / конфигуратор.", weight: 2, mandatory: false },
+    { criterion: "FAQ до покупки", bestPractice: "Закрывать частые вопросы до обращения в продажи.", weight: 1, mandatory: false }
+  ]
+},
+{
+  title: "Заявка, лиды и продажи",
+  desc: "Проверяем путь от заявки до продажи и передачи в подключение.",
+  items: [
+    { criterion: "SLA первого контакта", bestPractice: "Быстрый контакт для горячих лидов.", weight: 3, mandatory: true },
+    { criterion: "Контроль SLA", bestPractice: "Дашборд просрочек и причин нарушений.", weight: 3, mandatory: true },
+    { criterion: "Подтверждение заявки", bestPractice: "Сообщение о принятии заявки и следующих шагах.", weight: 2, mandatory: true },
+    { criterion: "Прозрачный статус заявки", bestPractice: "Трекер статусов заявки.", weight: 3, mandatory: true },
+    { criterion: "Ответственный за заявку", bestPractice: "Owner заявки в CRM / очереди.", weight: 2, mandatory: false },
+    { criterion: "Бесшовная передача", bestPractice: "Клиент не повторяет данные на этапах.", weight: 3, mandatory: true },
+    { criterion: "Минимум лишних вопросов", bestPractice: "Короткая форма на старте.", weight: 2, mandatory: false },
+    { criterion: "Follow-up", bestPractice: "Повторные касания по незавершённым заявкам.", weight: 1, mandatory: false },
+    { criterion: "Единые статусы", bestPractice: "Общий словарь статусов по всем командам.", weight: 1, mandatory: false },
+    { criterion: "Передача в подключение", bestPractice: "Понятен следующий владелец и срок после продажи.", weight: 3, mandatory: true }
+  ]
+},
+{
+  title: "Оформление, договор и документы",
+  desc: "Проверяем простоту юридических и операционных шагов.",
+  items: [
+    { criterion: "Понятный сценарий оформления", bestPractice: "Пошаговый сценарий с прогрессом.", weight: 3, mandatory: true },
+    { criterion: "Минимум ручного ввода", bestPractice: "Автозаполнение и переиспользование данных.", weight: 2, mandatory: false },
+    { criterion: "Проверка данных", bestPractice: "Inline validation.", weight: 2, mandatory: true },
+    { criterion: "Прозрачность документов", bestPractice: "Список документов и требования.", weight: 2, mandatory: true },
+    { criterion: "Цифровое подписание", bestPractice: "Максимальный уход от бумаги.", weight: 3, mandatory: false },
+    { criterion: "Статус договора / счёта", bestPractice: "Видимость статусов документов.", weight: 2, mandatory: true },
+    { criterion: "Понятные юридические условия", bestPractice: "Выжимка условий простым языком.", weight: 2, mandatory: false },
+    { criterion: "Черновик оформления", bestPractice: "Сохранение прогресса.", weight: 1, mandatory: false },
+    { criterion: "Исправление ошибок", bestPractice: "Понятная причина отклонения и действие.", weight: 2, mandatory: true }
+  ]
+},
+{
+  title: "Онбординг и активация",
+  desc: "Проверяем выход клиента на первую пользу.",
+  items: [
+    { criterion: "Стартовый сценарий", bestPractice: "Welcome-flow / чек-лист старта.", weight: 3, mandatory: true },
+    { criterion: "Welcome-коммуникация", bestPractice: "Письмо / SMS / push со стартом.", weight: 2, mandatory: false },
+    { criterion: "Пошаговая настройка", bestPractice: "Wizard / мастер настройки.", weight: 3, mandatory: true },
+    { criterion: "Прогресс настройки", bestPractice: "Progress bar / checklist.", weight: 2, mandatory: false },
+    { criterion: "Быстрый выход на пользу", bestPractice: "Сокращение time-to-value.", weight: 3, mandatory: true },
+    { criterion: "Подсказки в процессе", bestPractice: "Контекстная помощь.", weight: 2, mandatory: false },
+    { criterion: "Шаблоны и преднастройки", bestPractice: "Готовые конфигурации / шаблоны.", weight: 2, mandatory: false },
+    { criterion: "Пустые состояния", bestPractice: "Пустой экран ведёт к действию.", weight: 2, mandatory: false },
+    { criterion: "Ролевой онбординг", bestPractice: "Разные сценарии по ролям.", weight: 2, mandatory: false },
+    { criterion: "Контроль активации", bestPractice: "Измерение completion rate.", weight: 3, mandatory: true }
+  ]
+},
+{
+  title: "Самообслуживание",
+  desc: "Проверяем возможность управлять продуктом без поддержки.",
+  items: [
+    { criterion: "Базовые операции без поддержки", bestPractice: "Максимум действий в self-service.", weight: 3, mandatory: true },
+    { criterion: "Управление настройками", bestPractice: "Самостоятельное изменение параметров.", weight: 2, mandatory: true },
+    { criterion: "Управление пользователями", bestPractice: "CRUD пользователей / приглашения.", weight: 3, mandatory: false },
+    { criterion: "Роли и доступы", bestPractice: "Готовая ролевая модель.", weight: 2, mandatory: false },
+    { criterion: "Документы и финансы", bestPractice: "Онлайн-доступ к финансам.", weight: 3, mandatory: true },
+    { criterion: "История действий", bestPractice: "Audit log.", weight: 2, mandatory: false },
+    { criterion: "Массовые действия", bestPractice: "Bulk operations.", weight: 1, mandatory: false },
+    { criterion: "Шаблоны", bestPractice: "Сохранение типовых настроек.", weight: 1, mandatory: false },
+    { criterion: "Самодиагностика", bestPractice: "Проверка статуса / troubleshooting.", weight: 2, mandatory: false },
+    { criterion: "Прозрачное отключение", bestPractice: "Понятный offboarding / отключение.", weight: 2, mandatory: true }
+  ]
+},
+{
+  title: "Поддержка и помощь",
+  desc: "Проверяем качество сервисной поддержки.",
+  items: [
+    { criterion: "Доступный канал поддержки", bestPractice: "Поддержка доступна в релевантных точках.", weight: 3, mandatory: true },
+    { criterion: "Чат / цифровой канал", bestPractice: "Чат / бот / заявка.", weight: 2, mandatory: false },
+    { criterion: "Понятный срок ответа", bestPractice: "Показан SLA обращения.", weight: 2, mandatory: true },
+    { criterion: "Контекст обращения", bestPractice: "Передача контекста обращения.", weight: 3, mandatory: true },
+    { criterion: "База знаний", bestPractice: "Актуальная knowledge base.", weight: 2, mandatory: false },
+    { criterion: "Встроенная помощь", bestPractice: "Embedded help.", weight: 2, mandatory: false },
+    { criterion: "Эскалация", bestPractice: "Понятный путь эскалации.", weight: 2, mandatory: true },
+    { criterion: "Закрытие обращения", bestPractice: "Подтверждение решения.", weight: 1, mandatory: false },
+    { criterion: "Оценка поддержки", bestPractice: "CSAT после обращения.", weight: 2, mandatory: false },
+    { criterion: "Проактивная поддержка", bestPractice: "Предупреждение проблем заранее.", weight: 2, mandatory: false }
+  ]
+},
+{
+  title: "Интерфейс и эвристики UX/UI",
+  desc: "Проверяем удобство и соответствие UX-стандартам.",
+  items: [
+    { criterion: "Видимость статуса", bestPractice: "Прогресс / статусы / результаты.", weight: 3, mandatory: true },
+    { criterion: "Понятный язык", bestPractice: "Язык клиента, не внутренние термины.", weight: 3, mandatory: true },
+    { criterion: "Контроль и свобода", bestPractice: "Undo / Back / Edit.", weight: 2, mandatory: true },
+    { criterion: "Единообразие", bestPractice: "Консистентность интерфейса.", weight: 2, mandatory: true },
+    { criterion: "Предотвращение ошибок", bestPractice: "Error prevention.", weight: 3, mandatory: true },
+    { criterion: "Узнавание вместо запоминания", bestPractice: "Нужный контекст на экране.", weight: 2, mandatory: false },
+    { criterion: "Быстрые действия", bestPractice: "Shortcuts / bulk / templates.", weight: 1, mandatory: false },
+    { criterion: "Минимум визуального шума", bestPractice: "Visual hierarchy / progressive disclosure.", weight: 3, mandatory: true },
+    { criterion: "Понятные ошибки", bestPractice: "Ошибка объясняет проблему и действие.", weight: 3, mandatory: true },
+    { criterion: "Помощь и документация", bestPractice: "Help там, где нужен.", weight: 2, mandatory: false },
+    { criterion: "Соответствие дизайн-системе", bestPractice: "Использование design system.", weight: 3, mandatory: true },
+    { criterion: "Читаемость и доступность", bestPractice: "Контраст / размер / tap zones.", weight: 2, mandatory: true },
+    { criterion: "Состояния компонентов", bestPractice: "Все UI-states спроектированы.", weight: 2, mandatory: false },
+    { criterion: "Адаптивность", bestPractice: "Корректная работа на целевых устройствах.", weight: 2, mandatory: true }
+  ]
+},
+{
+  title: "Формы и ввод данных",
+  desc: "Проверяем удобство заполнения данных.",
+  items: [
+    { criterion: "Минимум полей", bestPractice: "Только необходимые поля.", weight: 3, mandatory: true },
+    { criterion: "Логичная группировка", bestPractice: "Поля сгруппированы по смыслу.", weight: 2, mandatory: false },
+    { criterion: "Понятные названия", bestPractice: "Ясные label без внутренней терминологии.", weight: 2, mandatory: true },
+    { criterion: "Подсказки", bestPractice: "Подсказки до ошибки.", weight: 2, mandatory: false },
+    { criterion: "Валидация до отправки", bestPractice: "Inline validation.", weight: 3, mandatory: true },
+    { criterion: "Маски и автозаполнение", bestPractice: "Input masks / autofill.", weight: 2, mandatory: false },
+    { criterion: "Сохранение данных", bestPractice: "Draft / autosave.", weight: 2, mandatory: false },
+    { criterion: "Понятные ошибки", bestPractice: "Конкретное описание ошибки.", weight: 3, mandatory: true },
+    { criterion: "Согласия и безопасность", bestPractice: "Прозрачная юридическая логика.", weight: 2, mandatory: true }
+  ]
+},
+{
+  title: "Коммуникации и уведомления",
+  desc: "Проверяем клиентские уведомления.",
+  items: [
+    { criterion: "Подтверждение действий", bestPractice: "Подтверждать важные действия.", weight: 2, mandatory: true },
+    { criterion: "Уведомления о статусах", bestPractice: "Статусные сообщения по этапам.", weight: 2, mandatory: true },
+    { criterion: "Понятный текст сообщений", bestPractice: "Что произошло → что делать → срок.", weight: 3, mandatory: true },
+    { criterion: "Правильный канал", bestPractice: "Выбор канала под критичность.", weight: 2, mandatory: false },
+    { criterion: "Нет лишнего шума", bestPractice: "Контроль частоты коммуникаций.", weight: 2, mandatory: false },
+    { criterion: "История коммуникаций", bestPractice: "Журнал уведомлений.", weight: 1, mandatory: false },
+    { criterion: "Триггерные сообщения", bestPractice: "Event-based коммуникации.", weight: 2, mandatory: false },
+    { criterion: "Коммуникации после запуска", bestPractice: "Первые 7–14 дней сопровождения.", weight: 1, mandatory: false }
+  ]
+},
+{
+  title: "Аналитика и метрики",
+  desc: "Проверяем измеримость продукта.",
+  items: [
+    { criterion: "Ключевые метрики определены", bestPractice: "Есть metric tree.", weight: 3, mandatory: true },
+    { criterion: "Сбор данных настроен", bestPractice: "Метрики реально собираются.", weight: 3, mandatory: true },
+    { criterion: "Воронка заявки / подключения", bestPractice: "Lead-to-activation funnel.", weight: 3, mandatory: true },
+    { criterion: "Метрики онбординга", bestPractice: "Completion / TTV / drop-off.", weight: 2, mandatory: false },
+    { criterion: "Метрики использования", bestPractice: "Usage / DAU / depth.", weight: 2, mandatory: false },
+    { criterion: "Метрики поддержки", bestPractice: "Support analytics.", weight: 2, mandatory: false },
+    { criterion: "Причины отказов", bestPractice: "Loss reasons tracking.", weight: 2, mandatory: false },
+    { criterion: "Регулярный разбор", bestPractice: "Регулярный review метрик.", weight: 2, mandatory: true },
+    { criterion: "Ответственный за метрики", bestPractice: "Есть owner данных.", weight: 1, mandatory: false },
+    { criterion: "Оценка эффекта изменений", bestPractice: "Impact review after release.", weight: 2, mandatory: false }
+  ]
+},
+{
+  title: "Удержание и развитие клиента",
+  desc: "Проверяем работу с удержанием и развитием клиента.",
+  items: [
+    { criterion: "Сигналы риска оттока", bestPractice: "Health score / churn signals.", weight: 2, mandatory: false },
+    { criterion: "Сценарии удержания", bestPractice: "Retention playbook.", weight: 2, mandatory: false },
+    { criterion: "Повторное вовлечение", bestPractice: "Re-engagement сценарии.", weight: 1, mandatory: false },
+    { criterion: "Расширение использования", bestPractice: "Upsell / expansion сценарии.", weight: 1, mandatory: false },
+    { criterion: "Обучение новым возможностям", bestPractice: "Release notes / education.", weight: 1, mandatory: false },
+    { criterion: "Обратная связь", bestPractice: "CSAT / CES / NPS / feedback form.", weight: 2, mandatory: true }
+  ]
+},
+{
+  title: "Готовность запуска и управление качеством",
+  desc: "Проверяем готовность продукта к запуску.",
+  items: [
+    { criterion: "Целевой CJ задокументирован", bestPractice: "TO BE CJ / blueprint обязателен.", weight: 3, mandatory: true },
+    { criterion: "Роли и ответственность", bestPractice: "RACI / owner map.", weight: 2, mandatory: true },
+    { criterion: "Участники согласованы", bestPractice: "Stakeholder alignment.", weight: 2, mandatory: true },
+    { criterion: "Нестандартные сценарии", bestPractice: "Edge-case / fallback карта.", weight: 3, mandatory: true },
+    { criterion: "Готовность поддержки", bestPractice: "Support readiness checklist.", weight: 3, mandatory: true },
+    { criterion: "Готовность продаж", bestPractice: "Sales enablement kit.", weight: 2, mandatory: true },
+    { criterion: "Готовность коммуникаций", bestPractice: "Communication map.", weight: 2, mandatory: false },
+    { criterion: "План мониторинга после запуска", bestPractice: "Launch monitoring plan.", weight: 2, mandatory: true },
+    { criterion: "Критерии успешного запуска", bestPractice: "Success criteria defined.", weight: 2, mandatory: true },
+    { criterion: "План быстрых исправлений", bestPractice: "Fast-fix backlog.", weight: 2, mandatory: false }
+  ]
+}
+];
 
     function renderBlocks() {
       const root = document.getElementById('accordion');
