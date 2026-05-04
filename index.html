@@ -1,174 +1,725 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CX / Product Review Scorecard</title>
+
   <style>
     :root {
-      --primary-green: #00B956;
+      --green: #00B956;
       --green-hover: #00A94F;
       --green-pressed: #009447;
-      --accent-purple: #731982;
-      --main-bg: #F2F4F7;
-      --card-bg: #FFFFFF;
-      --surface-secondary: #F7F8FA;
-      --border-primary: #D2D5DA;
-      --border-secondary: #E6E9EE;
-      --text-primary: #2B2D33;
-      --text-secondary: #8F96A4;
-      --text-disabled: #A8AFB9;
-      --text-inverse: #FFFFFF;
+      --purple: #731982;
+
+      --bg: #F2F4F7;
+      --card: #FFFFFF;
+      --surface: #F7F8FA;
+      --border: #D2D5DA;
+      --border-soft: #E6E9EE;
+
+      --text: #2B2D33;
+      --secondary: #8F96A4;
+      --disabled: #A8AFB9;
+      --inverse: #FFFFFF;
+
       --success-bg: #EAFBF1;
       --info-bg: #DDF5FF;
       --warning-bg: #FFF6E5;
       --error-bg: #FFF0F0;
+
+      --radius-lg: 24px;
+      --radius-md: 20px;
+      --radius-btn: 14px;
+      --radius-input: 16px;
+      --radius-pill: 999px;
     }
 
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
-    body {
-      font-family: "MegaFon Graphik LC", Inter, Arial, sans-serif;
-      background: var(--main-bg);
-      color: var(--text-primary);
-      line-height: 1.45;
-      font-size: 16px;
+    * {
+      box-sizing: border-box;
     }
+
+    body {
+      margin: 0;
+      font-family: "MegaFon Graphik LC", Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
     .container {
       max-width: 1280px;
-      width: min(1240px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 32px 0 48px;
+      padding: 48px 32px 80px;
     }
-    h1 { font-size: clamp(40px, 6vw, 48px); margin: 0 0 12px; font-weight: 700; line-height: 1.1; }
-    h2 { font-size: clamp(32px, 4vw, 36px); margin: 0 0 12px; font-weight: 700; line-height: 1.2; }
-    h3 { font-size: clamp(22px, 3vw, 26px); margin: 0; font-weight: 600; }
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-secondary);
-      border-radius: 24px;
-      padding: 24px;
-      margin-bottom: 20px;
-      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-    }
-    .card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(43,45,51,.08); border-color: var(--primary-green); }
-    .subtext { color: var(--text-secondary); font-size: 14px; }
-    .hero-grid, .summary-grid { display: grid; grid-template-columns: repeat(5,minmax(180px,1fr)); gap: 14px; }
-    label { font-size: 14px; color: var(--text-secondary); display: block; margin-bottom: 6px; }
-    input, select, textarea {
-      width: 100%; border: 1px solid var(--border-primary); border-radius: 16px; padding: 10px 12px;
-      font: inherit; background: #fff; color: var(--text-primary);
-      transition: border-color .15s ease, box-shadow .15s ease;
-    }
-    input:focus, select:focus, textarea:focus {
-      outline: none; border-color: var(--primary-green); box-shadow: 0 0 0 4px rgba(0,185,86,.15);
-    }
-    textarea { min-height: 72px; resize: vertical; }
-    .sticky {
-      position: sticky; top: 10px; z-index: 20;
-      border-radius: 20px; padding: 16px 20px;
-      background: #fff; border: 1px solid var(--border-primary);
-      box-shadow: 0 8px 20px rgba(43,45,51,.08);
-      margin-bottom: 20px;
-    }
-    .score-row { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr 1fr auto; gap: 10px; align-items: center; }
-    .metric { background: var(--surface-secondary); border-radius: 14px; padding: 10px 12px; }
-    .metric strong { display:block; font-size: 24px; }
-    .progress-wrap { margin-top: 12px; background: var(--surface-secondary); border-radius: 999px; height: 12px; overflow: hidden; }
-    .progress-bar { height: 100%; width: 0; background: linear-gradient(90deg,var(--primary-green),#14d66f); transition: width .25s ease; }
-    .badge { display:inline-block; border-radius:999px; padding:5px 10px; font-size:13px; font-weight:600; border:1px solid transparent; }
-    .mandatory { background:#f1fff8; color:#03783a; border-color:#bfeecf; }
-    .zone-red { background: var(--error-bg); }
-    .zone-yellow { background: var(--warning-bg); }
-    .zone-green { background: var(--success-bg); }
-    .zone-best { background: var(--info-bg); color: var(--accent-purple); border-color: #c4d9ff; }
-    .rules { display:grid; grid-template-columns: repeat(4,1fr); gap:12px; }
-    .rule { border-radius: 20px; padding: 14px; background: var(--surface-secondary); border:1px solid var(--border-secondary); }
-    .table-wrap { overflow-x: auto; border:1px solid var(--border-secondary); border-radius:16px; }
-    table { width: 100%; min-width: 1320px; border-collapse: collapse; font-size: 14px; }
-    th, td { border-bottom:1px solid var(--border-secondary); padding: 10px; vertical-align: top; text-align:left; }
-    th { background: var(--surface-secondary); font-size:13px; color: var(--text-secondary); position: sticky; top: 0; z-index: 1; }
-    td.best { background: #f2fff7; }
-    .block-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom: 12px; }
-    .buttons { display:flex; flex-wrap: wrap; gap: 8px; justify-content:flex-end; }
-    button {
-      border: 1px solid var(--primary-green); background: var(--primary-green); color: var(--text-inverse);
-      border-radius:14px; padding: 10px 12px; font-weight:600; font-size:15px; cursor:pointer;
-      transition: background .15s ease, border-color .15s ease, transform .1s ease;
-    }
-    button:hover { background: var(--green-hover); border-color: var(--green-hover); }
-    button:active { background: var(--green-pressed); border-color: var(--green-pressed); transform: translateY(1px); }
-    button.secondary { background:#fff; color: var(--primary-green); }
 
-    @media (max-width: 1200px) {
-      .hero-grid, .summary-grid { grid-template-columns: repeat(2,minmax(200px,1fr)); }
-      .score-row { grid-template-columns: repeat(2,minmax(200px,1fr)); }
-      .buttons { justify-content: flex-start; }
-      .rules { grid-template-columns: repeat(2,1fr); }
+    .hero {
+      background: linear-gradient(135deg, #FFFFFF 0%, #EAFBF1 60%, #DDF5FF 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: 0 16px 40px rgba(43, 45, 51, 0.08);
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 44px;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      font-weight: 700;
+    }
+
+    h2 {
+      margin: 0 0 20px;
+      font-size: 32px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+    }
+
+    h3 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      max-width: 880px;
+      color: var(--secondary);
+      font-size: 17px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--secondary);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-input);
+      padding: 13px 14px;
+      font: inherit;
+      outline: none;
+      background: white;
+      color: var(--text);
+      transition: 0.2s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 4px rgba(0, 185, 86, 0.12);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: 0 12px 32px rgba(43, 45, 51, 0.06);
+      margin-bottom: 24px;
+    }
+
+    .scorebar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(242, 244, 247, 0.92);
+      backdrop-filter: blur(12px);
+      padding: 16px 0;
+      margin-bottom: 24px;
+    }
+
+    .scorebox {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: 1fr 160px 220px 220px;
+      gap: 16px;
+      align-items: center;
+      box-shadow: 0 10px 28px rgba(43, 45, 51, 0.08);
+    }
+
+    .score-value {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .zone {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-pill);
+      padding: 10px 16px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .zone.red { background: var(--error-bg); color: #B42318; }
+    .zone.yellow { background: var(--warning-bg); color: #B76E00; }
+    .zone.green { background: var(--success-bg); color: #067A3D; }
+    .zone.platinum { background: var(--info-bg); color: var(--purple); }
+
+    .progress {
+      width: 100%;
+      height: 12px;
+      background: var(--surface);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+      border: 1px solid var(--border-soft);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--green), #00D2FF);
+      transition: width 0.3s ease;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: var(--radius-btn);
+      padding: 13px 18px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: var(--inverse);
+    }
+
+    .btn-primary:hover {
+      background: var(--green-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      background: var(--green-pressed);
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--green);
+      color: var(--green);
+      transform: translateY(-1px);
+    }
+
+    .block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 28px rgba(43, 45, 51, 0.05);
+    }
+
+    .block-header {
+      padding: 24px 28px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border-soft);
+      background: linear-gradient(180deg, #FFFFFF 0%, #F7F8FA 100%);
+    }
+
+    .block-desc {
+      color: var(--secondary);
+      font-size: 14px;
+      max-width: 760px;
+    }
+
+    .block-score {
+      white-space: nowrap;
+      background: var(--surface);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-pill);
+      padding: 8px 12px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      font-size: 13px;
+      color: var(--secondary);
+      font-weight: 600;
+      background: var(--surface);
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-soft);
+      vertical-align: top;
+    }
+
+    td {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-soft);
+      vertical-align: top;
+    }
+
+    tr:hover td {
+      background: #FCFDFC;
+    }
+
+    .criterion {
+      font-weight: 600;
+      min-width: 190px;
+    }
+
+    .hint {
+      color: var(--secondary);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .practice {
+      background: var(--success-bg);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #067A3D;
+      min-width: 240px;
+    }
+
+    .score-select {
+      min-width: 120px;
+    }
+
+    .evidence-input {
+      min-width: 220px;
+    }
+
+    .comment-input {
+      min-width: 240px;
+    }
+
+    .badge {
+      display: inline-flex;
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--surface);
+      color: var(--secondary);
+      border: 1px solid var(--border-soft);
+      margin-top: 8px;
+    }
+
+    .mandatory {
+      background: var(--warning-bg);
+      color: #B76E00;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 18px;
+    }
+
+    .summary-card strong {
+      display: block;
+      font-size: 28px;
+      margin-top: 6px;
+    }
+
+    .footer-note {
+      color: var(--secondary);
+      font-size: 13px;
+      margin-top: 16px;
     }
 
     @media print {
-      .buttons, .sticky { position: static; box-shadow:none; }
-      button { display:none !important; }
-      .card { box-shadow:none !important; break-inside: avoid; }
-      .table-wrap { overflow: visible; }
+      .scorebar, .actions, button {
+        display: none !important;
+      }
+      body {
+        background: white;
+      }
+      .container {
+        padding: 0;
+      }
+      .block, .panel, .hero {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .grid, .summary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .scorebox {
+        grid-template-columns: 1fr;
+      }
+
+      table {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
+
 <body>
-  <main class="container">
-    <section class="card">
+  <div class="container">
+    <section class="hero">
       <h1>CX / Product Review Scorecard</h1>
-      <p class="subtext">Онлайн-форма для оценки качества клиентского опыта продукта: от исследования и коммерческой упаковки до онбординга, самообслуживания, поддержки, UX/UI, метрик и готовности запуска.</p>
-      <div class="hero-grid" id="heroFields"></div>
-    </section>
+      <div class="subtitle">
+        Онлайн-форма для оценки качества клиентского опыта продукта: от исследования и коммерческой упаковки до онбординга, самообслуживания, поддержки, UX/UI, метрик и готовности запуска.
+      </div>
 
-    <section class="sticky" id="stickyScore"></section>
-
-    <section class="card">
-      <h3>Правила оценки</h3><div class="rules" id="rules"></div>
-      <p class="subtext">Итоговая оценка = сумма(оценка × вес) / сумма(максимальная оценка × вес) × 100%. Штраф: каждый обязательный критерий с оценкой 0 или 1 снижает итог на 10%.</p>
-    </section>
-
-    <section id="blocks"></section>
-
-    <section class="card">
-      <h2>Итоговое резюме</h2>
-      <div class="summary-grid" style="grid-template-columns:repeat(2,minmax(260px,1fr));">
-        <div><label>Основные сильные стороны</label><textarea id="sumStrengths"></textarea></div>
-        <div><label>Ключевые зоны роста</label><textarea id="sumGrowth"></textarea></div>
-        <div><label>Критические риски</label><textarea id="sumRisks"></textarea></div>
-        <div><label>Рекомендованный план улучшений</label><textarea id="sumPlan"></textarea></div>
-        <div><label>Решение по итогам ревью</label><select id="sumDecision"><option value="">—</option><option>Запуск возможен</option><option>Запуск возможен с условиями</option><option>Требуется доработка</option><option>Запуск не рекомендован</option></select></div>
+      <div class="grid">
+        <div class="field">
+          <label>Продукт</label>
+          <input id="productName" placeholder="Например: Виртуальная АТС" />
+        </div>
+        <div class="field">
+          <label>Тип ревью</label>
+          <select id="reviewType">
+            <option>Запуск продукта</option>
+            <option>Квартальное ревью</option>
+            <option>Глубокий аудит</option>
+            <option>Редизайн сценария</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Ответственный за продукт</label>
+          <input placeholder="ФИО / команда" />
+        </div>
+        <div class="field">
+          <label>CX reviewer</label>
+          <input placeholder="ФИО" />
+        </div>
       </div>
     </section>
-  </main>
-<script>
-const heroConfig=[['product','Продукт','text'],['reviewType','Тип ревью','select',['Запуск продукта','Квартальное ревью','Глубокий аудит','Редизайн сценария']],['owner','Ответственный за продукт','text'],['reviewer','CX reviewer','text'],];
-const blocks = [
-{title:'Блок 1. Исследования и обоснование',desc:'Проверяем, насколько продуктовые решения опираются на данные, клиентов, рынок и подтверждённые гипотезы.',items:[["Анализ рынка","Есть актуальные данные по рынку, трендам, динамике и клиентским ожиданиям.","Использовать регулярный обзор рынка и фиксировать выводы в продуктовой документации.",2,true],["Конкурентный анализ","Сформирована сравнительная матрица: цены, функции, UX, условия, поддержка, сильные и слабые стороны конкурентов.","Делать не только feature comparison, но и UX-сравнение ключевых сценариев.",2,true],["CustDev / интервью","Проведены интервью с клиентами или пользователями. Боли подтверждены фактами.","Минимум 5–7 интервью на ключевой сегмент перед значимой доработкой.",3,true],["JTBD / Персоны","Команда понимает, какую задачу клиент решает продуктом, и какие роли участвуют в сценарии.","Разделять ЛПР, администратора, бухгалтера и конечного пользователя.",2,false],["Проверка гипотез","До разработки проведены тесты: MVP, прототипы, коридорные тесты, опросы, интервью.","Проверять спорные решения до передачи в разработку.",2,false],["Анализ текущего CJ","Если продукт уже существует, описан текущий путь клиента, боли, разрывы и узкие места.","Вести AS IS и TO BE CJ для крупных продуктов.",3,true],["Анализ обращений и жалоб","Изучены обращения в поддержку, жалобы, причины отказов, повторные проблемы.","Использовать поддержку как источник продуктовой диагностики.",2,false],["Аналитика воронки","Есть данные по этапам: визиты, заявки, контакт, КП, договор, подключение, активация.","Искать потери не в целом, а между конкретными этапами.",3,true]]},
-{title:'Блок 2. Коммерческий блок и ценность продукта',desc:'Проверяем, насколько клиент понимает ценность продукта, отличие от альтернатив и следующий шаг.',items:[["Ценностное предложение","Клиент за 5–10 секунд понимает, что это за продукт, для кого он и какую проблему решает.","Формула: для кого → какая боль → какой результат → почему с нами.",3,true],["Конкурентные отличия","Показано, чем продукт лучше альтернатив: скорость, цена, надёжность, удобство, поддержка, интеграции.","Показывать отличия в формате сравнения или конкретных преимуществ.",3,true],["Бизнес-кейсы","Описано, какие конкретные задачи клиента решает продукт, с примерами применения.","Давать сценарии использования по ролям и отраслям.",2,false],["Отраслевая специфика","Предложение адаптировано под разные сегменты, отрасли или типы клиентов.","Использовать отдельные примеры для малого, среднего и крупного бизнеса.",2,false],["Эффект / выгода","Понятно, что получит клиент: экономия времени, денег, снижение рисков, рост продаж.","Показывать ROI, экономию, снижение ручного труда или рисков.",3,true],["Прозрачность тарифов","Стоимость, условия подключения, ограничения, скрытые платежи и условия отключения понятны заранее.","Калькулятор стоимости, тарифные карточки, FAQ по условиям.",3,true],["Понятный CTA","Клиент понимает, что делать дальше: оставить заявку, подключить, получить расчёт.","Один главный следующий шаг на экран.",2,true],["Доказательства доверия","Есть кейсы, цифры, отзывы, сертификаты, SLA, логотипы клиентов, гарантии.","Для B2B особенно важны proof points и надёжность.",2,false],["Калькулятор / расчёт","Клиент может предварительно оценить стоимость, конфигурацию или порядок цены.","Для сложных продуктов — калькулятор или конфигуратор.",2,false],["FAQ до покупки","Есть ответы на частые вопросы: документы, сроки, ограничения, тех. требования, оплата.","FAQ снижает нагрузку на продажи и поддержку.",1,false]]}
-];
-// Остальные блоки добавлены ниже отдельным вызовом, чтобы не раздувать читаемость.
-blocks.push(...JSON.parse(document.getElementById('rawBlocks').textContent));
 
-function renderHero(){const box=document.getElementById('heroFields');heroConfig.forEach(([id,label,type,opts])=>{const w=document.createElement('div');const l=document.createElement('label');l.textContent=label;w.appendChild(l);let c;if(type==='select'){c=document.createElement('select');c.innerHTML='<option value="">—</option>'+opts.map(v=>`<option>${v}</option>`).join('');}else{c=document.createElement('input');c.type=type;}c.id=id;w.appendChild(c);box.appendChild(w);});}
-function getZone(score){if(score<=40)return['Красная зона','zone-red'];if(score<=70)return['Жёлтая зона','zone-yellow'];if(score<=90)return['Зелёная зона','zone-green'];return['Эталонная зона','zone-best'];}
-function renderBlocks(){const root=document.getElementById('blocks');blocks.forEach((b,bi)=>{const card=document.createElement('section');card.className='card';card.dataset.block=bi;const hd=document.createElement('div');hd.className='block-head';hd.innerHTML=`<div><h3>${b.title}</h3><p class="subtext">${b.desc}</p></div><div class="badge" id="blockPct-${bi}">0%</div>`;card.appendChild(hd);const wrap=document.createElement('div');wrap.className='table-wrap';const table=document.createElement('table');table.innerHTML='<thead><tr><th>Критерий</th><th>Что проверяем</th><th>Лучшая практика / пример</th><th>Вес</th><th>Обязательность</th><th>Оценка</th><th>Подтверждение</th><th>Комментарий / рекомендация</th></tr></thead>';const body=document.createElement('tbody');b.items.forEach((it,ii)=>{const tr=document.createElement('tr');const [c,check,best,w,m]=it;tr.innerHTML=`<td>${c}</td><td>${check}</td><td class="best">${best}</td><td>${w}</td><td>${m?'<span class="badge mandatory">Обязательный</span>':'—'}</td><td><select data-type="score" data-k="${bi}_${ii}"><option value="">—</option><option value="0">0 — Нет</option><option value="1">1 — Критично</option><option value="2">2 — База</option><option value="3">3 — Эталон</option></select></td><td><textarea data-type="evidence" data-k="${bi}_${ii}" placeholder="Ссылка, скрин, CJ, макет, дашборд..."></textarea></td><td><textarea data-type="comment" data-k="${bi}_${ii}" placeholder="Комментарий / рекомендация"></textarea></td>`;body.appendChild(tr);});table.appendChild(body);wrap.appendChild(table);card.appendChild(wrap);root.appendChild(card);});}
-function calculateScores(){let sum=0,max=0,filled=0,total=0,gaps=0;blocks.forEach((b,bi)=>{let bs=0,bm=0;b.items.forEach((it,ii)=>{const [,,,,m]=it;const w=it[3];const val=document.querySelector(`[data-type="score"][data-k="${bi}_${ii}"]`).value;total++;bm+=3*w;if(val!==''){const n=Number(val);filled++;bs+=n*w;sum+=n*w;if(m&&n<=1)gaps++;}max+=3*w;});const pct=bm?Math.round(bs/bm*100):0;document.getElementById(`blockPct-${bi}`).textContent=`${pct}%`;});const raw=max?sum/max*100:0;const penalty=gaps*10;const final=Math.max(0,Math.round(raw-penalty));return {final,filled,total,gaps,penalty,raw:Math.round(raw)};}
-function updateSticky(){const m=calculateScores();const [zone,cls]=getZone(m.final);document.getElementById('stickyScore').innerHTML=`<div class="score-row"><div class="metric"><span class="subtext">Итоговый процент</span><strong>${m.final}%</strong></div><div class="metric"><span class="subtext">Зона качества</span><div class="badge ${cls}">${zone}</div></div><div class="metric"><span class="subtext">Заполнено критериев</span><strong>${m.filled}/${m.total}</strong></div><div class="metric"><span class="subtext">Обязательные разрывы</span><strong>${m.gaps}</strong></div><div class="metric"><span class="subtext">Штраф</span><strong>${m.penalty}%</strong></div><div class="buttons"><button class="secondary" id="clearBtn">Очистить</button><button class="secondary" id="printBtn">Печать / PDF</button><button id="copyBtn">Скопировать итог</button></div></div><div class="progress-wrap"><div class="progress-bar" style="width:${m.final}%"></div></div>`;bindButtons();}
-function collectData(){const data={hero:{},items:{},summary:{}};heroConfig.forEach(([id])=>data.hero[id]=document.getElementById(id).value);document.querySelectorAll('[data-k]').forEach(el=>{data.items[`${el.dataset.type}:${el.dataset.k}`]=el.value;});['sumStrengths','sumGrowth','sumRisks','sumPlan','sumDecision'].forEach(id=>data.summary[id]=document.getElementById(id).value);return data;}
-function applyData(data){if(!data)return;Object.entries(data.hero||{}).forEach(([k,v])=>{const el=document.getElementById(k);if(el)el.value=v;});Object.entries(data.items||{}).forEach(([k,v])=>{const [t,key]=k.split(':');const el=document.querySelector(`[data-type="${t}"][data-k="${key}"]`);if(el)el.value=v;});Object.entries(data.summary||{}).forEach(([k,v])=>{const el=document.getElementById(k);if(el)el.value=v;});}
-function clearAll(){if(!confirm('Очистить все поля формы?'))return;document.querySelectorAll('input,select,textarea').forEach(el=>el.value='');updateSticky();}
-function copySummary(){const m=calculateScores();const [zone]=getZone(m.final);const txt=`CX / Product Review Summary\nПродукт: ${document.getElementById('product').value}\nТип ревью: ${document.getElementById('reviewType').value}\nИтоговая оценка: ${m.final}%\nЗона качества: ${zone}\nЗаполнено критериев: ${m.filled} из ${m.total}\nОбязательные разрывы: ${m.gaps}\nШтраф: ${m.penalty}%\nРешение: ${document.getElementById('sumDecision').value}`;navigator.clipboard.writeText(txt).then(()=>alert('Итог скопирован'));}
-function bindButtons(){document.getElementById('clearBtn').onclick=clearAll;document.getElementById('printBtn').onclick=()=>window.print();document.getElementById('copyBtn').onclick=copySummary;}
-function bootstrap(){renderHero();renderRules();renderBlocks();document.body.addEventListener('input',updateSticky);updateSticky();}
-function renderRules(){const rules=[['0 — Нет','критерий отсутствует или не работает'],['1 — Критично','реализовано слабо, фрагментарно или неудобно'],['2 — База','соответствует минимальному стандарту'],['3 — Эталон','сильное решение, можно использовать как пример']];const root=document.getElementById('rules');rules.forEach(([t,d])=>{const div=document.createElement('div');div.className='rule';div.innerHTML=`<strong>${t}</strong><p class="subtext">${d}</p>`;root.appendChild(div);});}
-bootstrap();
-</script>
-<script id="rawBlocks" type="application/json">[
-{"title":"Блок 3. Заявка, лиды и продажи","desc":"Проверяем путь от интереса клиента до передачи в продажу и подключение.","items":[["SLA первого контакта","Определён норматив, за сколько времени клиент должен получить первый ответ после заявки.","Для горячих лидов — максимально быстрый контакт и отдельный SLA.",3,true],["Контроль SLA","SLA реально измеряется: есть отчётность, контроль просрочек и причины нарушений.","Дашборд времени реакции и просрочек.",3,true],["Подтверждение заявки","После отправки заявки клиент сразу получает подтверждение, что заявка принята.","Сообщение: заявка принята → следующий шаг → срок ответа.",2,true],["Прозрачный статус заявки","Клиент понимает, на каком этапе находится заявка и что будет дальше.","Трекер статуса: принята → обработка → КП → договор → подключение.",3,true],["Ответственный за заявку","Понятно, кто отвечает за доведение заявки до результата.","Owner заявки в CRM / очереди обработки.",2,false],["Бесшовная передача","Данные клиента не теряются между сайтом, CRM, продажами, подключением и поддержкой.","Клиент не должен повторять данные.",3,true],["Минимум лишних вопросов","У клиента не запрашивают лишние данные раньше, чем они нужны.","Короткая форма на старте, детали позже.",2,false],["Follow-up","Есть сценарий повторного контакта, если клиент не ответил или не завершил оформление.","Аккуратная цепочка касаний без давления.",1,false],["Единые статусы","Все команды одинаково понимают этапы: заявка, квалификация, КП, договор, подключение.","Единый словарь статусов.",1,false],["Передача в подключение","После продажи клиент не попадает в чёрную дыру; следующий этап понятен.","После сделки сразу понятен следующий владелец и срок.",3,true]]}
-]
-</script>
+    <div class="scorebar">
+      <div class="scorebox">
+        <div>
+          <div class="progress">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="footer-note" id="scoreDetails">Заполните оценки по критериям</div>
+        </div>
+        <div>
+          <div class="hint">Итоговая оценка</div>
+          <div class="score-value" id="totalScore">0%</div>
+        </div>
+        <div>
+          <div class="hint">Зона качества</div>
+          <div class="zone red" id="zoneLabel">Красная зона</div>
+        </div>
+        <div class="actions">
+          <button class="btn-secondary" onclick="resetForm()">Очистить</button>
+          <button class="btn-secondary" onclick="window.print()">Печать / PDF</button>
+          <button class="btn-primary" onclick="copySummary()">Скопировать итог</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="panel">
+      <h2>Правила оценки</h2>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <span class="hint">0 баллов</span>
+          <strong>Нет</strong>
+          <div class="hint">Критерий отсутствует или не работает.</div>
+        </div>
+        <div class="summary-card">
+          <span class="hint">1 балл</span>
+          <strong>Критично</strong>
+          <div class="hint">Реализовано слабо, фрагментарно или неудобно.</div>
+        </div>
+        <div class="summary-card">
+          <span class="hint">2 балла</span>
+          <strong>База</strong>
+          <div class="hint">Соответствует минимальному стандарту.</div>
+        </div>
+        <div class="summary-card">
+          <span class="hint">3 балла</span>
+          <strong>Эталон</strong>
+          <div class="hint">Сильное решение, можно использовать как пример.</div>
+        </div>
+      </div>
+      <p class="footer-note">
+        Формула: итоговая оценка = сумма набранных баллов / максимально возможная сумма × 100%.
+        Для обязательных критериев с оценкой 0 или 1 фиксируется критический разрыв.
+      </p>
+    </section>
+
+    <div id="reviewForm"></div>
+
+    <section class="panel">
+      <h2>Итоговое резюме ревью</h2>
+      <div class="grid">
+        <div class="field">
+          <label>Основные сильные стороны</label>
+          <textarea placeholder="Что в продукте уже реализовано хорошо?"></textarea>
+        </div>
+        <div class="field">
+          <label>Ключевые зоны роста</label>
+          <textarea placeholder="Что требует доработки?"></textarea>
+        </div>
+        <div class="field">
+          <label>Критические риски</label>
+          <textarea placeholder="Что может повлиять на запуск / качество CX?"></textarea>
+        </div>
+        <div class="field">
+          <label>Решение по итогам ревью</label>
+          <select>
+            <option>Запуск возможен</option>
+            <option>Запуск возможен с условиями</option>
+            <option>Требуется доработка</option>
+            <option>Запуск не рекомендован</option>
+          </select>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const blocks = [
+      {
+        title: "Блок 1. Исследования и обоснование",
+        desc: "Проверяем, насколько продуктовые решения опираются на данные, клиентов, рынок и подтверждённые гипотезы.",
+        items: [
+          ["Анализ рынка", "Есть актуальные данные по рынку, трендам, динамике и клиентским ожиданиям.", "Использовать регулярный обзор рынка и фиксировать выводы в продуктовой документации.", 2, true],
+          ["Конкурентный анализ", "Сформирована сравнительная матрица: цены, функции, UX, условия, поддержка, сильные и слабые стороны конкурентов.", "Делать не только feature comparison, но и UX-сравнение ключевых сценариев.", 2, true],
+          ["CustDev / интервью", "Проведены интервью с клиентами или пользователями. Боли подтверждены фактами.", "Минимум 5–7 интервью на ключевой сегмент перед значимой доработкой.", 3, true],
+          ["JTBD / Персоны", "Команда понимает, какую задачу клиент решает продуктом, и какие роли участвуют в сценарии.", "Разделять ЛПР, администратора, бухгалтера и конечного пользователя.", 2, false],
+          ["Проверка гипотез", "До разработки проведены тесты: MVP, прототипы, коридорные тесты, опросы, интервью.", "Проверять спорные решения до передачи в разработку.", 2, false],
+          ["Анализ текущего CJ", "Если продукт уже существует, описан текущий путь клиента, боли, разрывы и узкие места.", "Вести AS IS и TO BE CJ для крупных продуктов.", 3, true],
+          ["Анализ обращений и жалоб", "Изучены обращения в поддержку, жалобы, причины отказов, повторные проблемы.", "Использовать поддержку как источник продуктовой диагностики.", 2, false],
+          ["Аналитика воронки", "Есть данные по этапам: визиты, заявки, контакт, КП, договор, подключение, активация.", "Искать потери не в целом, а между конкретными этапами.", 3, true]
+        ]
+      },
+      {
+        title: "Блок 2. Коммерческий блок и ценность продукта",
+        desc: "Проверяем, насколько клиент понимает ценность продукта, отличие от альтернатив и следующий шаг.",
+        items: [
+          ["Ценностное предложение", "Клиент за 5–10 секунд понимает, что это за продукт, для кого он и какую проблему решает.", "Формула: для кого → какая боль → какой результат → почему с нами.", 3, true],
+          ["Конкурентные отличия", "Показано, чем продукт лучше альтернатив: скорость, цена, надёжность, удобство, поддержка, интеграции.", "Показывать отличия в формате сравнения или конкретных преимуществ.", 3, true],
+          ["Бизнес-кейсы", "Описано, какие конкретные задачи клиента решает продукт, с примерами применения.", "Давать сценарии использования по ролям и отраслям.", 2, false],
+          ["Отраслевая специфика", "Предложение адаптировано под разные сегменты, отрасли или типы клиентов.", "Использовать отдельные примеры для малого, среднего и крупного бизнеса.", 2, false],
+          ["Эффект / выгода", "Понятно, что получит клиент: экономия времени, денег, снижение рисков, рост продаж.", "Показывать ROI, экономию, снижение ручного труда или рисков.", 3, true],
+          ["Прозрачность тарифов", "Стоимость, условия подключения, ограничения, скрытые платежи и условия отключения понятны заранее.", "Калькулятор стоимости, тарифные карточки, FAQ по условиям.", 3, true],
+          ["Понятный CTA", "Клиент понимает, что делать дальше: оставить заявку, подключить, получить расчёт.", "Один главный следующий шаг на экран.", 2, true],
+          ["Доказательства доверия", "Есть кейсы, цифры, отзывы, сертификаты, SLA, логотипы клиентов, гарантии.", "Для B2B особенно важны proof points и надёжность.", 2, false],
+          ["Калькулятор / расчёт", "Клиент может предварительно оценить стоимость, конфигурацию или порядок цены.", "Для сложных продуктов — калькулятор или конфигуратор.", 2, false],
+          ["FAQ до покупки", "Есть ответы на частые вопросы: документы, сроки, ограничения, тех. требования, оплата.", "FAQ снижает нагрузку на продажи и поддержку.", 1, false]
+        ]
+      }
+    ];
+
+    function createForm() {
+      const form = document.getElementById("reviewForm");
+      blocks.forEach((block, blockIndex) => {
+        const section = document.createElement("section");
+        section.className = "block";
+        section.innerHTML = `
+          <div class="block-header">
+            <div>
+              <h2>${block.title}</h2>
+              <div class="block-desc">${block.desc}</div>
+            </div>
+            <div class="block-score" id="blockScore-${blockIndex}">0%</div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 17%">Критерий</th>
+                <th style="width: 27%">Что проверяем</th>
+                <th style="width: 22%">Лучшая практика</th>
+                <th style="width: 10%">Оценка</th>
+                <th style="width: 12%">Подтверждение</th>
+                <th style="width: 12%">Комментарий</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${block.items.map((item, itemIndex) => `
+                <tr>
+                  <td>
+                    <div class="criterion">${item[0]}</div>
+                    <span class="badge">Вес: ${item[3]}</span>
+                    ${item[4] ? '<span class="badge mandatory">Обязательный</span>' : ''}
+                  </td>
+                  <td>${item[1]}</td>
+                  <td><div class="practice">${item[2]}</div></td>
+                  <td>
+                    <select class="score-select" data-block="${blockIndex}" data-weight="${item[3]}" data-mandatory="${item[4]}" onchange="calculateScore()">
+                      <option value="">—</option>
+                      <option value="0">0 — Нет</option>
+                      <option value="1">1 — Критично</option>
+                      <option value="2">2 — База</option>
+                      <option value="3">3 — Эталон</option>
+                    </select>
+                  </td>
+                  <td>
+                    <textarea class="evidence-input" placeholder="Ссылка, скрин, CJ, макет, дашборд..."></textarea>
+                  </td>
+                  <td>
+                    <textarea class="comment-input" placeholder="Комментарий / рекомендация"></textarea>
+                  </td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        `;
+        form.appendChild(section);
+      });
+    }
+
+    function calculateScore() {
+      const selects = document.querySelectorAll(".score-select");
+
+      let total = 0;
+      let max = 0;
+      let filled = 0;
+      let mandatoryGaps = 0;
+
+      const blockTotals = {};
+      const blockMax = {};
+
+      selects.forEach(select => {
+        const value = select.value;
+        const weight = Number(select.dataset.weight);
+        const block = select.dataset.block;
+        const mandatory = select.dataset.mandatory === "true";
+
+        if (!blockTotals[block]) blockTotals[block] = 0;
+        if (!blockMax[block]) blockMax[block] = 0;
+
+        max += 3 * weight;
+        blockMax[block] += 3 * weight;
+
+        if (value !== "") {
+          const score = Number(value);
+          total += score * weight;
+          blockTotals[block] += score * weight;
+          filled++;
+
+          if (mandatory && score <= 1) {
+            mandatoryGaps++;
+          }
+        }
+      });
+
+      let percent = max ? Math.round((total / max) * 100) : 0;
+
+      const penalty = mandatoryGaps * 10;
+      const finalPercent = Math.max(0, percent - penalty);
+
+      document.getElementById("totalScore").textContent = finalPercent + "%";
+      document.getElementById("progressFill").style.width = finalPercent + "%";
+
+      document.getElementById("scoreDetails").textContent =
+        `Заполнено критериев: ${filled} из ${selects.length}. Штраф за обязательные разрывы: ${penalty}%.`;
+
+      const zone = document.getElementById("zoneLabel");
+      zone.className = "zone";
+
+      if (finalPercent <= 40) {
+        zone.textContent = "Красная зона";
+        zone.classList.add("red");
+      } else if (finalPercent <= 70) {
+        zone.textContent = "Жёлтая зона";
+        zone.classList.add("yellow");
+      } else if (finalPercent <= 90) {
+        zone.textContent = "Зелёная зона";
+        zone.classList.add("green");
+      } else {
+        zone.textContent = "Эталонная зона";
+        zone.classList.add("platinum");
+      }
+
+      Object.keys(blockMax).forEach(block => {
+        const blockPercent = Math.round((blockTotals[block] / blockMax[block]) * 100);
+        const el = document.getElementById(`blockScore-${block}`);
+        if (el) el.textContent = blockPercent + "%";
+      });
+    }
+
+    function resetForm() {
+      if (!confirm("Очистить все оценки и комментарии?")) return;
+      document.querySelectorAll("input, textarea").forEach(el => el.value = "");
+      document.querySelectorAll("select").forEach((el, index) => {
+        if (el.classList.contains("score-select")) el.value = "";
+      });
+      calculateScore();
+    }
+
+    function copySummary() {
+      const product = document.getElementById("productName").value || "Не указан";
+      const reviewType = document.getElementById("reviewType").value;
+      const score = document.getElementById("totalScore").textContent;
+      const zone = document.getElementById("zoneLabel").textContent;
+      const details = document.getElementById("scoreDetails").textContent;
+
+      const text = `CX / Product Review Summary
+Продукт: ${product}
+Тип ревью: ${reviewType}
+Итоговая оценка: ${score}
+Зона качества: ${zone}
+${details}`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Итог скопирован");
+      });
+    }
+
+    createForm();
+    calculateScore();
+  </script>
 </body>
 </html>
